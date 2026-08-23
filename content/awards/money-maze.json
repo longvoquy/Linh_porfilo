@@ -1,0 +1,20 @@
+{
+  "slug": "money-maze",
+  "section": "awards",
+  "title": {
+    "en": "Money Maze",
+    "vi": "Cuộc thi Money Maze"
+  },
+  "org": {
+    "en": "Money Maze Competition",
+    "vi": "Cuộc thi Money Maze"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "Took part in the Money Maze competition, including its The Debate Arena round.",
+    "vi": "Tham gia cuộc thi Money Maze, bao gồm phần thi The Debate Arena."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/awards/money-maze",
+  "status": "published"
+}

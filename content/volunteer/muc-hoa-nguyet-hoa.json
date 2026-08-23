@@ -1,0 +1,25 @@
+{
+  "slug": "muc-hoa-nguyet-hoa",
+  "section": "volunteer",
+  "title": {
+    "en": "Mục Hoạ Nguyệt Hoa",
+    "vi": "Mục Hoạ Nguyệt Hoa"
+  },
+  "org": {
+    "en": "Event Club, Nguyễn Siêu School",
+    "vi": "Câu lạc bộ Sự kiện, Trường Nguyễn Siêu"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "Took part in the \"Mục Hoạ Nguyệt Hoa\" fundraiser, donating for children at a welfare center under the Department of Health.",
+    "vi": "Tham gia quyên góp tại sự kiện \"Mục Hoạ Nguyệt Hoa,\" ủng hộ trẻ em tại Trung tâm bảo trợ thuộc Sở Y tế."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786978329/portfolio/volunteer/muc-hoa-nguyet-hoa/certificates/cert-quyen-gop-tai-su-kien-muc-hoa-nguyet-hoa-cua-tt-bao-tro-thuoc-so-y-te.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/volunteer/muc-hoa-nguyet-hoa",
+  "status": "published"
+}

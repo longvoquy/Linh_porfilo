@@ -1,0 +1,24 @@
+{
+  "slug": "tranh-8-huong-vi-sai-gon",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Flavors of Saigon",
+    "vi": "Hương vị Sài Gòn"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "An original painting capturing the everyday flavors and street life of Saigon.",
+    "vi": "Một bức tranh gốc ghi lại hương vị và nhịp sống đường phố Sài Gòn."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786784762/portfolio/art/tranh-8-huong-vi-sai-gon.jpg",
+      "alt": {
+        "en": "Painting titled Flavors of Saigon",
+        "vi": "Tranh Hương vị Sài Gòn"
+      }
+    }
+  ],
+  "status": "published"
+}

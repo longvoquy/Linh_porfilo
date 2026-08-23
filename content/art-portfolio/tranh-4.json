@@ -1,0 +1,24 @@
+{
+  "slug": "tranh-4-am-sac-hoang-cung",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Sounds of the Royal Court",
+    "vi": "Âm sắc hoàng cung"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "An original painting depicting traditional court musicians in performance.",
+    "vi": "Một bức tranh gốc khắc họa các nhạc công cung đình trong buổi biểu diễn."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786784755/portfolio/art/tranh-4-am-sac-hoang-cung.jpg",
+      "alt": {
+        "en": "Painting titled Sounds of the Royal Court",
+        "vi": "Tranh Âm sắc hoàng cung"
+      }
+    }
+  ],
+  "status": "published"
+}

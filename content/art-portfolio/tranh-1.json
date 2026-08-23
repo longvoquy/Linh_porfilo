@@ -10,6 +10,15 @@
     "en": "An original painting exploring the transition between seasons.",
     "vi": "Một bức tranh gốc khám phá khoảnh khắc giao thoa giữa các mùa."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786783971/portfolio/art/tranh-1-giao-mua.jpg",
+      "alt": {
+        "en": "Painting titled Season's Crossing",
+        "vi": "Tranh Giao mùa"
+      }
+    }
+  ],
   "status": "published"
 }

@@ -22,12 +22,14 @@ export function ActivityDetail({ item, onClose }: { item: ActivityItem; onClose:
         onClick={(e) => e.stopPropagation()}
         className="flex max-h-[85vh] w-full max-w-2xl flex-col overflow-y-auto rounded-2xl bg-white p-6"
       >
-        <div className="mb-4 flex aspect-video items-center justify-center overflow-hidden rounded-xl bg-black/5">
+        <div className="mb-4 flex max-h-[70vh] items-center justify-center overflow-hidden rounded-xl bg-black/5">
           {cover ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={cover} alt="" className="h-full w-full object-cover" />
+            <img src={cover} alt="" className="max-h-[70vh] w-full object-contain" />
           ) : (
-            <span className="text-xs uppercase tracking-widest text-black/30">{item.section}</span>
+            <div className="flex aspect-video w-full items-center justify-center">
+              <span className="text-xs uppercase tracking-widest text-black/30">{item.section}</span>
+            </div>
           )}
         </div>
         {item.tier && (

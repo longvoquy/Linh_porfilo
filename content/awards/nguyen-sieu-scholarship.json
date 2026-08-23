@@ -1,0 +1,29 @@
+{
+  "slug": "nguyen-sieu-scholarship",
+  "section": "awards",
+  "title": {
+    "en": "Nguyễn Siêu Scholarship",
+    "vi": "Học bổng Nguyễn Siêu"
+  },
+  "org": {
+    "en": "Nguyễn Siêu School",
+    "vi": "Trường Nguyễn Siêu"
+  },
+  "date": "2024–2025",
+  "tier": {
+    "en": "Scholarship recipient",
+    "vi": "Học sinh nhận học bổng"
+  },
+  "caption": {
+    "en": "Awarded the Nguyễn Siêu School scholarship for the 2024–2025 academic year.",
+    "vi": "Nhận học bổng của Trường Nguyễn Siêu cho năm học 2024–2025."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788659/portfolio/awards/nguyen-sieu-scholarship/certificates/giay-chung-nhan-hoc-bong-nguyen-sieu-2024-2025.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/awards/nguyen-sieu-scholarship",
+  "status": "published"
+}

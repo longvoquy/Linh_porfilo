@@ -1,19 +1,14 @@
-"use client";
+import { VisualChapters } from "@/components/chapters/VisualChapters";
+import { getChapters } from "@/lib/chapters";
+import { getSectionMeta } from "@/lib/getContent";
 
-import { ActivityGrid } from "@/components/activity/ActivityGrid";
-import { getSectionItems, getSectionMeta } from "@/lib/getContent";
-import { useTranslation } from "@/lib/i18n/useTranslation";
+/** See app/awards/page.tsx for why this is a Server Component with `revalidate`. */
+export const revalidate = 3600;
 
 const meta = getSectionMeta("leadership")!;
-const items = getSectionItems("leadership");
 
-export default function LeadershipPage() {
-  const { localize } = useTranslation();
+export default async function LeadershipPage() {
+  const chapters = await getChapters("leadership");
 
-  return (
-    <main className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="mb-10 text-3xl font-semibold tracking-tight">{localize(meta.label)}</h1>
-      <ActivityGrid items={items} />
-    </main>
-  );
+  return <VisualChapters chapters={chapters} label={meta.label} introKey="leadership.intro" />;
 }

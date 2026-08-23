@@ -1,0 +1,323 @@
+Redesign the current Home page into a **radial / circular portfolio navigation**.
+
+## Current Context
+
+The Home page currently renders:
+
+```ts
+getAllSections()
+```
+
+from:
+
+```text
+content/sections.ts
+```
+
+This returns 7 sections:
+
+1. Awards & Honors
+2. Leadership
+3. Passion Projects
+4. Art Portfolio
+5. Volunteer & Philanthropy
+6. Research
+7. Internship
+
+Currently, these are displayed as 7 separate option cards.
+
+## Main Goal
+
+Replace the current Home layout with a **radial navigation interface**.
+
+The visual concept should be:
+
+```text
+                    [ Awards ]
+
+          [ Leadership ]     [ Passion Projects ]
+
+
+                    ┌─────────┐
+                    │         │
+                    │  CORE   │
+                    │ CIRCLE  │
+                    │         │
+                    └─────────┘
+
+
+          [ Art Portfolio ]   [ Volunteer ]
+
+
+              [ Research ]   [ Internship ]
+```
+
+The exact positioning should be calculated dynamically rather than manually hard-coded.
+
+---
+
+## 1. Central Circle
+
+Create a large circular element positioned exactly at the center of the viewport.
+
+The central circle should be the main visual focal point of the Home page.
+
+It can contain an appropriate existing portfolio element such as:
+
+* Name
+* Initials
+* Avatar
+* Portfolio title
+* Existing logo/visual
+
+If the project already has a suitable avatar, logo, or identity component, **reuse it instead of creating a duplicate**.
+
+The circle should feel:
+
+* Premium
+* Minimal
+* Modern
+* Elegant
+* Interactive
+
+---
+
+## 2. Seven Section Items Around the Circle
+
+Continue using:
+
+```ts
+getAllSections()
+```
+
+as the **single source of truth**.
+
+Do NOT hard-code the 7 sections again.
+
+Render the section items dynamically.
+
+Each section should become a floating card/button positioned around the central circle.
+
+Each item must retain its existing navigation behavior.
+
+For example:
+
+```text
+/awards-honors
+/leadership
+/passion-projects
+/art-portfolio
+/volunteer-philanthropy
+/research
+/internship
+```
+
+Do not change the existing routing architecture unless necessary.
+
+---
+
+## 3. Dynamic Radial Positioning
+
+The position of each item should be calculated based on its index and the total number of sections.
+
+For example:
+
+```ts
+const angle = (index / sections.length) * 360;
+```
+
+Then position each item around the center using CSS transforms or another clean layout approach.
+
+Avoid manually defining positions such as:
+
+```ts
+top: ...
+left: ...
+```
+
+for each individual section.
+
+The implementation should remain reasonably flexible if the number of sections changes in the future.
+
+For example, it should still behave sensibly with 6, 8, or 9 sections.
+
+---
+
+## 4. Hide the Navbar on Home
+
+The navbar should be **completely hidden on the Home page**.
+
+The Home page should feel like an independent portfolio landing/navigation experience.
+
+However:
+
+* Do NOT delete the navbar component.
+* Do NOT disable it globally.
+* Only conditionally hide it when the current route is the Home route.
+
+The navbar should continue working normally on all section pages.
+
+---
+
+## 5. Visual Design
+
+The overall design should feel like a **premium interactive portfolio**.
+
+Think of the central circle as the user's identity and the 7 sections as a constellation/orbit around it.
+
+Use the existing project's design system and styling conventions.
+
+Prefer:
+
+* Subtle glassmorphism if it fits the existing design
+* Soft borders
+* Subtle shadows
+* Elegant typography
+* Smooth transitions
+* Generous spacing
+* Minimal visual noise
+
+Avoid making it overly flashy or gimmicky.
+
+The central circle should clearly be the visual anchor.
+
+---
+
+## 6. Hover & Interaction
+
+Each section card should have a polished hover interaction.
+
+For example:
+
+* Slight scale-up
+* Subtle elevation
+* Border/shadow transition
+* Small movement toward the user
+* Smooth transition
+
+The interaction should feel responsive but not excessive.
+
+When the Home page loads:
+
+1. The central circle should appear first.
+2. The 7 section items should then appear with a subtle staggered animation.
+
+Keep animations smooth and lightweight.
+
+If the project already uses an animation library, reuse it instead of introducing another dependency.
+
+---
+
+## 7. Responsive Behavior
+
+### Desktop
+
+Use the full radial layout.
+
+The central circle should remain centered with the 7 section cards distributed evenly around it.
+
+### Tablet
+
+Reduce:
+
+* Circle size
+* Card size
+* Radial distance
+* Typography where necessary
+
+Maintain a balanced composition.
+
+### Mobile
+
+Do NOT force the desktop radial layout if it causes:
+
+* Horizontal scrolling
+* Cards going outside the viewport
+* Overlapping elements
+* Poor usability
+
+On mobile, it is acceptable to switch to a compact layout such as:
+
+```text
+        [ Core Circle ]
+
+        [ Awards ]
+      [ Leadership ]
+    [ Passion Projects ]
+     [ Art Portfolio ]
+       [ Volunteer ]
+        [ Research ]
+       [ Internship ]
+```
+
+The priority is **usability and visual quality**, not preserving the exact desktop geometry.
+
+---
+
+## 8. Codebase Inspection Before Implementation
+
+Before making changes, inspect:
+
+1. Current Home page/component
+2. `content/sections.ts`
+3. `getAllSections()`
+4. Navbar component
+5. Routing configuration
+6. Existing animation utilities
+7. Existing UI components
+8. Existing Tailwind/CSS conventions
+
+Follow the architecture already used by the project.
+
+Do not introduce unnecessary dependencies.
+
+Do not duplicate existing components or data.
+
+---
+
+## 9. Preserve Existing Functionality
+
+Do NOT break:
+
+* Existing routes
+* Section pages
+* Navigation
+* Existing content
+* Theme
+* Other page layouts
+* Responsive behavior outside Home
+
+This task is primarily a **Home page visual/navigation redesign**.
+
+---
+
+## Acceptance Criteria
+
+* [ ] Navbar is hidden on the Home page.
+* [ ] Navbar still works normally on all other pages.
+* [ ] A large central circle is positioned in the center of the Home page.
+* [ ] All 7 sections are displayed around the circle.
+* [ ] Sections are rendered dynamically from `getAllSections()`.
+* [ ] No duplicate hard-coded section data is introduced.
+* [ ] Section positions are calculated dynamically.
+* [ ] Clicking a section navigates to its existing route.
+* [ ] Section cards have polished hover interactions.
+* [ ] Home has a subtle entrance animation.
+* [ ] Desktop layout is balanced and visually appealing.
+* [ ] Tablet layout scales appropriately.
+* [ ] Mobile layout does not overflow or become unusable.
+* [ ] Existing section pages and routing remain unchanged.
+* [ ] No unnecessary dependencies are added.
+* [ ] Existing project design conventions are respected.
+
+## Final Instruction
+
+First inspect the existing implementation and understand the current architecture.
+
+Then implement the redesign directly in the existing codebase.
+
+Do not ask for confirmation unless there is a genuine architectural ambiguity.
+
+After implementation, run the appropriate build/type-check/tests and fix any issues introduced by the changes.
+
+Prioritize **clean code, maintainability, responsiveness, and a premium visual result** over over-engineering.

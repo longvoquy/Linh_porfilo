@@ -62,6 +62,11 @@ export function NavBar() {
     return () => zone.removeEventListener("wheel", handleWheel);
   }, [pathname, router]);
 
+  // Home is its own radial navigation experience — the bar is hidden there only,
+  // and stays active on every section page. (Declared after the hooks above so
+  // hook order stays stable across routes.)
+  if (pathname === "/") return null;
+
   const activeIndex = sections.findIndex((section) => `/${section.key}` === pathname);
   const centerIndex = activeIndex === -1 ? 0 : activeIndex;
   const count = sections.length;

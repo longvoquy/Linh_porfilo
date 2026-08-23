@@ -1,0 +1,25 @@
+{
+  "slug": "vinh-thanh",
+  "section": "volunteer",
+  "title": {
+    "en": "Chắp Cánh Ước Mơ – Vĩnh Thanh",
+    "vi": "Chắp cánh ước mơ – Vĩnh Thanh"
+  },
+  "org": {
+    "en": "Vĩnh Thanh Women's Union",
+    "vi": "Hội Liên hiệp Phụ nữ xã Vĩnh Thanh"
+  },
+  "date": "2026",
+  "caption": {
+    "en": "Contributed to \"Chắp cánh ước mơ – Đồng hành cùng trẻ em mồ côi và khó khăn xã Vĩnh Thanh,\" supporting orphaned and disadvantaged children in Vĩnh Thanh commune.",
+    "vi": "Đóng góp cho sự kiện \"Chắp cánh ước mơ – Đồng hành cùng trẻ em mồ côi và khó khăn xã Vĩnh Thanh,\" hỗ trợ trẻ em mồ côi và có hoàn cảnh khó khăn tại xã Vĩnh Thanh."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786978338/portfolio/volunteer/vinh-thanh/certificates/cert-tre-mo-coi-xa-vinh-thanh.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/volunteer/vinh-thanh",
+  "status": "published"
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "tranh-6-hon-thieng-song-nui",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Spirit of the Mountains and Rivers",
+    "vi": "Hồn thiêng sông núi"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "An original painting celebrating the sacred spirit of Vietnam's landscapes.",
+    "vi": "Một bức tranh gốc tôn vinh hồn thiêng của núi sông đất nước."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786784759/portfolio/art/tranh-6-hon-thieng-song-nui.jpg",
+      "alt": {
+        "en": "Painting titled Spirit of the Mountains and Rivers",
+        "vi": "Tranh Hồn thiêng sông núi"
+      }
+    }
+  ],
+  "status": "published"
+}

@@ -1,0 +1,24 @@
+{
+  "slug": "tranh-5-co-do-hoai-niem",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Nostalgia of the Ancient Capital",
+    "vi": "Cố đô hoài niệm"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "An original painting evoking the quiet nostalgia of Vietnam's ancient imperial capital.",
+    "vi": "Một bức tranh gốc gợi nhớ vẻ hoài niệm trầm lắng của cố đô Việt Nam."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786785621/portfolio/art/tranh-5-co-do-hoai-niem.jpg",
+      "alt": {
+        "en": "Painting titled Nostalgia of the Ancient Capital",
+        "vi": "Tranh Cố đô hoài niệm"
+      }
+    }
+  ],
+  "status": "published"
+}

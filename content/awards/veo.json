@@ -1,0 +1,25 @@
+{
+  "slug": "veo",
+  "section": "awards",
+  "title": {
+    "en": "VEO",
+    "vi": "Cuộc thi VEO"
+  },
+  "org": {
+    "en": "VEO",
+    "vi": "VEO"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "Took part in the VEO competition.",
+    "vi": "Tham gia cuộc thi VEO."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788658/portfolio/awards/veo/certificates/veo-chung-nhan-tham-gia.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/awards/veo",
+  "status": "published"
+}

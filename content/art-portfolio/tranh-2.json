@@ -1,0 +1,24 @@
+{
+  "slug": "tranh-2-am-vang-nguon-coi",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Echoes of Heritage",
+    "vi": "Âm vang nguồn cội"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "An original painting reflecting on cultural roots and ancestral memory.",
+    "vi": "Một bức tranh gốc gợi lại cội nguồn văn hóa và ký ức tổ tiên."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786783972/portfolio/art/tranh-2-am-vang-nguon-coi.jpg",
+      "alt": {
+        "en": "Painting titled Echoes of Heritage",
+        "vi": "Tranh Âm vang nguồn cội"
+      }
+    }
+  ],
+  "status": "published"
+}

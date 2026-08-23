@@ -18,6 +18,12 @@
     "en": "Placed first nationally among Grade 10 students in Vietnam's Bebras Computational Thinking Challenge, an international competition testing algorithmic and computational reasoning.",
     "vi": "Đạt giải Nhất toàn quốc khối lớp 10 tại cuộc thi Tư duy Máy tính Bebras Việt Nam — một cuộc thi quốc tế kiểm tra tư duy thuật toán và khả năng tính toán."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788641/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-tieng-anh-quoc-gia.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/awards/bebras-2025-2026",
   "status": "published"
 }

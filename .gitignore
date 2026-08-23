@@ -42,3 +42,4 @@ next-env.d.ts
 
 # raw source assets (originals, not served by the app — see content/*.json for what actually ships)
 /data
+.prompt

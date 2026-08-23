@@ -1,0 +1,19 @@
+{
+  "slug": "soccer-varsity",
+  "section": "leadership",
+  "title": {
+    "en": "Soccer Varsity",
+    "vi": "Đội bóng đá Varsity"
+  },
+  "org": {
+    "en": "Soccer Varsity Team",
+    "vi": "Đội bóng đá Varsity"
+  },
+  "caption": {
+    "en": "Part of the school's Varsity Soccer team.",
+    "vi": "Thành viên đội bóng đá Varsity của trường."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/leadership/soccer-varsity",
+  "status": "published"
+}

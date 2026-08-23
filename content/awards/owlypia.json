@@ -1,0 +1,29 @@
+{
+  "slug": "owlypia",
+  "section": "awards",
+  "title": {
+    "en": "Owlypia",
+    "vi": "Cuộc thi Owlypia"
+  },
+  "org": {
+    "en": "Owlypia",
+    "vi": "Owlypia"
+  },
+  "date": "2025",
+  "tier": {
+    "en": "Silver Medal",
+    "vi": "Huy chương Bạc"
+  },
+  "caption": {
+    "en": "Awarded a Silver Medal at Owlypia.",
+    "vi": "Đạt Huy chương Bạc tại Owlypia."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788657/portfolio/awards/owlypia/certificates/owlypia-huy-chuong-bac.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/awards/owlypia",
+  "status": "published"
+}

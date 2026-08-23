@@ -1,0 +1,76 @@
+I have already configured the Cloudinary credentials in the environment.
+
+Before modifying any application code, please inspect my Cloudinary account and inventory the portfolio images.
+
+### Goal
+
+I currently have portfolio sections defined through:
+
+```ts
+getAllSections()
+```
+
+in:
+
+```text
+content/sections.ts
+```
+
+The sections are:
+
+1. Awards & Honors
+2. Leadership
+3. Passion Projects
+4. Art Portfolio
+5. Volunteer & Philanthropy
+6. Research
+7. Internship
+
+### Task
+
+First, connect to Cloudinary using the configured credentials and inspect the available assets.
+
+Do NOT modify my code yet.
+
+Please:
+
+1. List the available images/assets.
+2. Group them by Cloudinary folder/path if possible.
+3. Show each asset's:
+
+   * `public_id`
+   * format
+   * width
+   * height
+   * secure URL
+4. Identify which images appear relevant to each of the 7 portfolio sections.
+5. If the Cloudinary assets are not organized clearly, propose a clean folder structure such as:
+
+```text
+portfolio/
+├── awards/
+├── leadership/
+├── passion-projects/
+├── art/
+├── volunteer/
+├── research/
+└── internship/
+```
+
+6. Do not download the images into the repository.
+7. Do not create local copies of the images.
+8. Do not modify `sections.ts` yet.
+
+### Important
+
+I want Cloudinary to be the external source of truth for portfolio images so that I do not have to manually copy image URLs into TypeScript files one by one.
+
+After inspecting everything, give me a concise report containing:
+
+* All discovered assets
+* Their Cloudinary paths
+* Suggested section mapping
+* Any assets that are ambiguous or cannot be confidently mapped
+
+
+right now i only have home/art folder on Cloudinary

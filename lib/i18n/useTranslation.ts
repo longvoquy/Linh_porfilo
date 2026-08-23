@@ -7,7 +7,7 @@ import vi from "./dictionaries/vi.json";
 
 const dictionaries = { en, vi } as const;
 
-type DictionaryKey = keyof typeof en;
+export type DictionaryKey = keyof typeof en;
 
 export function useTranslation() {
   const { locale } = useLanguage();

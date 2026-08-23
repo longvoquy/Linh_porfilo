@@ -1,0 +1,778 @@
+Redesign the **Awards & Honors** page into a **Visual Chapter / Editorial Gallery** experience.
+
+The key concept is:
+
+> **One award = one visual chapter.**
+>
+> Each award/folder can contain many images, and those images should be presented together as a visual story.
+
+Do NOT treat individual images as individual awards.
+
+---
+
+# 1. Current Data Model
+
+The current Awards & Honors content concept is:
+
+```text
+Awards & Honors
+├── Bebras 2025, 2026
+│   ├── image
+│   ├── image
+│   ├── image
+│   └── ...
+│
+├── Cuộc thi Money Maze
+│   ├── image
+│   ├── image
+│   └── ...
+│
+├── Cuộc thi VEO
+│   ├── image
+│   └── ...
+│
+└── Học bổng Nguyễn Siêu
+    ├── image
+    ├── image
+    └── ...
+```
+
+The important relationship is:
+
+```text
+Award / Folder
+      ↓
+Multiple media assets
+      ↓
+Visual gallery
+```
+
+The UI should reflect this hierarchy.
+
+---
+
+# 2. Main Design Concept
+
+The Awards page should feel like a **personal visual archive / editorial portfolio**, NOT a file manager, dashboard, or Google Drive clone.
+
+Each award should appear as a separate **visual chapter**.
+
+Conceptually:
+
+```text
+AWARDS & HONORS
+
+A collection of achievements, competitions,
+scholarships and memorable milestones.
+
+
+01 / BEBRAS 2025, 2026
+Computational Thinking Challenge
+2025 — 2026
+
+┌───────────────────────────┐  ┌─────────────────┐
+│                           │  │                 │
+│                           │  │                 │
+│       LARGE IMAGE         │  │      IMAGE      │
+│                           │  │                 │
+│                           │  └─────────────────┘
+│                           │
+└───────────────────────────┘  ┌─────────────────┐
+                               │                 │
+                               │      IMAGE      │
+                               │                 │
+                               └─────────────────┘
+
+
+────────────────────────────────────────────────────
+
+
+02 / MONEY MAZE
+Business Competition
+2025
+
+┌─────────────────┐  ┌───────────────────────────┐
+│                 │  │                           │
+│      IMAGE      │  │                           │
+│                 │  │       LARGE IMAGE         │
+└─────────────────┘  │                           │
+                     └───────────────────────────┘
+```
+
+The exact layout does NOT need to match this ASCII art literally.
+
+The important design principles are:
+
+* One award = one chapter
+* Multiple images per chapter
+* Strong visual hierarchy
+* Editorial composition
+* Asymmetric image layouts
+* Large focal images
+* Generous whitespace
+* Clear separation between chapters
+* Smooth scrolling experience
+
+---
+
+# 3. Before Coding
+
+First inspect the existing codebase.
+
+Inspect:
+
+* Current Awards & Honors page/component
+* `content/sections.ts`
+* `getAllSections()`
+* Existing routing
+* Existing portfolio components
+* Existing gallery components
+* Existing card components
+* Existing typography system
+* Existing spacing/layout conventions
+* Existing animation utilities
+* Existing Tailwind/CSS conventions
+* Existing Cloudinary integration
+* Existing image/lightbox components if any
+
+Understand the current architecture before modifying anything.
+
+Reuse existing components when appropriate.
+
+Do not introduce unnecessary dependencies.
+
+---
+
+# 4. Page Header
+
+At the top of the page, create a strong editorial header.
+
+Example:
+
+```text
+AWARDS & HONORS
+
+A collection of achievements, competitions,
+scholarships and memorable milestones.
+```
+
+The title should be visually prominent.
+
+Use the existing typography/design system.
+
+Do not make this look like a dashboard page.
+
+Consider adding a small metadata line such as:
+
+```text
+04 CHAPTERS
+```
+
+if the existing design supports this kind of detail.
+
+Keep it subtle.
+
+---
+
+# 5. Award = Visual Chapter
+
+Every award should be rendered as an independent visual chapter.
+
+For example:
+
+```text
+01 / BEBRAS 2025, 2026
+
+Computational Thinking Challenge
+2025 — 2026
+```
+
+Then its gallery.
+
+Next:
+
+```text
+02 / MONEY MAZE
+
+Business Competition
+2025
+```
+
+Then its gallery.
+
+And so on.
+
+Each chapter should have:
+
+* Chapter number
+* Award title
+* Optional subtitle/category
+* Optional year
+* Image gallery
+* Optional short description if the existing data supports it
+
+Do not invent information that does not exist in the data.
+
+---
+
+# 6. Gallery Design
+
+This is the most important part.
+
+Do NOT render the images as a boring equal-size grid.
+
+Use an **asymmetric editorial/masonry-style composition**.
+
+For example:
+
+```text
+┌─────────────────────────────┐ ┌────────────────────┐
+│                             │ │                    │
+│                             │ │                    │
+│         LARGE IMAGE         │ │      IMAGE         │
+│                             │ │                    │
+│                             │ └────────────────────┘
+│                             │
+│                             │ ┌────────────────────┐
+└─────────────────────────────┘ │                    │
+                                │      IMAGE         │
+                                │                    │
+                                └────────────────────┘
+```
+
+Another chapter can use a different composition:
+
+```text
+┌──────────────────┐ ┌──────────────────────────────┐
+│                  │ │                              │
+│      IMAGE       │ │                              │
+│                  │ │         LARGE IMAGE          │
+└──────────────────┘ │                              │
+                     └──────────────────────────────┘
+
+┌──────────────────────────────┐
+│                              │
+│            IMAGE             │
+│                              │
+└──────────────────────────────┘
+```
+
+The layout can vary slightly between chapters to create a curated editorial feeling.
+
+However:
+
+* Do not make the layout random.
+* Do not create unnecessarily complicated geometry.
+* Keep it deterministic and maintainable.
+* Make sure the content remains readable.
+
+---
+
+# 7. Image Hierarchy
+
+Not every image should have equal visual importance.
+
+If a chapter contains multiple images:
+
+* Choose one image as the primary/focal image.
+* Display it larger.
+* Display secondary images smaller.
+* Additional images can continue below.
+
+If there is existing metadata indicating a cover/featured image, use that.
+
+If there is no metadata, use a deterministic rule such as the first image as the primary image.
+
+Do NOT use AI/image analysis to guess which image is the most important unless the project already has such functionality.
+
+---
+
+# 8. Many Images Per Award
+
+Some awards may contain a large number of images.
+
+Do NOT try to display 20+ images above the fold.
+
+Use:
+
+* Lazy loading
+* Natural image dimensions/aspect ratios
+* Progressive loading where appropriate
+* Reasonable spacing
+* Additional gallery rows below the primary composition
+
+For example:
+
+```text
+Award Header
+      ↓
+Featured Gallery
+      ↓
+Additional Images
+      ↓
+Additional Images
+```
+
+The user should be able to scroll naturally through the entire chapter.
+
+Do not unnecessarily hide the majority of the images behind a "View More" button unless there is a clear performance reason.
+
+---
+
+# 9. Image Interaction
+
+Images should be interactive.
+
+On hover:
+
+* subtle scale
+* subtle brightness/elevation change
+* smooth transition
+* cursor should indicate the image is clickable
+
+On click:
+
+Open the image in a fullscreen/lightbox viewer if the project already has one.
+
+If there is no existing lightbox, implement a lightweight accessible solution rather than adding a large dependency unnecessarily.
+
+The lightbox should support:
+
+* Next image
+* Previous image
+* Close
+* Keyboard Escape
+* Keyboard navigation where practical
+* Mobile-friendly interaction
+
+Do not navigate away from the Awards page just to view a single image.
+
+---
+
+# 10. Chapter Separation
+
+Each visual chapter should feel independent.
+
+Use:
+
+* generous vertical spacing
+* subtle divider
+* chapter number
+* consistent title treatment
+
+For example:
+
+```text
+01 / BEBRAS 2025, 2026
+[gallery]
+
+
+────────────────────────────────────
+
+
+02 / MONEY MAZE
+[gallery]
+
+
+────────────────────────────────────
+
+
+03 / VEO
+[gallery]
+```
+
+Avoid heavy cards around every chapter.
+
+I want the page to feel editorial rather than like a collection of SaaS cards.
+
+---
+
+# 11. Responsive Design
+
+Desktop:
+
+* Large asymmetric gallery
+* Generous whitespace
+* Strong typography
+* Large focal image
+
+Tablet:
+
+* Reduce gallery complexity
+* Maintain asymmetric composition where possible
+* Reduce image sizes and spacing
+
+Mobile:
+
+Do NOT try to preserve complex desktop geometry.
+
+Use a clean stacked layout:
+
+```text
+01 / BEBRAS 2025, 2026
+
+[ LARGE IMAGE ]
+
+[ IMAGE ]
+
+[ IMAGE ]
+
+[ IMAGE ]
+
+02 / MONEY MAZE
+
+[ LARGE IMAGE ]
+
+[ IMAGE ]
+
+[ IMAGE ]
+```
+
+No horizontal overflow.
+
+No cropped content unless intentionally caused by the image presentation.
+
+Touch targets must be comfortable.
+
+---
+
+# 12. Cloudinary Architecture
+
+Cloudinary should be the source of truth for media.
+
+The conceptual structure should be:
+
+```text
+portfolio/
+└── awards/
+    ├── bebras-2025-2026/
+    │   ├── cover.webp
+    │   ├── 01.webp
+    │   ├── 02.webp
+    │   └── ...
+    │
+    ├── money-maze/
+    │   ├── cover.webp
+    │   ├── 01.webp
+    │   └── ...
+    │
+    ├── veo/
+    │   ├── cover.webp
+    │   └── ...
+    │
+    └── nguyen-sieu-scholarship/
+        ├── cover.webp
+        └── ...
+```
+
+Treat:
+
+```text
+folder = award
+files inside folder = award gallery
+```
+
+Do not treat every file as a separate award.
+
+---
+
+# 13. Data Model
+
+Do not manually repeat full Cloudinary URLs throughout the UI.
+
+Prefer stable identifiers.
+
+For example:
+
+```ts
+{
+  slug: "bebras-2025-2026",
+  title: "Bebras 2025, 2026",
+  category: "Competition",
+  year: "2025–2026",
+  cloudinaryFolder: "portfolio/awards/bebras-2025-2026"
+}
+```
+
+Then use a reusable Cloudinary helper for asset delivery URLs.
+
+If the existing application architecture already has a better data model, follow it instead of blindly using this exact structure.
+
+---
+
+# 14. Dynamic Asset Discovery
+
+Before implementing Cloudinary fetching, inspect the current project architecture.
+
+I want to avoid manually doing:
+
+```ts
+image: "https://res.cloudinary.com/..."
+```
+
+for every image.
+
+Determine whether the cleanest solution is:
+
+### Option A
+
+Metadata lives in TypeScript:
+
+```ts
+{
+  slug,
+  title,
+  year,
+  cloudinaryFolder
+}
+```
+
+and Cloudinary assets are discovered dynamically.
+
+OR
+
+### Option B
+
+A build-time/server-side Cloudinary asset listing is generated.
+
+OR
+
+### Option C
+
+Another approach that is more appropriate for this project.
+
+The most important requirements are:
+
+* No local image files
+* No manually copied URLs
+* No Cloudinary API Secret exposed to browser/client code
+* Production-safe
+* Maintainable
+* Easy to add new awards
+* Easy to add more images to an existing award
+
+Do not expose Cloudinary credentials in frontend code.
+
+---
+
+# 15. Adding New Awards
+
+The final architecture should make this workflow simple:
+
+```text
+1. Create/upload a new Cloudinary folder:
+
+portfolio/awards/new-award/
+
+2. Upload images into that folder.
+
+3. Add minimal award metadata if required.
+
+4. The website automatically discovers/loads the images.
+```
+
+I do NOT want to manually copy 10–20 image URLs into a TypeScript file for every new award.
+
+---
+
+# 16. Performance
+
+Because each award can contain many images:
+
+* Use lazy loading.
+* Do not load full-resolution originals unnecessarily.
+* Use Cloudinary transformations for responsive image delivery.
+* Generate appropriate thumbnail/preview dimensions.
+* Use larger versions only for lightbox/fullscreen viewing.
+* Avoid loading all galleries at full resolution on initial page load.
+
+If possible, use responsive Cloudinary image URLs.
+
+The browser should receive an appropriately sized image for the viewport.
+
+---
+
+# 17. Visual Style
+
+The overall feeling should be:
+
+**Personal portfolio + editorial magazine + visual archive**
+
+Not:
+
+* Google Drive
+* File manager
+* Admin dashboard
+* SaaS dashboard
+* Generic Bootstrap card grid
+
+Prefer:
+
+* Elegant typography
+* Large visual moments
+* Asymmetric composition
+* Generous whitespace
+* Subtle dividers
+* Minimal controls
+* Smooth motion
+* Strong hierarchy
+* High-quality image presentation
+
+The page should feel intentional and curated.
+
+---
+
+# 18. Animation
+
+Use subtle animation only.
+
+When a chapter enters the viewport:
+
+* text can fade/slide slightly
+* images can fade/scale subtly
+
+Hover:
+
+* image scale around 1.02–1.04
+* subtle overlay or brightness transition
+
+Do not use excessive parallax.
+
+Do not make every element animate independently.
+
+If an animation library already exists in the project, reuse it.
+
+---
+
+# 19. Navigation
+
+The page should integrate with the existing portfolio navigation.
+
+Do not break the Home radial navigation.
+
+The intended flow is:
+
+```text
+Home
+  ↓
+Awards & Honors
+  ↓
+Visual Chapters
+  ↓
+Gallery / Lightbox
+```
+
+The user should be able to return to the Home/previous section naturally.
+
+If the navbar is intentionally hidden on Home, preserve that behavior.
+
+Do not introduce a second navigation system unnecessarily.
+
+---
+
+# 20. Important Constraints
+
+Do NOT:
+
+* Create a Google Drive-like folder UI.
+* Create one card per image.
+* Create one route per image.
+* Hard-code dozens of Cloudinary URLs.
+* Download images into `public/`.
+* Store images in Git.
+* Expose Cloudinary API Secret to the client.
+* Add unnecessary dependencies.
+* Rewrite unrelated parts of the portfolio.
+* Invent award descriptions or achievements.
+* Over-engineer the data layer.
+
+---
+
+# 21. Implementation Process
+
+Follow this sequence:
+
+### Step 1
+
+Inspect the existing implementation and architecture.
+
+### Step 2
+
+Identify the cleanest data model for:
+
+```text
+Award
+  └── many assets
+```
+
+### Step 3
+
+Implement the Awards page using the Visual Chapter concept.
+
+### Step 4
+
+Implement the responsive editorial gallery.
+
+### Step 5
+
+Implement image interaction/lightbox using existing project infrastructure where possible.
+
+### Step 6
+
+Integrate Cloudinary safely.
+
+### Step 7
+
+Test with multiple images per award.
+
+### Step 8
+
+Test with an award containing many images.
+
+### Step 9
+
+Test desktop, tablet and mobile.
+
+### Step 10
+
+Run the project's type-check/build/tests.
+
+Fix any issues introduced by the implementation.
+
+---
+
+# 22. Acceptance Criteria
+
+The implementation is complete when:
+
+* [ ] Awards & Honors feels like a visual portfolio, not a file manager.
+* [ ] Each award is treated as one visual chapter.
+* [ ] Each award can contain many images.
+* [ ] Images are presented using an editorial/asymmetric gallery.
+* [ ] One image can be visually emphasized as the primary image.
+* [ ] Additional images remain accessible.
+* [ ] Images support fullscreen/lightbox viewing.
+* [ ] Gallery supports many images without becoming visually chaotic.
+* [ ] Images are lazy-loaded.
+* [ ] Cloudinary is used as the media source.
+* [ ] No local image copies are introduced.
+* [ ] Cloudinary API Secret is never exposed to the browser.
+* [ ] No manual list of dozens of image URLs is required.
+* [ ] Adding images to an award is simple.
+* [ ] Adding a new award is simple.
+* [ ] Desktop layout looks premium.
+* [ ] Mobile layout is clean and usable.
+* [ ] No horizontal overflow.
+* [ ] Existing routing remains functional.
+* [ ] Existing portfolio design language is preserved.
+* [ ] No unrelated pages are broken.
+
+## Final Direction
+
+Do not optimize for "showing as many images as possible."
+
+Optimize for:
+
+> **telling the story of each achievement through its collection of images.**
+
+Each award should feel like a chapter in the person's portfolio journey.
