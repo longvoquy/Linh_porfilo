@@ -1085,3 +1085,13 @@ Skip the commit if nothing changed.
 **Placeholder scan:** none — every code step contains the code; commands have expected output.
 
 **Type consistency:** `HatSceneProps` (`yaw`, `reducedMotion`, `onSpin`) matches `HatStage`'s usage; `HatStage({ yaw, onSpin })` matches `HomeLanding`; `ArchCarousel({ activeIndex, onChange })` matches `HomeLanding` (`setActiveIndex` is a `Dispatch<SetStateAction<number>>`, assignable to `(index: number) => void`); helper names (`wrapIndex`, `ringOffset`, `shortestAngle`, `yawForIndex`) are identical across tasks.
+
+---
+
+## Deviations found during implementation
+
+- **`npm install three @react-three/fiber` needs `--legacy-peer-deps`.** r3f 9.7 declares optional React-Native peers (expo, react-native-webview, …) that npm tries to resolve and fails with ERESOLVE. They are irrelevant on the web; `three`, `@react-three/fiber` and `@types/three` resolve normally.
+- **`npm run lint` is not clean repo-wide**, before this work: `LanguageContext.tsx` (set-state-in-effect) and scripts under `.claude/skills/`. Lint is therefore run on the files this plan touches (`npx eslint components/home app/page.tsx`).
+- **Task 4, no-WebGL handling.** The error boundary alone does not catch a failed WebGL context: r3f reports it as an unhandled promise rejection, so the hat area was blank and Next showed an issue overlay. `HatStage` now probes WebGL first (`detectWebGL`, via `useSyncExternalStore` so hydration stays consistent) and only mounts the scene when it succeeds. The boundary stays for errors thrown while rendering.
+- **Task 4, framing.** The pedestal was clipped by the canvas bottom. Camera is now `[0, 2.2, 5.8]`, `fov 34`, aimed at `y = -0.3` each frame; pedestal radii reduced to 2.0 / 2.2.
+- **Task 7, verification method.** Headless `--screenshot` with `--virtual-time-budget` is flaky for WebGL (identical loads sometimes captured a blank canvas), so it was not trusted. Verification used a scripted Edge session (puppeteer-core, installed outside the repo): 12/12 loads rendered the hat (6 desktop, 6 mobile), and keyboard, buttons, click, drag, swipe, language toggle and navigation were exercised for real.

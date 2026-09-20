@@ -15,6 +15,7 @@ export type HatSceneProps = {
 
 const RADIUS = 1.7;
 const HEIGHT = 1.25;
+const CAMERA_TARGET_Y = -0.3;
 const DRAG_SPEED = 0.008;
 /** Pointer travel (px) above which a click is treated as the end of a drag. */
 const CLICK_SLOP = 6;
@@ -65,6 +66,9 @@ function Hat({ yaw, reducedMotion, onSpin }: HatSceneProps) {
   }, [gl]);
 
   useFrame((state, delta) => {
+    // Aim a little below the hat so the front of the pedestal stays in frame.
+    state.camera.lookAt(0, CAMERA_TARGET_Y, 0);
+
     const hat = group.current;
     if (!hat) return;
     const ease = reducedMotion ? 1 : 1 - Math.exp(-5 * delta);
@@ -104,15 +108,15 @@ function Pedestal() {
   return (
     <group position={[0, -0.82, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <mesh>
-        <circleGeometry args={[2.3, 96]} />
+        <circleGeometry args={[2.0, 96]} />
         <meshBasicMaterial color="#f3e2b8" transparent opacity={0.35} />
       </mesh>
       <mesh position={[0, 0, 0.001]}>
-        <ringGeometry args={[2.3, 2.34, 128]} />
+        <ringGeometry args={[2.0, 2.035, 128]} />
         <meshBasicMaterial color={HAT_GOLD} transparent opacity={0.8} />
       </mesh>
       <mesh position={[0, 0, 0.001]}>
-        <ringGeometry args={[2.7, 2.72, 128]} />
+        <ringGeometry args={[2.2, 2.22, 128]} />
         <meshBasicMaterial color={HAT_GOLD} transparent opacity={0.35} />
       </mesh>
     </group>
@@ -122,7 +126,7 @@ function Pedestal() {
 export default function HatScene(props: HatSceneProps) {
   return (
     <Canvas
-      camera={{ position: [0, 2.3, 6.2], fov: 32 }}
+      camera={{ position: [0, 2.2, 5.8], fov: 34 }}
       dpr={[1, 2]}
       style={{ touchAction: "pan-y" }}
     >
