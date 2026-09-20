@@ -13,5 +13,16 @@
   "hero.greeting": "Xin chào, mình là",
   "home.portfolio": "Hồ sơ",
   "home.hint": "Chọn một mục để khám phá",
-  "hero.tagline": "Học sinh lớp 11 trường Nguyễn Siêu, Hà Nội — xây dựng hồ sơ học tập, sáng tạo và hoạt động cộng đồng."
+  "hero.tagline": "Học sinh lớp 11 trường Nguyễn Siêu, Hà Nội — xây dựng hồ sơ học tập, sáng tạo và hoạt động cộng đồng.",
+  "home.hello": "Xin chào!",
+  "home.welcome": "Chào mừng đến với",
+  "home.journey": "Hành trình của mình",
+  "home.body": "Đây là câu chuyện về sự trưởng thành, đam mê và mục đích sống của mình. Mỗi trải nghiệm đã tạo nên con người mình hôm nay.",
+  "home.start": "Bắt đầu hành trình",
+  "home.spin": "Nhấn để xoay",
+  "home.hatHint": "Nhấn vào chiếc nón để xoay bánh xe trải nghiệm",
+  "home.quote": "Mỗi đường nét đều có nguồn cội. Mỗi hoa văn phản chiếu một thế giới đang đổi thay.",
+  "carousel.label": "Các mục hồ sơ",
+  "carousel.previous": "Mục trước",
+  "carousel.next": "Mục tiếp theo"
 }

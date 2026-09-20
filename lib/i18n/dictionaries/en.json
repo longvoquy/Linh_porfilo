@@ -13,5 +13,16 @@
   "hero.greeting": "Hi, I'm",
   "home.portfolio": "Portfolio",
   "home.hint": "Choose a section to explore",
-  "hero.tagline": "Grade 11 student at Nguyễn Siêu School, Hanoi — building a portfolio of academic, creative, and community work."
+  "hero.tagline": "Grade 11 student at Nguyễn Siêu School, Hanoi — building a portfolio of academic, creative, and community work.",
+  "home.hello": "Xin chào!",
+  "home.welcome": "Welcome to",
+  "home.journey": "My Journey",
+  "home.body": "This is the story of my growth, passions, and purpose. Each experience has shaped me into who I am today.",
+  "home.start": "Start the Magic",
+  "home.spin": "Click to spin",
+  "home.hatHint": "Click the hat to spin the wheel of my experiences",
+  "home.quote": "Every line has a lineage. Every pattern reflects a changing world.",
+  "carousel.label": "Portfolio sections",
+  "carousel.previous": "Previous section",
+  "carousel.next": "Next section"
 }
