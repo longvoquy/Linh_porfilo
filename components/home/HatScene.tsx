@@ -95,10 +95,6 @@ function Hat({ yaw, reducedMotion, onSpin }: HatSceneProps) {
         <torusGeometry args={[RADIUS, 0.035, 16, 128]} />
         <meshStandardMaterial color={HAT_GOLD} metalness={0.9} roughness={0.25} />
       </mesh>
-      <mesh position={[0, HEIGHT / 2 + 0.05, 0]}>
-        <sphereGeometry args={[0.09, 24, 16]} />
-        <meshStandardMaterial color={HAT_GOLD} metalness={0.9} roughness={0.25} />
-      </mesh>
     </group>
   );
 }

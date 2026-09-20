@@ -19,7 +19,6 @@ export function HatFallback() {
         fill="none"
       />
       <path d="M32 240 Q200 292 368 240" stroke="#c9a45c" strokeWidth="4" fill="none" />
-      <circle cx="200" cy="38" r="7" fill="#c9a45c" />
     </svg>
   );
 }

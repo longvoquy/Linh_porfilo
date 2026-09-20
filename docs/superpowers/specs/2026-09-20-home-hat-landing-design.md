@@ -37,7 +37,7 @@ deliberately deferred.
   `node_modules/next/dist/docs/01-app/02-guides/lazy-loading.md`, `ssr: false`
   is only valid inside Client Components. The three.js bundle therefore loads
   on Home only.
-- Geometry: open-ended cone (body), gold finial at the apex, gold torus rim,
+- Geometry: open-ended cone (body) with a plain pointed apex (no finial), gold torus rim,
   a glowing disc as the pedestal.
 - Texture: drawn on a `<canvas>` — navy base, gold vertical ribs, a few
   horizontal bands — applied with metalness for a brass sheen. The drawing lives
