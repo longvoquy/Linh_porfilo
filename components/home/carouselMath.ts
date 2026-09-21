@@ -26,3 +26,8 @@ export function shortestAngle(from: number, to: number): number {
 export function yawForIndex(index: number, count: number): number {
   return (index / count) * Math.PI * 2;
 }
+
+/** Item nearest the front for a given hat yaw (any number of turns) — the inverse of `yawForIndex`. */
+export function indexForYaw(yaw: number, count: number): number {
+  return wrapIndex(Math.round((yaw / (Math.PI * 2)) * count), count);
+}

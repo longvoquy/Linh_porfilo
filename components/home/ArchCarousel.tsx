@@ -10,11 +10,15 @@ import { sectionIcons } from "./sectionIcons";
 
 const sections = getAllSections();
 
-/** Horizontal gap between arches, as a % of one arch's width. */
-const SPACING = 108;
-/** Vertical lift per offset², as a % of one arch's height — bends the row into an arc. */
+/** Centre-to-centre distance between arches, as a % of one arch's width (<100 = they overlap slightly). */
+const SPACING = 88;
+/** Vertical lift per offset², as a % of one arch's height — the row sags in the middle like a bowl. */
 const LIFT = 3.5;
-const TILT_DEG = 5;
+/** Lean per step from the active arch. Tops lean toward the centre, following the ring. */
+const TILT_DEG = 3.2;
+/** Each step away from the active arch is this much smaller; the active one is a touch larger. */
+const SHRINK = 0.05;
+const ACTIVE_SCALE = 1.04;
 const SWIPE_THRESHOLD = 40;
 
 type Props = {
@@ -108,7 +112,7 @@ export function ArchCarousel({ activeIndex, onChange }: Props) {
               dragged.current = false;
             }, 0);
           }}
-          className="relative mx-2 h-60 flex-1 touch-pan-y overflow-x-clip md:h-72"
+          className="relative mx-2 h-60 flex-1 touch-pan-y overflow-x-clip"
         >
           {sections.map((section, index) => {
             const offset = ringOffset(index, activeIndex, count);
@@ -124,31 +128,30 @@ export function ArchCarousel({ activeIndex, onChange }: Props) {
                 animate={{
                   x: `${offset * SPACING}%`,
                   y: `${-offset * offset * LIFT}%`,
-                  rotate: offset * TILT_DEG,
-                  scale: 1 - distance * 0.07,
-                  opacity: distance === 3 ? 0.45 : 1,
+                  rotate: -offset * TILT_DEG,
+                  scale: active ? ACTIVE_SCALE : 1 - distance * SHRINK,
                 }}
                 transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 280, damping: 30 }}
                 style={{ zIndex: 10 - distance }}
-                className="absolute bottom-2 left-1/2 -ml-14 w-28 md:-ml-16 md:w-32"
+                className="absolute bottom-2 left-1/2 -ml-16 w-32 md:-ml-18 md:w-36"
               >
                 <Link
                   href={`/${section.key}`}
                   draggable={false}
                   aria-current={active ? "true" : undefined}
                   onClick={(event) => handleArchClick(event, index, active)}
-                  className={`flex h-44 flex-col items-center justify-end gap-2 rounded-t-[999px] rounded-b-2xl border px-2 pb-5 pt-10 text-center transition-colors md:h-48 ${
+                  className={`flex h-44 flex-col items-center justify-center gap-3 rounded-t-[999px] rounded-b-2xl border px-2 pb-5 pt-6 text-center transition-colors ${
                     active
-                      ? "border-gold bg-navy text-gold shadow-[0_0_28px_rgba(201,164,92,0.55)]"
-                      : "border-gold/40 bg-cream/80 text-navy hover:border-gold"
+                      ? "border-gold bg-navy text-gold shadow-gold-glow"
+                      : "border-gold/50 bg-ivory/75 text-navy shadow-arch hover:border-gold hover:bg-ivory"
                   }`}
                 >
-                  <Icon className="h-8 w-8 text-gold" />
+                  <Icon className="h-10 w-10 text-gold" />
                   <span className="font-heading text-base font-semibold leading-tight">
                     {localize(section.label)}
                   </span>
                   {!hasContent && (
-                    <span className="text-[9px] uppercase tracking-widest opacity-60">
+                    <span className="text-[10px] uppercase tracking-widest opacity-70">
                       {t("comingSoon.title")}
                     </span>
                   )}

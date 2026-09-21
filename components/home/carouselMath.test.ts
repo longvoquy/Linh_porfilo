@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { ringOffset, shortestAngle, wrapIndex, yawForIndex } from "./carouselMath.ts";
+import { indexForYaw, ringOffset, shortestAngle, wrapIndex, yawForIndex } from "./carouselMath.ts";
 
 const close = (actual: number, expected: number) =>
   assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} !== ${expected}`);
@@ -41,4 +41,20 @@ describe("shortestAngle", () => {
 describe("yawForIndex", () => {
   it("is 0 for the first item", () => close(yawForIndex(0, 7), 0));
   it("advances 2π/count per item", () => close(yawForIndex(1, 7), (Math.PI * 2) / 7));
+});
+
+describe("indexForYaw (count 7)", () => {
+  const step = (Math.PI * 2) / 7;
+  it("inverts yawForIndex", () => {
+    for (let i = 0; i < 7; i++) assert.equal(indexForYaw(yawForIndex(i, 7), 7), i);
+  });
+  it("snaps to the nearest item", () => {
+    assert.equal(indexForYaw(step * 0.49, 7), 0);
+    assert.equal(indexForYaw(step * 0.51, 7), 1);
+  });
+  it("wraps past a full turn in both directions", () => {
+    assert.equal(indexForYaw(Math.PI * 2 + step, 7), 1);
+    assert.equal(indexForYaw(-step, 7), 6);
+    assert.equal(indexForYaw(-0.1, 7), 0);
+  });
 });

@@ -37,10 +37,12 @@ const subscribeNever = () => () => {};
 
 type Props = {
   yaw: number;
+  count: number;
   onSpin: () => void;
+  onSelect: (index: number) => void;
 };
 
-export function HatStage({ yaw, onSpin }: Props) {
+export function HatStage({ yaw, count, onSpin, onSelect }: Props) {
   const { t } = useTranslation();
   const reduceMotion = useReducedMotion() ?? false;
   // `null` on the server and during hydration, so the first client render matches the HTML.
@@ -48,14 +50,26 @@ export function HatStage({ yaw, onSpin }: Props) {
 
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-xl md:max-w-none">
-      <p className="absolute inset-x-0 top-0 z-10 text-center text-[11px] uppercase tracking-[0.3em] text-gold">
+      <p className="absolute inset-x-0 top-0 z-10 text-center text-[11px] uppercase tracking-[0.3em] text-gold-ink">
         {t("home.spin")}
       </p>
+      {/* Ground shadow, in CSS rather than in the scene: a plane on the 3D ground
+          runs past the bottom of the canvas, which cuts it off with a hard edge. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[12%] top-[72%] h-[32%] bg-[radial-gradient(ellipse_at_center,rgba(84,66,42,0.22),rgba(84,66,42,0.09)_45%,transparent_72%)]"
+      />
       {/* Decorative + pointer-only: the carousel is the accessible way to navigate. */}
       <div aria-hidden className="absolute inset-0 cursor-grab active:cursor-grabbing">
         {webgl ? (
           <HatErrorBoundary fallback={<HatFallback />}>
-            <HatScene yaw={yaw} reducedMotion={reduceMotion} onSpin={onSpin} />
+            <HatScene
+              yaw={yaw}
+              count={count}
+              reducedMotion={reduceMotion}
+              onSpin={onSpin}
+              onSelect={onSelect}
+            />
           </HatErrorBoundary>
         ) : (
           <HatFallback />
