@@ -21,8 +21,21 @@
   "home.start": "Start the Magic",
   "home.spin": "Click to spin",
   "home.hatHint": "Click the hat to spin the wheel of my experiences",
-  "home.quote": "Every line has a lineage. Every pattern reflects a changing world.",
+  "home.quote": "Every line has a lineage.\nEvery pattern reflects\na changing world.",
   "carousel.label": "Portfolio sections",
   "carousel.previous": "Previous section",
-  "carousel.next": "Next section"
+  "carousel.next": "Next section",
+  "nav.about": "About Me",
+  "nav.timeline": "Timeline",
+  "nav.portfolio": "Portfolio",
+  "nav.resume": "Resume",
+  "nav.contact": "Contact",
+  "nav.brand": "My Journey,\nMy Future",
+  "nav.menu": "Open menu",
+  "nav.sections": "Portfolio sections",
+  "home.quoteAuthor": "Khởi Vân",
+  "home.scroll": "Scroll to explore more",
+  "social.linkedin": "LinkedIn profile",
+  "social.instagram": "Instagram profile",
+  "social.email": "Send an email"
 }

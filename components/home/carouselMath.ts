@@ -31,3 +31,24 @@ export function yawForIndex(index: number, count: number): number {
 export function indexForYaw(yaw: number, count: number): number {
   return wrapIndex(Math.round((yaw / (Math.PI * 2)) * count), count);
 }
+
+/**
+ * Where an arch's base sits on the ring, `offset` steps from the active one.
+ *
+ * The ring is the front of an ellipse seen at an angle, like the hat's brim:
+ * semi-axes `a` and `b`, with the active arch at its lowest point. Returned as
+ * CSS translate percentages of the arch's own box — `x` of its width, `y` of
+ * its height, negative being up — so the ring scales with the arches.
+ *
+ * Every base therefore lies on one curve by construction, rather than on a
+ * lift and a tilt tuned separately, which is what stopped them lining up.
+ */
+export function archBase(
+  offset: number,
+  stepDeg: number,
+  a: number,
+  b: number,
+): { x: number; y: number } {
+  const t = offset * stepDeg * (Math.PI / 180);
+  return { x: a * Math.sin(t), y: -b * (1 - Math.cos(t)) };
+}

@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { indexForYaw, ringOffset, shortestAngle, wrapIndex, yawForIndex } from "./carouselMath.ts";
+import {
+  archBase,
+  indexForYaw,
+  ringOffset,
+  shortestAngle,
+  wrapIndex,
+  yawForIndex,
+} from "./carouselMath.ts";
 
 const close = (actual: number, expected: number) =>
   assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} !== ${expected}`);
@@ -56,5 +63,39 @@ describe("indexForYaw (count 7)", () => {
     assert.equal(indexForYaw(Math.PI * 2 + step, 7), 1);
     assert.equal(indexForYaw(-step, 7), 6);
     assert.equal(indexForYaw(-0.1, 7), 0);
+  });
+});
+
+describe("archBase", () => {
+  const A = 602;
+  const B = 494;
+  const STEP = 8.4;
+  const at = (offset: number) => archBase(offset, STEP, A, B);
+
+  it("puts the active arch at the origin", () => {
+    close(at(0).x, 0);
+    close(at(0).y, 0);
+  });
+
+  it("lays every base on one ellipse", () => {
+    // The ring is the ellipse centred at (0, -B): (x/A)² + (y/B + 1)² = 1.
+    for (let offset = -3; offset <= 3; offset++) {
+      const { x, y } = at(offset);
+      close((x / A) ** 2 + (y / B + 1) ** 2, 1);
+    }
+  });
+
+  it("is symmetric about the active arch", () => {
+    for (let offset = 1; offset <= 3; offset++) {
+      close(at(-offset).x, -at(offset).x);
+      close(at(-offset).y, at(offset).y);
+    }
+  });
+
+  it("rises monotonically away from the centre, and never dips below it", () => {
+    for (let offset = 1; offset <= 3; offset++) {
+      assert.ok(at(offset).y < at(offset - 1).y, `not rising at ${offset}`);
+      assert.ok(at(offset).x > at(offset - 1).x, `not spreading at ${offset}`);
+    }
   });
 });

@@ -21,8 +21,21 @@
   "home.start": "Bắt đầu hành trình",
   "home.spin": "Nhấn để xoay",
   "home.hatHint": "Nhấn vào chiếc nón để xoay bánh xe trải nghiệm",
-  "home.quote": "Mỗi đường nét đều có nguồn cội. Mỗi hoa văn phản chiếu một thế giới đang đổi thay.",
+  "home.quote": "Mỗi đường nét đều có nguồn cội.\nMỗi hoa văn phản chiếu\nmột thế giới đang đổi thay.",
   "carousel.label": "Các mục hồ sơ",
   "carousel.previous": "Mục trước",
-  "carousel.next": "Mục tiếp theo"
+  "carousel.next": "Mục tiếp theo",
+  "nav.about": "Về mình",
+  "nav.timeline": "Dòng thời gian",
+  "nav.portfolio": "Hồ sơ",
+  "nav.resume": "CV",
+  "nav.contact": "Liên hệ",
+  "nav.brand": "Hành trình,\nTương lai",
+  "nav.menu": "Mở menu",
+  "nav.sections": "Các mục hồ sơ",
+  "home.quoteAuthor": "Khởi Vân",
+  "home.scroll": "Cuộn để khám phá thêm",
+  "social.linkedin": "Trang LinkedIn",
+  "social.instagram": "Trang Instagram",
+  "social.email": "Gửi email"
 }

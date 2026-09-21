@@ -21,6 +21,8 @@
   --gold-ink: #7d5f28;
   /* Gold as lit metal: the 3D hat's material and the glow around the active arch. */
   --gold-lit: #c9a45c;
+  /* Seal-ink red. Used only for the triện, so it stays a punctuation mark. */
+  --vermilion: #a8322d;
 
   --background: var(--cream);
   --foreground: var(--navy);
@@ -39,6 +41,7 @@
   --color-gold: var(--gold);
   --color-gold-ink: var(--gold-ink);
   --color-gold-lit: var(--gold-lit);
+  --color-vermilion: var(--vermilion);
 
   --shadow-gold-glow: 0 0 28px rgb(201 164 92 / 0.55);
   --shadow-arch: 0 6px 18px rgb(20 33 61 / 0.06);
@@ -57,6 +60,32 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading), Georgia, serif;
+}
+
+/**
+ * Beaten gold leaf, for display text only — the highlight band is kept narrow
+ * so the run of letters still reads as dark gold. Falls back to a flat
+ * `gold-ink` wherever the text clip is unavailable, rather than to invisible.
+ */
+.text-gold-leaf {
+  color: var(--gold-ink);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .text-gold-leaf {
+    background: linear-gradient(
+      100deg,
+      #6f5423 0%,
+      var(--gold) 30%,
+      #e7cd96 48%,
+      var(--gold-lit) 56%,
+      var(--gold) 74%,
+      #6f5423 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 /* Every interactive element gets the same visible focus ring. */

@@ -3,9 +3,9 @@
 import { useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 import { useReducedMotion } from "framer-motion";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 import { HatErrorBoundary } from "./HatErrorBoundary";
 import { HatFallback } from "./HatFallback";
+import { SpinGuide } from "./SpinGuide";
 
 // three.js is only needed here, and needs a browser: load it on the client only.
 const HatScene = dynamic(() => import("./HatScene"), {
@@ -43,16 +43,13 @@ type Props = {
 };
 
 export function HatStage({ yaw, count, onSpin, onSelect }: Props) {
-  const { t } = useTranslation();
   const reduceMotion = useReducedMotion() ?? false;
   // `null` on the server and during hydration, so the first client render matches the HTML.
   const webgl = useSyncExternalStore<boolean | null>(subscribeNever, detectWebGL, () => null);
 
   return (
     <div className="relative mx-auto aspect-[5/4] w-full max-w-xl md:max-w-none">
-      <p className="absolute inset-x-0 top-0 z-10 text-center text-[11px] uppercase tracking-[0.3em] text-gold-ink">
-        {t("home.spin")}
-      </p>
+      <SpinGuide className="absolute inset-x-0 top-0 z-10 mx-auto h-10 w-56 text-gold-ink" />
       {/* Ground shadow, in CSS rather than in the scene: a plane on the 3D ground
           runs past the bottom of the canvas, which cuts it off with a hard edge. */}
       <div
