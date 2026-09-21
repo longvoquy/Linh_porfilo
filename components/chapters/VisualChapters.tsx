@@ -39,7 +39,7 @@ export function VisualChapters({ chapters, label, introKey }: Props) {
   if (chapters.length === 0) {
     return (
       <main className="mx-auto max-w-6xl px-6 py-16">
-        <h1 className="mb-10 text-3xl font-semibold tracking-tight">{localize(label)}</h1>
+        <h1 className="mb-10 text-3xl font-semibold text-navy">{localize(label)}</h1>
         <ComingSoon />
       </main>
     );
@@ -50,11 +50,11 @@ export function VisualChapters({ chapters, label, introKey }: Props) {
   return (
     <main className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
       <header className="mb-16 sm:mb-24">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-black/40">
+        <p className="text-[11px] uppercase tracking-[0.28em] text-gold-ink">
           {chapters.length} {t("chapters.count")}
         </p>
-        <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">{localize(label)}</h1>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-black/60 sm:text-lg">{t(introKey)}</p>
+        <h1 className="mt-4 text-4xl font-semibold text-navy sm:text-5xl">{localize(label)}</h1>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-navy/70 sm:text-lg">{t(introKey)}</p>
       </header>
 
       <div>
@@ -63,7 +63,7 @@ export function VisualChapters({ chapters, label, introKey }: Props) {
           // so spacing stays even; the first chapter gets neither.
           <div
             key={chapter.item.slug}
-            className="mt-20 border-t border-black/10 pt-20 first:mt-0 first:border-t-0 first:pt-0 sm:mt-32 sm:pt-32"
+            className="mt-20 border-t border-gold/25 pt-20 first:mt-0 first:border-t-0 first:pt-0 sm:mt-32 sm:pt-32"
           >
             <Chapter
               chapter={chapter}

@@ -21,24 +21,24 @@ export function ActivityCard({ item, onOpen }: { item: ActivityItem; onOpen: () 
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.98 }}
       onClick={onOpen}
-      className="flex flex-col gap-3 rounded-2xl border border-black/10 bg-white p-5 text-left shadow-sm transition-shadow hover:shadow-md"
+      className="flex flex-col gap-3 rounded-2xl border border-gold/35 bg-ivory p-5 text-left shadow-arch transition-shadow hover:border-gold hover:shadow-md"
     >
-      <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-black/5">
+      <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-navy/5">
         {thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={thumbnail} alt="" className="h-full w-full object-cover" />
         ) : (
-          <span className="text-xs uppercase tracking-widest text-black/30">{item.section}</span>
+          <span className="text-xs uppercase tracking-widest text-navy/60">{item.section}</span>
         )}
       </div>
       {item.tier && (
-        <span className="w-fit rounded-full bg-black/90 px-2.5 py-0.5 text-xs font-medium text-white">
+        <span className="w-fit rounded-full bg-navy px-2.5 py-0.5 text-xs font-medium text-gold">
           {localize(item.tier)}
         </span>
       )}
-      <h3 className="text-lg font-semibold leading-snug">{localize(item.title)}</h3>
-      {item.org && <p className="text-sm text-black/60">{localize(item.org)}</p>}
-      {item.date && <p className="text-xs text-black/40">{item.date}</p>}
+      <h3 className="text-lg font-semibold leading-snug text-navy">{localize(item.title)}</h3>
+      {item.org && <p className="text-sm text-navy/70">{localize(item.org)}</p>}
+      {item.date && <p className="text-xs text-gold-ink">{item.date}</p>}
     </motion.button>
   );
 }

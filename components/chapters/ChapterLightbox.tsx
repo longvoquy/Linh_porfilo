@@ -72,14 +72,14 @@ export function ChapterLightbox({ images, index, onIndexChange, onClose, title }
       aria-modal="true"
       aria-label={title}
       tabIndex={-1}
-      className="fixed inset-0 z-60 flex flex-col bg-black/90 outline-none backdrop-blur-sm"
+      className="fixed inset-0 z-60 flex flex-col bg-navy/95 outline-none backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.2 }}
       onClick={onClose}
     >
-      <div className="flex items-center justify-between px-4 py-4 text-white/70 sm:px-6">
+      <div className="flex items-center justify-between px-4 py-4 text-cream/75 sm:px-6">
         {/* min-w-0 is required for `truncate` to work inside a flex row — without
             it the item won't shrink below its content size, and the sibling
             (counter/close) gets squeezed and wraps instead. */}
@@ -88,7 +88,7 @@ export function ChapterLightbox({ images, index, onIndexChange, onClose, title }
         </span>
         <div className="flex shrink-0 items-center gap-4">
           {count > 1 && (
-            <span className="text-xs tabular-nums text-white/50">
+            <span className="text-xs tabular-nums text-gold">
               {index + 1} / {count}
             </span>
           )}
@@ -98,7 +98,7 @@ export function ChapterLightbox({ images, index, onIndexChange, onClose, title }
               e.stopPropagation();
               onClose();
             }}
-            className="-m-2 p-2 text-sm font-medium text-white/70 transition hover:text-white"
+            className="-m-2 p-2 text-sm font-medium text-cream/75 transition hover:text-gold"
           >
             {t("activity.close")}
           </button>
@@ -147,7 +147,7 @@ function LightboxArrow({
         e.stopPropagation();
         onClick();
       }}
-      className={`absolute top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white/80 transition hover:bg-white/20 hover:text-white ${
+      className={`absolute top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-cream/10 text-2xl leading-none text-cream/80 transition hover:bg-cream/20 hover:text-gold ${
         side === "left" ? "left-3 sm:left-6" : "right-3 sm:right-6"
       }`}
     >

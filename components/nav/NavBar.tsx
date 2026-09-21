@@ -77,9 +77,12 @@ export function NavBar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-gold/20 bg-cream/85 backdrop-blur">
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="pointer-events-auto text-sm font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="pointer-events-auto font-heading text-lg font-semibold text-navy transition-colors hover:text-gold-ink"
+        >
           Khánh Linh
         </Link>
         <div className="pointer-events-auto">
@@ -91,7 +94,7 @@ export function NavBar() {
         <div ref={wheelZoneRef} className="relative flex flex-col items-center pb-6">
           <div
             aria-hidden
-            className="relative z-10 h-14 w-28 rounded-b-full border border-t-0 border-black/10 bg-white shadow-md"
+            className="relative z-10 h-14 w-28 rounded-b-full border border-t-0 border-gold/35 bg-ivory shadow-arch"
           />
           <div className="relative h-24 w-0">
             <AnimatePresence>
@@ -120,8 +123,8 @@ export function NavBar() {
                       href={href}
                       className={`block w-40 -translate-x-1/2 truncate rounded-full border px-3.5 py-2 text-center text-xs font-medium shadow-sm transition-colors ${
                         active
-                          ? "border-black bg-black text-white"
-                          : "border-black/10 bg-white/95 text-black/70 backdrop-blur hover:text-black"
+                          ? "border-gold bg-navy text-gold"
+                          : "border-gold/30 bg-ivory/95 text-navy/70 backdrop-blur hover:border-gold hover:text-navy"
                       }`}
                     >
                       {localize(section.label)}

@@ -218,7 +218,7 @@ function GalleryImage({
       whileHover={reduceMotion ? undefined : { scale: 1.01 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       style={style}
-      className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-black/5 ${className}`}
+      className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl bg-navy/5 ${className}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -230,7 +230,7 @@ function GalleryImage({
         decoding="async"
         className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
       />
-      <span className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
+      <span className="pointer-events-none absolute inset-0 bg-navy/0 transition-colors duration-300 group-hover:bg-navy/10" />
     </motion.button>
   );
 }

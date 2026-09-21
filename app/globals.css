@@ -1,8 +1,29 @@
 @import "tailwindcss";
 
+/**
+ * One palette for the whole site: warm paper, navy ink, antique gold accent.
+ * Home established it; every other page now inherits the same base.
+ *
+ * Contrast on cream (#f6efe3), for picking text colours:
+ *   navy          14.0:1   headings, body
+ *   navy/70        5.6:1   secondary body            (AA)
+ *   navy/60        4.1:1   large text only
+ *   gold-ink       5.2:1   small accent text         (AA)
+ *   gold           2.5:1   NOT text on cream — rules, icons, gold-on-navy only
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #f6efe3;
+  /* Raised surfaces on cream: cards, pills, the nav brim. */
+  --ivory: #fffdf8;
+  --navy: #14213d;
+  --gold: #b8935a;
+  /* Gold dark enough to read as small text on cream. */
+  --gold-ink: #7d5f28;
+  /* Gold as lit metal: the 3D hat's material and the glow around the active arch. */
+  --gold-lit: #c9a45c;
+
+  --background: var(--cream);
+  --foreground: var(--navy);
 }
 
 @theme inline {
@@ -11,9 +32,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-cormorant-garamond);
-  --color-cream: #f6efe3;
-  --color-navy: #14213d;
-  --color-gold: #b8935a;
+
+  --color-cream: var(--cream);
+  --color-ivory: var(--ivory);
+  --color-navy: var(--navy);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
+  --color-gold-lit: var(--gold-lit);
+
+  --shadow-gold-glow: 0 0 28px rgb(201 164 92 / 0.55);
+  --shadow-arch: 0 6px 18px rgb(20 33 61 / 0.06);
 }
 
 body {
@@ -29,4 +57,11 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading), Georgia, serif;
+}
+
+/* Every interactive element gets the same visible focus ring. */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }

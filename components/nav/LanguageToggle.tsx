@@ -9,7 +9,7 @@ export function LanguageToggle() {
   const { locale, setLocale } = useLanguage();
 
   return (
-    <div className="relative flex items-center rounded-full border border-black/10 bg-black/3 p-1 text-sm font-medium">
+    <div className="relative flex items-center rounded-full border border-gold/30 bg-navy/5 p-1 text-sm font-medium">
       {OPTIONS.map((option) => (
         <button
           key={option}
@@ -21,11 +21,11 @@ export function LanguageToggle() {
           {locale === option && (
             <motion.span
               layoutId="language-toggle-pill"
-              className="absolute inset-0 -z-10 rounded-full bg-white shadow-sm"
+              className="absolute inset-0 -z-10 rounded-full bg-ivory shadow-sm"
               transition={{ type: "spring", stiffness: 500, damping: 35 }}
             />
           )}
-          <span className={locale === option ? "text-black" : "text-black/50"}>{option}</span>
+          <span className={locale === option ? "text-navy" : "text-navy/70"}>{option}</span>
         </button>
       ))}
     </div>

@@ -41,24 +41,24 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
       aria-labelledby={headingId}
     >
       <header className="mb-6 sm:mb-8">
-        <p className="text-[11px] uppercase tracking-[0.28em] text-black/40">
+        <p className="text-[11px] uppercase tracking-[0.28em] text-gold-ink">
           {number} <span className="px-1">/</span> {item.org ? localize(item.org) : localize(item.title)}
         </p>
-        <h2 id={headingId} className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h2 id={headingId} className="mt-3 text-2xl font-semibold text-navy sm:text-3xl">
           {localize(item.title)}
         </h2>
-        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-black/50">
-          {item.tier && <span className="text-black/70">{localize(item.tier)}</span>}
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-navy/70">
+          {item.tier && <span className="font-medium text-navy">{localize(item.tier)}</span>}
           {item.tier && item.date && <span aria-hidden="true">·</span>}
           {item.date && <span>{item.date}</span>}
         </div>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-black/70">{localize(item.caption)}</p>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-navy/70">{localize(item.caption)}</p>
         {certificate?.src && (
           <a
             href={certificate.src}
             target="_blank"
             rel="noreferrer"
-            className="mt-4 inline-block text-sm font-medium underline underline-offset-4 transition hover:text-black/60"
+            className="mt-4 inline-block text-sm font-medium text-gold-ink underline underline-offset-4 transition hover:text-navy"
           >
             {t("activity.viewCertificate")}
           </a>

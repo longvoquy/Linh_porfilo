@@ -12,7 +12,7 @@ export default function ResearchPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="mb-10 text-3xl font-semibold tracking-tight">{localize(meta.label)}</h1>
+      <h1 className="mb-10 text-3xl font-semibold text-navy">{localize(meta.label)}</h1>
       <ActivityGrid items={items} />
     </main>
   );
