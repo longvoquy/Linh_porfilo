@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { LotusSketch, TempleEtching } from "@/components/decor/HeritageArt";
 import { SealStamp } from "@/components/decor/SealStamp";
 import { Sparkles } from "@/components/decor/Sparkles";
 import { getAllSections } from "@/lib/getContent";
@@ -93,10 +93,27 @@ export function HomeLanding() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,255,255,0.75),transparent_60%)]"
       />
 
-      {/* Heritage etchings. Decorative, and only where the column is wide enough
-          for them to read as illustration rather than as clutter. */}
-      <TempleEtching className="pointer-events-none absolute bottom-0 left-0 hidden w-72 text-gold-ink opacity-30 md:block xl:w-96" />
-      <LotusSketch className="pointer-events-none absolute bottom-2 right-0 hidden w-64 text-gold-ink opacity-30 md:block xl:w-80" />
+      {/* Heritage etchings, shown only where the corners are wide enough for them
+          to read as illustration rather than clutter. They are ink-only cutouts
+          of the sources in asset/, made by scripts/prepare-decor.mjs so the
+          parchment drops out and the page's cream shows through — re-run that
+          script after replacing a source. */}
+      <Image
+        src="/decor/one-pillar-pagoda.webp"
+        alt=""
+        width={900}
+        height={716}
+        sizes="(min-width: 1280px) 28rem, 20rem"
+        className="pointer-events-none absolute bottom-0 left-0 hidden w-80 opacity-45 select-none md:block xl:w-md"
+      />
+      <Image
+        src="/decor/lotus.webp"
+        alt=""
+        width={900}
+        height={697}
+        sizes="(min-width: 1280px) 26rem, 18rem"
+        className="pointer-events-none absolute bottom-0 right-0 hidden w-72 opacity-45 select-none md:block xl:w-104"
+      />
       <Sparkles className="inset-x-[12%] top-24 hidden h-[26rem] md:block" />
 
       {/* The hat is framed centred in its 5:4 box, leaving ~12% of that box empty
