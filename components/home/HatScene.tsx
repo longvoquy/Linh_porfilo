@@ -20,13 +20,19 @@ export type HatSceneProps = {
 };
 
 const RADIUS = 1.7;
-const HEIGHT = 1.25;
+/**
+ * Height against a radius of 1.7, which is roughly the proportion of a real nón
+ * lá. A flatter cone than this reads as a bowl: its sides meet the rim so early
+ * that the straight part of the silhouette is short and the eye follows the
+ * curve of the rim instead.
+ */
+const HEIGHT = 1.5;
 /**
  * Aim below the hat's centre so the apex and the front of the brim sit an equal
  * distance from the top and bottom of the frame — otherwise the hat rides low
  * and the space above it is wasted.
  */
-const CAMERA_TARGET_Y = -0.65;
+const CAMERA_TARGET_Y = -0.55;
 const DRAG_SPEED = 0.008;
 /** Pointer travel (px) above which a click is treated as the end of a drag. */
 const CLICK_SLOP = 6;
@@ -152,7 +158,10 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect }: HatSceneProps) {
 export default function HatScene(props: HatSceneProps) {
   return (
     <Canvas
-      camera={{ position: [0, 1.9, 4.9], fov: 31 }}
+      // 20.5° above the rim. The higher the eye, the rounder the rim reads, and
+      // past roughly 25° the hat stops looking like a cone seen from the side
+      // and starts looking like a dish seen from above.
+      camera={{ position: [0, 1.38, 5.15], fov: 31 }}
       dpr={[1, 2]}
       style={{ touchAction: "pan-y" }}
     >

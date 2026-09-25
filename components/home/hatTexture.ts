@@ -13,21 +13,16 @@ const WIDTH = 2560;
 const HEIGHT = 512;
 
 /**
- * The painted panel, already unrolled from its wedge into a rectangle by
- * scripts/prepare-decor.mjs. Four of them go round: the artwork opens 69.8°
- * flat and this cone unrolls to 290°, so four is the count that leaves the
- * painting nearest its own proportions — it is stretched by 4% and no more.
+ * The painted surface: one image covering the whole turn, unrolled by
+ * scripts/prepare-decor.mjs from a disc drawn as the hat seen from above.
  */
-const PANEL_SRC = "/decor/hat-panel.webp";
-const PANELS = 4;
+const PANEL_SRCS = ["/decor/hat-disc.webp"] as const;
 /**
- * Quarter turns and the wheel's seven stops do not line up, so at some stops a
- * seam faces the viewer. This phase, in panel widths, is the one that puts a
- * panel's middle at the front for the section the page opens on — the third of
- * seven, so the front sits 2/7 of a turn round, which is 0.36 of a panel past
- * the nearest seam.
+ * How far round the artwork is turned, as a fraction of a turn. Chosen so the
+ * Lạc birds face the viewer on the section the page opens on — the third of
+ * seven, so the front of the hat sits 2/7 of a turn round.
  */
-const PANEL_SHIFT = 0.36;
+const PANEL_OFFSET = 0.089;
 
 /** Fractions of the height (0 = apex, 1 = rim) where the woven hoops sit. */
 const HOOP_START = 0.1;
@@ -84,21 +79,24 @@ export function drawHatPattern(
   ctx: CanvasRenderingContext2D,
   width: number,
   height: number,
-  panel?: CanvasImageSource | null,
+  panels?: readonly HTMLImageElement[] | null,
 ): void {
   ctx.fillStyle = HAT_NAVY;
   ctx.fillRect(0, 0, width, height);
 
-  if (!panel) {
+  if (!panels?.length) {
     drawWeave(ctx, width, height);
     return;
   }
 
-  // One copy either side of the run, so the panel straddling the seam at u = 0
-  // has its other half there rather than a gap.
-  const panelWidth = width / PANELS;
-  for (let i = -1; i <= PANELS; i++) {
-    ctx.drawImage(panel, (i + PANEL_SHIFT) * panelWidth, 0, panelWidth, height);
+  // The run is laid down a turn to either side as well, so the panel straddling
+  // the seam at u = 0 has its other half there rather than a gap.
+  for (const turn of [-width, 0, width]) {
+    let x = PANEL_OFFSET * width + turn;
+    for (const panel of panels) {
+      ctx.drawImage(panel, x, 0, panel.naturalWidth, height);
+      x += panel.naturalWidth;
+    }
   }
 }
 
@@ -114,12 +112,21 @@ export function createHatTexture(): CanvasTexture {
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 8;
 
-  const panel = new Image();
-  panel.src = PANEL_SRC;
-  panel
-    .decode()
+  // One element per distinct file, reused wherever that panel repeats.
+  const loaded = new Map<string, HTMLImageElement>();
+  const load = (src: string) => {
+    const existing = loaded.get(src);
+    if (existing) return existing;
+    const image = new Image();
+    image.src = src;
+    loaded.set(src, image);
+    return image;
+  };
+  const panels = PANEL_SRCS.map(load);
+
+  Promise.all([...loaded.values()].map((image) => image.decode()))
     .then(() => {
-      drawHatPattern(ctx, WIDTH, HEIGHT, panel);
+      drawHatPattern(ctx, WIDTH, HEIGHT, panels);
       texture.needsUpdate = true;
     })
     .catch(() => {});
