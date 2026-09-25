@@ -7,41 +7,40 @@ export const HAT_GOLD = "#c9a45c";
 
 /**
  * Unrolled hat surface. The lathe's UVs put the apex on the top row and the rim
- * on the bottom row, so 5:1 keeps the pattern roughly undistorted. This file is
- * the only place to touch when the detailed ornament arrives.
+ * on the bottom row, so 5:1 keeps the pattern roughly undistorted.
  */
 const WIDTH = 2560;
 const HEIGHT = 512;
-const PANELS = 12;
+
+/**
+ * The painted panel, already unrolled from its wedge into a rectangle by
+ * scripts/prepare-decor.mjs. Four of them go round: the artwork opens 69.8°
+ * flat and this cone unrolls to 290°, so four is the count that leaves the
+ * painting nearest its own proportions — it is stretched by 4% and no more.
+ */
+const PANEL_SRC = "/decor/hat-panel.webp";
+const PANELS = 4;
+/**
+ * Quarter turns and the wheel's seven stops do not line up, so at some stops a
+ * seam faces the viewer. This phase, in panel widths, is the one that puts a
+ * panel's middle at the front for the section the page opens on — the third of
+ * seven, so the front sits 2/7 of a turn round, which is 0.36 of a panel past
+ * the nearest seam.
+ */
+const PANEL_SHIFT = 0.36;
 
 /** Fractions of the height (0 = apex, 1 = rim) where the woven hoops sit. */
 const HOOP_START = 0.1;
 const HOOP_END = 0.86;
 const HOOP_STEP = 0.055;
 
-/** A diamond with a navy outline, so it cuts cleanly through the hoops behind it. */
-function diamond(ctx: CanvasRenderingContext2D, cx: number, cy: number, rx: number, ry: number) {
-  ctx.save();
-  ctx.beginPath();
-  ctx.moveTo(cx, cy - ry);
-  ctx.lineTo(cx + rx, cy);
-  ctx.lineTo(cx, cy + ry);
-  ctx.lineTo(cx - rx, cy);
-  ctx.closePath();
-  ctx.lineWidth = 10;
-  ctx.strokeStyle = HAT_NAVY;
-  ctx.stroke();
-  ctx.fill();
-  ctx.restore();
-}
-
-export function drawHatPattern(ctx: CanvasRenderingContext2D, width: number, height: number): void {
-  ctx.fillStyle = HAT_NAVY;
-  ctx.fillRect(0, 0, width, height);
-
+/**
+ * The bare weave, which is what the hat wears until the panels load — and what
+ * it keeps if they never do.
+ */
+function drawWeave(ctx: CanvasRenderingContext2D, width: number, height: number) {
   ctx.strokeStyle = HAT_GOLD;
   ctx.fillStyle = HAT_GOLD;
-  const panelWidth = width / PANELS;
 
   // Woven strands: very faint, so the surface reads as fibre rather than as spokes.
   ctx.globalAlpha = 0.1;
@@ -64,18 +63,6 @@ export function drawHatPattern(ctx: CanvasRenderingContext2D, width: number, hei
   }
   ctx.globalAlpha = 1;
 
-  // Staggered diamond rows. The surface narrows toward the apex, so the vertical
-  // radius scales with the height fraction to look square on the hat.
-  const rx = panelWidth * 0.2;
-  for (const [fraction, shift] of [
-    [0.3, 0],
-    [0.77, 0.5],
-  ] as const) {
-    for (let i = 0; i < PANELS; i++) {
-      diamond(ctx, (i + shift) * panelWidth, height * fraction, rx, rx * fraction);
-    }
-  }
-
   // Double bands near the rim, with small squares between them.
   ctx.lineWidth = 4;
   for (const fraction of [0.9, 0.94]) {
@@ -86,6 +73,32 @@ export function drawHatPattern(ctx: CanvasRenderingContext2D, width: number, hei
   }
   for (let x = 12; x < width; x += 28) {
     ctx.fillRect(x, height * 0.92 - 4, 8, 8);
+  }
+}
+
+/**
+ * Draws the whole surface. `panel` is optional because it arrives over the
+ * network: the hat is drawn once without it and redrawn when it lands.
+ */
+export function drawHatPattern(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  panel?: CanvasImageSource | null,
+): void {
+  ctx.fillStyle = HAT_NAVY;
+  ctx.fillRect(0, 0, width, height);
+
+  if (!panel) {
+    drawWeave(ctx, width, height);
+    return;
+  }
+
+  // One copy either side of the run, so the panel straddling the seam at u = 0
+  // has its other half there rather than a gap.
+  const panelWidth = width / PANELS;
+  for (let i = -1; i <= PANELS; i++) {
+    ctx.drawImage(panel, (i + PANEL_SHIFT) * panelWidth, 0, panelWidth, height);
   }
 }
 
@@ -100,5 +113,16 @@ export function createHatTexture(): CanvasTexture {
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = 8;
+
+  const panel = new Image();
+  panel.src = PANEL_SRC;
+  panel
+    .decode()
+    .then(() => {
+      drawHatPattern(ctx, WIDTH, HEIGHT, panel);
+      texture.needsUpdate = true;
+    })
+    .catch(() => {});
+
   return texture;
 }

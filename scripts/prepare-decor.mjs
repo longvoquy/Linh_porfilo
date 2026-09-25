@@ -195,5 +195,155 @@ async function prepare({ source, output, fade }) {
   );
 }
 
+
+/**
+ * The hat's painted panel, drawn flat as the wedge it would be if one panel of
+ * the hat were peeled off and laid down. The hat's texture is a plain rectangle
+ * wrapped round the cone, so the wedge has to be unrolled into one: this reads
+ * the source in polar coordinates around its own apex and writes it out square.
+ */
+const PANEL = {
+  source: "nonla_generate_rmbg.png",
+  output: "hat-panel.webp",
+  width: 640,
+  height: 512,
+};
+/** Alpha above this counts as drawn; below it is the cut-out background. */
+const SHAPE = 16;
+
+/**
+ * Where the wedge's apex is and how wide it opens, read off the artwork itself
+ * rather than assumed: both straight sides are fitted as lines and met.
+ */
+function wedge(alphaAt, width, height) {
+  const run = (y) => {
+    let a = -1;
+    let b = -1;
+    for (let x = 0; x < width; x++) {
+      if (alphaAt(x, y) > SHAPE) {
+        if (a < 0) a = x;
+        b = x;
+      }
+    }
+    return [a, b];
+  };
+
+  // Fitted over the middle band only: the apex is rounded and the bottom
+  // corners are clipped, and both would bend a line fitted through them.
+  const fit = (pick) => {
+    let n = 0;
+    let sy = 0;
+    let sx = 0;
+    let syy = 0;
+    let sxy = 0;
+    for (let y = Math.round(height * 0.25); y <= Math.round(height * 0.8); y += 2) {
+      const r = run(y);
+      if (r[0] < 0) continue;
+      const x = pick(r);
+      n++;
+      sy += y;
+      sx += x;
+      syy += y * y;
+      sxy += x * y;
+    }
+    const m = (n * sxy - sy * sx) / (n * syy - sy * sy);
+    return { m, c: (sx - m * sy) / n };
+  };
+
+  const left = fit((r) => r[0]);
+  const right = fit((r) => r[1]);
+  const y = (right.c - left.c) / (left.m - right.m);
+  return {
+    apex: { x: left.m * y + left.c, y },
+    half: (Math.atan(-left.m) + Math.atan(right.m)) / 2,
+  };
+}
+
+/** Bilinear sample, weighted by alpha so the transparent outside cannot bleed in. */
+function sample(data, width, height, x, y, out) {
+  const x0 = Math.floor(x);
+  const y0 = Math.floor(y);
+  const fx = x - x0;
+  const fy = y - y0;
+  let r = 0;
+  let g = 0;
+  let b = 0;
+  let a = 0;
+  for (const [dx, dy, w] of [
+    [0, 0, (1 - fx) * (1 - fy)],
+    [1, 0, fx * (1 - fy)],
+    [0, 1, (1 - fx) * fy],
+    [1, 1, fx * fy],
+  ]) {
+    const sx = Math.min(width - 1, Math.max(0, x0 + dx));
+    const sy = Math.min(height - 1, Math.max(0, y0 + dy));
+    const o = (sy * width + sx) * 4;
+    const alpha = data[o + 3] / 255;
+    r += data[o] * alpha * w;
+    g += data[o + 1] * alpha * w;
+    b += data[o + 2] * alpha * w;
+    a += alpha * w;
+  }
+  out[3] = Math.round(a * 255);
+  const k = a > 0 ? 1 / a : 0;
+  out[0] = Math.round(r * k);
+  out[1] = Math.round(g * k);
+  out[2] = Math.round(b * k);
+}
+
+async function preparePanel({ source, output, width: outW, height: outH }) {
+  const { data, info } = await sharp(path.join(ROOT, "asset", source))
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const { width, height } = info;
+  const alphaAt = (x, y) => data[(y * width + x) * 4 + 3];
+  const { apex, half } = wedge(alphaAt, width, height);
+
+  /**
+   * How far the artwork reaches along one ray. The bottom edge is drawn as a
+   * gentler curve than a true arc — 4% deeper at the sides than in the middle —
+   * so each ray is scaled by its own reach, which lands the wave border on the
+   * hat's rim all the way round instead of wandering above it.
+   */
+  const reach = (angle) => {
+    const dx = Math.sin(angle);
+    const dy = Math.cos(angle);
+    for (let r = Math.hypot(width, height); r > 0; r -= 0.5) {
+      const x = Math.round(apex.x + dx * r);
+      const y = Math.round(apex.y + dy * r);
+      if (x < 0 || y < 0 || x >= width || y >= height) continue;
+      if (alphaAt(x, y) > SHAPE) return r;
+    }
+    return 0;
+  };
+
+  const out = Buffer.alloc(outW * outH * 4);
+  const pixel = new Uint8Array(4);
+  for (let i = 0; i < outW; i++) {
+    // Across the panel: the wedge's full opening, edge to edge.
+    const angle = (((i + 0.5) / outW) * 2 - 1) * half;
+    const edge = reach(angle);
+    const dx = Math.sin(angle);
+    const dy = Math.cos(angle);
+    for (let j = 0; j < outH; j++) {
+      // Down the panel: apex at the top row, rim at the bottom.
+      const r = ((j + 0.5) / outH) * edge;
+      sample(data, width, height, apex.x + dx * r, apex.y + dy * r, pixel);
+      out.set(pixel, (j * outW + i) * 4);
+    }
+  }
+
+  const result = await sharp(out, { raw: { width: outW, height: outH, channels: 4 } })
+    .webp({ quality: 88, alphaQuality: 90 })
+    .toFile(path.join(OUT_DIR, output));
+
+  console.log(
+    `${output}: wedge opens ${((half * 360) / Math.PI).toFixed(1)}°, ` +
+      `saved ${result.width}×${result.height} (${Math.round(result.size / 1024)} KB)`,
+  );
+}
+
 await mkdir(OUT_DIR, { recursive: true });
 for (const job of JOBS) await prepare(job);
+await preparePanel(PANEL);
