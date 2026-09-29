@@ -100,7 +100,11 @@ export function drawHatPattern(
   }
 }
 
-export function createHatTexture(): CanvasTexture {
+/**
+ * `settled` resolves once the painted panels are drawn in — or once they have
+ * failed to load, leaving the bare weave — so callers know the hat is final.
+ */
+export function createHatTexture(): { texture: CanvasTexture; settled: Promise<void> } {
   const canvas = document.createElement("canvas");
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
@@ -124,12 +128,12 @@ export function createHatTexture(): CanvasTexture {
   };
   const panels = PANEL_SRCS.map(load);
 
-  Promise.all([...loaded.values()].map((image) => image.decode()))
+  const settled = Promise.all([...loaded.values()].map((image) => image.decode()))
     .then(() => {
       drawHatPattern(ctx, WIDTH, HEIGHT, panels);
       texture.needsUpdate = true;
     })
     .catch(() => {});
 
-  return texture;
+  return { texture, settled };
 }

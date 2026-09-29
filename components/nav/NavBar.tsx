@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandMark } from "@/components/decor/BrandMark";
+import { useRouteTransition } from "@/components/transition/RouteTransition";
 import { getAllSections } from "@/lib/getContent";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { DictionaryKey } from "@/lib/i18n/useTranslation";
@@ -70,6 +71,15 @@ export function NavBar() {
   const setOpenMenu = (open: boolean) => setMenuAt(open ? pathname : null);
   const setOpenPortfolio = (open: boolean) => setPortfolioAt(open ? pathname : null);
   const portfolioRef = useRef<HTMLDivElement>(null);
+  const { goHome } = useRouteTransition();
+
+  // Links home play the hat transition backwards. Modified clicks (new tab,
+  // etc.) keep native behaviour; so does a click on Home while already there.
+  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === "/" || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    goHome();
+  };
 
   // The dropdown closes on Escape, or on a pointer landing outside it.
   useEffect(() => {
@@ -102,6 +112,7 @@ export function NavBar() {
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-6 py-3">
         <Link
           href="/"
+          onClick={handleHomeClick}
           className="flex shrink-0 items-center gap-2.5 text-navy transition-colors hover:text-gold-ink"
         >
           <BrandMark className="h-10 w-11" />
@@ -119,6 +130,7 @@ export function NavBar() {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={item.href === "/" ? handleHomeClick : undefined}
                   aria-current={active ? "page" : undefined}
                   className={linkClass(active)}
                 >
@@ -232,6 +244,7 @@ export function NavBar() {
                   <li key={item.href}>
                     <Link
                       href={item.href}
+                      onClick={item.href === "/" ? handleHomeClick : undefined}
                       aria-current={active ? "page" : undefined}
                       className={`block py-2 text-sm ${
                         active ? "font-medium text-navy" : "text-navy/70"

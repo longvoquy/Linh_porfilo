@@ -2,7 +2,7 @@
 
 import { Component, type ReactNode } from "react";
 
-type Props = { fallback: ReactNode; children: ReactNode };
+type Props = { fallback: ReactNode; children: ReactNode; onError?: () => void };
 type State = { failed: boolean };
 
 /** Renders `fallback` if anything below throws — e.g. WebGL context creation failing. */
@@ -15,6 +15,7 @@ export class HatErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: unknown) {
     console.warn("3D hat unavailable, showing the static hat instead:", error);
+    this.props.onError?.();
   }
 
   render() {

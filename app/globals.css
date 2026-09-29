@@ -47,6 +47,31 @@
   --shadow-arch: 0 6px 18px rgb(20 33 61 / 0.06);
 }
 
+/* PageLoader: the hat bobbing, and a bead of gold running along a thread. */
+@theme {
+  --animate-loader-float: loader-float 2.4s ease-in-out infinite;
+  --animate-loader-sweep: loader-sweep 1.6s ease-in-out infinite;
+
+  @keyframes loader-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes loader-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(300%);
+    }
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

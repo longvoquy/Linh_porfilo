@@ -42,6 +42,8 @@ const SWIPE_THRESHOLD = 40;
 type Props = {
   activeIndex: number;
   onChange: (index: number) => void;
+  /** A plain click on the active arch: open its section (Home animates the way in). */
+  onEnter: (href: string) => void;
 };
 
 function ArrowButton({
@@ -76,7 +78,7 @@ function ArrowButton({
   );
 }
 
-export function ArchCarousel({ activeIndex, onChange }: Props) {
+export function ArchCarousel({ activeIndex, onChange, onEnter }: Props) {
   const { localize, t } = useTranslation();
   const reduceMotion = useReducedMotion();
   // Both wheel rotation and emphasis run on the same spring, so an arch never
@@ -99,16 +101,18 @@ export function ArchCarousel({ activeIndex, onChange }: Props) {
     }
   };
 
-  // Every arch is a real link. Non-active ones just bring themselves to the
-  // front on a plain click; modified clicks (new tab, etc.) keep native behaviour.
+  // Every arch is a real link. A plain click on a non-active one brings it to
+  // the front; on the active one it opens the section through `onEnter`.
+  // Modified clicks (new tab, etc.) keep native behaviour.
   const handleArchClick = (event: MouseEvent<HTMLAnchorElement>, index: number, active: boolean) => {
     if (dragged.current) {
       event.preventDefault();
       return;
     }
-    if (active || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    onChange(index);
+    if (active) onEnter(event.currentTarget.getAttribute("href") ?? "/");
+    else onChange(index);
   };
 
   return (

@@ -17,6 +17,14 @@ export type HatSceneProps = {
   onSpin: () => void;
   /** Dragging the hat: the section now nearest the front. */
   onSelect: (index: number) => void;
+  /** The hat has been drawn with its final texture: the loader can go. */
+  onReady?: () => void;
+  /**
+   * The fast spin of the Home transition: `up` builds it as the hat zooms in;
+   * `hold` keeps it at full speed, as the hat was left (arriving back, under
+   * the cover); `none` lets any of it wind down onto the current section.
+   */
+  spin?: "up" | "hold" | "none";
 };
 
 const RADIUS = 1.7;
@@ -36,8 +44,13 @@ const CAMERA_TARGET_Y = -0.55;
 const DRAG_SPEED = 0.008;
 /** Pointer travel (px) above which a click is treated as the end of a drag. */
 const CLICK_SLOP = 6;
+/** The transition spin: speed gained and lost per second (rad/s²), and its cap (rad/s). */
+const ZOOM_SPIN_ACCEL = 14;
+const ZOOM_SPIN_DECEL = 10;
+const ZOOM_SPIN_MAX = 9;
 
-function Hat({ yaw, count, reducedMotion, onSpin, onSelect }: HatSceneProps) {
+
+function Hat({ yaw, count, reducedMotion, onSpin, onSelect, onReady, spin: spinMode = "none" }: HatSceneProps) {
   const group = useRef<Group>(null);
   // Start already facing the initial section, so the hat does not spin on load.
   const current = useRef(yaw); // yaw currently rendered
@@ -45,7 +58,15 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect }: HatSceneProps) {
   const dragging = useRef(false);
   const onSelectRef = useRef(onSelect);
   const gl = useThree((state) => state.gl);
-  const texture = useMemo(() => createHatTexture(), []);
+  // Extra spin speed from the transition, rad/s. Mounting mid-transition, the
+  // hat is already at full speed.
+  const spin = useRef(spinMode === "hold" && !reducedMotion ? ZOOM_SPIN_MAX : 0);
+  // Set once the texture is final; the next rendered frame then reports ready,
+  // so the loader never uncovers a hat still wearing the bare weave.
+  const settled = useRef(false);
+  const reported = useRef(false);
+  const onReadyRef = useRef(onReady);
+  const { texture, settled: textureSettled } = useMemo(() => createHatTexture(), []);
   const shell = useMemo(
     () =>
       new LatheGeometry(
@@ -56,12 +77,18 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect }: HatSceneProps) {
   );
 
   useEffect(() => () => texture.dispose(), [texture]);
+  useEffect(() => {
+    textureSettled.then(() => {
+      settled.current = true;
+    });
+  }, [textureSettled]);
   useEffect(() => () => shell.dispose(), [shell]);
 
   // Keep the drag listeners (below) from re-subscribing when the parent's callback changes.
   useEffect(() => {
     onSelectRef.current = onSelect;
-  }, [onSelect]);
+    onReadyRef.current = onReady;
+  }, [onSelect, onReady]);
 
   // A new active section: ease to it via the shortest arc. While the user is
   // dragging, the hat follows the pointer instead — a selection made by the
@@ -128,10 +155,27 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect }: HatSceneProps) {
 
     const hat = group.current;
     if (!hat) return;
+    if (spinMode === "up" && !reducedMotion) {
+      // Fling the hat round, faster and faster, as it flies at the viewer.
+      spin.current = Math.min(spin.current + ZOOM_SPIN_ACCEL * delta, ZOOM_SPIN_MAX);
+    } else if (spinMode === "none") {
+      spin.current = Math.max(spin.current - ZOOM_SPIN_DECEL * delta, 0);
+    }
+    if (spin.current > 0) {
+      current.current += spin.current * delta;
+      // Winding down, the easing below pulls the hat onto the current section.
+      goal.current =
+        spinMode === "none" ? current.current + shortestAngle(current.current, yaw) : current.current;
+    }
     const ease = reducedMotion ? 1 : 1 - Math.exp(-5 * delta);
     current.current += (goal.current - current.current) * ease;
     const sway = reducedMotion ? 0 : Math.sin(state.clock.elapsedTime * 0.6) * 0.06;
     hat.rotation.y = current.current + sway;
+
+    if (settled.current && !reported.current) {
+      reported.current = true;
+      onReadyRef.current?.();
+    }
   });
 
   return (
@@ -163,6 +207,10 @@ export default function HatScene(props: HatSceneProps) {
       // and starts looking like a dish seen from above.
       camera={{ position: [0, 1.38, 5.15], fov: 31 }}
       dpr={[1, 2]}
+      // Size by the layout box, not the bounding rect: the stage is scaled by a
+      // CSS transform during the Home transition, and a canvas mounted while it
+      // is zoomed would otherwise measure itself 2.4× too big and stay that way.
+      resize={{ offsetSize: true }}
       style={{ touchAction: "pan-y" }}
     >
       <ambientLight intensity={0.9} />

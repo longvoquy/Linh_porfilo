@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { NavBar } from "@/components/nav/NavBar";
+import { RouteTransitionProvider } from "@/components/transition/RouteTransition";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +38,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <LanguageProvider>
-          <NavBar />
-          <div className="flex-1">{children}</div>
+          <RouteTransitionProvider>
+            <NavBar />
+            <div className="flex-1">{children}</div>
+          </RouteTransitionProvider>
         </LanguageProvider>
       </body>
     </html>

@@ -1,18 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SealStamp } from "@/components/decor/SealStamp";
 import { Sparkles } from "@/components/decor/Sparkles";
 import { getAllSections } from "@/lib/getContent";
 import { useTranslation } from "@/lib/i18n/useTranslation";
+import { useRouteTransition } from "@/components/transition/RouteTransition";
 import { ArchCarousel } from "./ArchCarousel";
 import { HatHint } from "./HatHint";
 import { HatStage } from "./HatStage";
+import { PageLoader } from "./PageLoader";
 import { wrapIndex, yawForIndex } from "./carouselMath";
 
 const sections = getAllSections();
+/**
+ * Set once the hat has loaded in this tab. Coming back to Home client-side
+ * remounts it, and the full-page loader is only for the first visit.
+ */
+let hatLoadedOnce = false;
+/** Lift the loader after this long even if the hat never reports ready. */
+const LOADER_TIMEOUT_MS = 10_000;
 /** The wheel opens on this section. */
 const INITIAL_SECTION = "research";
 
@@ -85,9 +94,38 @@ export function HomeLanding() {
     ),
   );
   const count = sections.length;
+  // Reads the module flag only at mount: false on the server and on the first
+  // hydration, so the loader is in the HTML and the markup matches.
+  const [hatReady, setHatReady] = useState(() => hatLoadedOnce);
+  const { stage, direction, enter, arrived } = useRouteTransition();
+  const markHatReady = useCallback(() => {
+    hatLoadedOnce = true;
+    setHatReady(true);
+    arrived();
+  }, [arrived]);
+  // Leaving: the hat zooms at the viewer. Arriving (the transition played
+  // backwards): Home mounts under the cover with the hat still zoomed, and it
+  // returns to its place as the cover lifts.
+  const leaving = direction === "in" && stage !== "idle";
+  const arriving = direction === "out" && (stage === "covered" || stage === "reveal");
+  const returning = arriving && stage === "reveal";
+  // Everything but the hat is hidden while it is zoomed, fading out as it
+  // leaves and back in once it has mostly settled.
+  const fade = `transition-opacity ${
+    leaving || (arriving && !returning)
+      ? "pointer-events-none opacity-0 duration-300"
+      : "duration-500 delay-300"
+  }`;
+
+  useEffect(() => {
+    const timer = window.setTimeout(markHatReady, LOADER_TIMEOUT_MS);
+    return () => window.clearTimeout(timer);
+  }, [markHatReady]);
 
   return (
     <main className="relative min-h-svh overflow-hidden bg-cream text-navy">
+      {/* Arriving through the transition, its cover is the loader. */}
+      <PageLoader visible={!hatReady && !arriving} />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,255,255,0.75),transparent_60%)]"
@@ -101,20 +139,26 @@ export function HomeLanding() {
       <Image
         src="/decor/one-pillar-pagoda.webp"
         alt=""
+        loading="eager"
         width={900}
         height={716}
         sizes="(min-width: 1280px) 28rem, 20rem"
-        className="pointer-events-none absolute bottom-0 left-0 hidden w-80 opacity-45 select-none md:block xl:w-md"
+        className={`pointer-events-none absolute bottom-0 left-0 hidden w-80 select-none md:block xl:w-md ${
+          leaving || (arriving && !returning) ? "opacity-0" : "opacity-45"
+        } ${fade}`}
       />
       <Image
         src="/decor/lotus.webp"
         alt=""
+        loading="eager"
         width={900}
         height={697}
         sizes="(min-width: 1280px) 26rem, 18rem"
-        className="pointer-events-none absolute bottom-0 right-0 hidden w-72 opacity-45 select-none md:block xl:w-104"
+        className={`pointer-events-none absolute bottom-0 right-0 hidden w-72 select-none md:block xl:w-104 ${
+          leaving || (arriving && !returning) ? "opacity-0" : "opacity-45"
+        } ${fade}`}
       />
-      <Sparkles className="inset-x-[12%] top-24 hidden h-[26rem] md:block" />
+      <Sparkles className={`inset-x-[12%] top-24 hidden h-[26rem] md:block ${fade}`} />
 
       {/* The hat is framed centred in its 5:4 box, leaving ~12% of that box empty
           below the brim; under the hat's centre that reads as a 120px gap to the
@@ -122,7 +166,7 @@ export function HomeLanding() {
           because the outer arches ride 53px higher than the active one, and
           pulling further would run them into the brim. */}
       <div className="relative mx-auto -mb-4 grid max-w-7xl gap-8 px-6 pt-12 md:grid-cols-[1fr_1.5fr_1fr] md:items-center lg:-mb-6 lg:max-w-352 lg:grid-cols-[1fr_2.5fr_1fr] lg:gap-4">
-        <div>
+        <div className={fade}>
           <p className="flex items-center gap-2 font-heading text-xl italic">
             {t("home.hello")}
             <Star className="h-3.5 w-3.5 text-gold" />
@@ -134,6 +178,11 @@ export function HomeLanding() {
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-navy/70">{t("home.body")}</p>
           <Link
             href={`/${sections[activeIndex].key}`}
+            onClick={(event) => {
+              if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault();
+              enter(`/${sections[activeIndex].key}`);
+            }}
             className="mt-7 inline-flex items-center gap-2 rounded-full border border-gold/50 bg-navy px-6 py-3 text-sm font-medium text-cream shadow-lg transition hover:bg-navy/90"
           >
             {t("home.start")}
@@ -148,9 +197,13 @@ export function HomeLanding() {
           count={count}
           onSpin={() => setActiveIndex((index) => wrapIndex(index + 1, count))}
           onSelect={setActiveIndex}
+          onReady={markHatReady}
+          zooming={leaving}
+          arriving={arriving}
+          returning={returning}
         />
 
-        <figure className="hidden md:block">
+        <figure className={`hidden md:block ${fade}`}>
           <span aria-hidden className="block font-heading text-6xl leading-none text-gold">
             &ldquo;
           </span>
@@ -164,9 +217,12 @@ export function HomeLanding() {
         </figure>
       </div>
 
-      <ArchCarousel activeIndex={activeIndex} onChange={setActiveIndex} />
+      {/* The arches' backdrop blur is costly to repaint while they fade: drop it. */}
+      <div className={`${fade} ${leaving || arriving ? "[&_a]:backdrop-blur-none" : ""}`}>
+        <ArchCarousel activeIndex={activeIndex} onChange={setActiveIndex} onEnter={enter} />
+      </div>
 
-      <div className="relative flex flex-col items-center gap-3 pb-10 pt-2">
+      <div className={`relative flex flex-col items-center gap-3 pb-10 pt-2 ${fade}`}>
         <ul className="flex items-center gap-3">
           {SOCIALS.map(({ key, href, icon: Icon }) => {
             const label = t(key);
