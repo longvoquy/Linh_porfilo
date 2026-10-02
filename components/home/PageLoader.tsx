@@ -26,15 +26,14 @@ export function PageLoader({ visible }: { visible: boolean }) {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,rgba(255,255,255,0.8),transparent_60%)]"
       />
 
-      <BrandMark className="relative h-20 w-22 text-gold-ink motion-safe:animate-loader-float" />
+      <BrandMark className="relative h-20 w-22 text-gold-ink animate-loader-float" />
 
       <p className="relative mt-5 font-heading text-3xl font-semibold text-navy">Vũ Khánh Linh</p>
       <p className="relative mt-1 text-[11px] uppercase tracking-[0.32em] text-navy/60">Portfolio</p>
 
-      {/* A thread with a bead of gold running along it. With reduced motion the
-          bead stays put and only glows, which is not movement across the screen. */}
+      {/* A thread with a bead of gold running along it. */}
       <div aria-hidden className="relative mt-7 h-px w-40 overflow-hidden bg-gold/30">
-        <div className="h-full w-1/3 bg-gold-ink motion-safe:animate-loader-sweep motion-reduce:mx-auto motion-reduce:animate-pulse" />
+        <div className="h-full w-1/3 bg-gold-ink animate-loader-sweep" />
       </div>
 
       <p role="status" className="sr-only">

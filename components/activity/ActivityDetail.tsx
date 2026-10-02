@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import type { ActivityItem } from "@/lib/types";
 import { useTranslation } from "@/lib/i18n/useTranslation";
@@ -9,8 +10,19 @@ export function ActivityDetail({ item, onClose }: { item: ActivityItem; onClose:
   const cover = item.media[0]?.thumbnail ?? item.media[0]?.src;
   const certificate = item.media.find((m) => m.type === "pdf");
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
   return (
     <motion.div
+      role="dialog"
+      aria-modal="true"
+      aria-label={localize(item.title)}
       className="fixed inset-0 z-60 flex items-center justify-center bg-navy/70 p-4 backdrop-blur-sm"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

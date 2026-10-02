@@ -2,21 +2,27 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const OPTIONS = ["en", "vi"] as const;
 
 export function LanguageToggle() {
   const { locale, setLocale } = useLanguage();
+  const { t } = useTranslation();
 
   return (
-    <div className="relative flex items-center rounded-full border border-gold/30 bg-navy/5 p-1 text-sm font-medium">
+    <div
+      role="group"
+      aria-label={t("nav.language")}
+      className="relative flex items-center rounded-full border border-gold/30 bg-navy/5 p-1 text-sm font-medium"
+    >
       {OPTIONS.map((option) => (
         <button
           key={option}
           type="button"
           onClick={() => setLocale(option)}
           aria-pressed={locale === option}
-          className="relative z-10 px-3 py-1 uppercase tracking-wide"
+          className="group relative z-10 touch-manipulation px-3 py-2 uppercase tracking-wide sm:py-1.5"
         >
           {locale === option && (
             <motion.span
@@ -25,7 +31,13 @@ export function LanguageToggle() {
               transition={{ type: "spring", stiffness: 500, damping: 35 }}
             />
           )}
-          <span className={locale === option ? "text-navy" : "text-navy/70"}>{option}</span>
+          <span
+            className={`transition-colors ${
+              locale === option ? "text-navy" : "text-navy/70 group-hover:text-navy"
+            }`}
+          >
+            {option}
+          </span>
         </button>
       ))}
     </div>

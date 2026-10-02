@@ -116,7 +116,11 @@ export function ChapterLightbox({ images, index, onIndexChange, onClose, title }
           initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: reduceMotion ? 0 : 0.2 }}
-          className="max-h-full max-w-full object-contain"
+          // `h-auto w-auto` makes the box follow the picture's real shape. Without
+          // them the width/height attributes (which can disagree with the image's
+          // orientation) plus the two max-* limits stretch the <img> across the
+          // whole stage, so clicks on the empty sides land on it and never close.
+          className="h-auto max-h-full w-auto max-w-full object-contain"
         />
       </div>
 

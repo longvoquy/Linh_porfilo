@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 /**
  * The "into the hat" navigation, both ways. A navy disc — the hat's own colour
@@ -15,6 +15,8 @@ import { motion, useReducedMotion } from "framer-motion";
  *        closes onto a hat that starts huge in the middle, spinning, and
  *        shrinks back into its place. Home reports `arrived` once its hat is
  *        drawn, so the disc never closes onto an empty stage.
+ *   across  one section to another: no hat is on the page, so it is just the
+ *        disc, opening at once and closing over the new section.
  *
  * It lives in the root layout so the cover survives the route change: the old
  * page unmounts under it, and the new one is only revealed once it is in.
@@ -24,7 +26,7 @@ import { motion, useReducedMotion } from "framer-motion";
  *   reveal   the disc closes (derived: covered + the new page is in)
  */
 export type TransitionStage = "idle" | "zoom" | "covered" | "reveal";
-export type TransitionDirection = "in" | "out";
+export type TransitionDirection = "in" | "out" | "across";
 
 /** Going in, the hat zooms on its own for this long before the disc opens. */
 const ZOOM_LEAD = 0.35;
@@ -40,6 +42,12 @@ type RouteTransitionValue = {
   enter: (href: string) => void;
   /** Back to Home; ignored while a transition is running. */
   goHome: () => void;
+  /**
+   * To any other page, with the film that fits where we are: from Home the hat
+   * zooms (`in`), from anywhere else it is just the disc (`across`). Ignored
+   * while a transition is running, or when already there.
+   */
+  navigate: (href: string) => void;
   /** Home's hat is on screen, so a transition heading home may reveal it. */
   arrived: () => void;
 };
@@ -58,7 +66,6 @@ type Phase = "idle" | "zoom" | "covered" | "forced";
 export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const reduceMotion = useReducedMotion() ?? false;
   const [phase, setPhase] = useState<Phase>("idle");
   const [direction, setDirection] = useState<TransitionDirection>("in");
   const [target, setTarget] = useState<string | null>(null);
@@ -71,7 +78,7 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   // The new page is in once the pathname matches: without a loading.tsx the
   // router only commits the route after its data has arrived. Home also has
   // to have drawn its hat.
-  const pageIn = pathname === target && (direction === "in" || homeArrived);
+  const pageIn = pathname === target && (direction !== "out" || homeArrived);
   const stage: TransitionStage =
     phase === "forced" || (phase === "covered" && pageIn) ? "reveal" : phase;
 
@@ -92,11 +99,16 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
 
   const enter = useCallback((href: string) => start(href, "in"), [start]);
   const goHome = useCallback(() => start("/", "out"), [start]);
+  // Like the `in` and `out` films, this plays whatever the reduced-motion setting says.
+  const navigate = useCallback(
+    (href: string) => start(href, pathname === "/" ? "in" : "across"),
+    [pathname, start],
+  );
   const arrived = useCallback(() => setHomeArrived(true), []);
 
   const value = useMemo(
-    () => ({ stage, direction, enter, goHome, arrived }),
-    [stage, direction, enter, goHome, arrived],
+    () => ({ stage, direction, enter, goHome, navigate, arrived }),
+    [stage, direction, enter, goHome, navigate, arrived],
   );
 
   const open = stage === "zoom" || stage === "covered";
@@ -130,18 +142,16 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
               width: disc.r * 2,
               height: disc.r * 2,
             }}
-            initial={reduceMotion ? { opacity: 0 } : { scale: 0 }}
-            animate={reduceMotion ? { opacity: open ? 1 : 0 } : { scale: open ? 1 : 0 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: open ? 1 : 0 }}
             transition={
-              reduceMotion
-                ? { duration: 0.25 }
-                : open
-                  ? {
-                      delay: direction === "in" ? ZOOM_LEAD : 0,
-                      duration: OPEN_DURATION,
-                      ease: [0.64, 0, 0.78, 0],
-                    }
-                  : { duration: CLOSE_DURATION, ease: [0.22, 1, 0.36, 1] }
+              open
+                ? {
+                    delay: direction === "in" ? ZOOM_LEAD : 0,
+                    duration: OPEN_DURATION,
+                    ease: [0.64, 0, 0.78, 0],
+                  }
+                : { duration: CLOSE_DURATION, ease: [0.22, 1, 0.36, 1] }
             }
             onAnimationComplete={handleComplete}
           />
@@ -152,7 +162,7 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
               stage === "covered" ? "opacity-100 delay-500 duration-500" : "opacity-0 duration-150"
             }`}
           >
-            <div className="h-full w-1/3 bg-gold-lit motion-safe:animate-loader-sweep motion-reduce:mx-auto motion-reduce:animate-pulse" />
+            <div className="h-full w-1/3 bg-gold-lit animate-loader-sweep" />
           </div>
         </div>
       )}

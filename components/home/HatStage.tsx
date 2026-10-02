@@ -87,7 +87,7 @@ export function HatStage({
   const zoomedOut = zooming || (arriving && !returning);
   useEffect(() => {
     const stage = scope.current;
-    if (reduceMotion || !stage) return;
+    if (!stage) return;
     if (zoomedOut) {
       const rect = stage.getBoundingClientRect();
       animate(
@@ -108,7 +108,7 @@ export function HatStage({
         { duration: CLOSE_DURATION + 0.3, ease: [0.22, 1, 0.36, 1] },
       );
     }
-  }, [zoomedOut, zooming, returning, reduceMotion, animate, scope]);
+  }, [zoomedOut, zooming, returning, animate, scope]);
 
   return (
     <div

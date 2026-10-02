@@ -44,10 +44,19 @@ const CAMERA_TARGET_Y = -0.55;
 const DRAG_SPEED = 0.008;
 /** Pointer travel (px) above which a click is treated as the end of a drag. */
 const CLICK_SLOP = 6;
-/** The transition spin: speed gained and lost per second (rad/s²), and its cap (rad/s). */
+/** The transition spin: speed gained per second (rad/s²), and its cap (rad/s). */
 const ZOOM_SPIN_ACCEL = 14;
-const ZOOM_SPIN_DECEL = 10;
 const ZOOM_SPIN_MAX = 9;
+/**
+ * Coming back to Home, the spin ends in a planned landing: over this long, the
+ * hat slows from its spin speed to a stop exactly on the section. At least
+ * SETTLE_MIN_TRAVEL radians are covered, which is what keeps the curve moving
+ * forward the whole way (it needs a distance of a third of speed × duration).
+ */
+const SETTLE_DURATION = 1;
+const SETTLE_MIN_TRAVEL = (ZOOM_SPIN_MAX * SETTLE_DURATION) / 3;
+
+type Settle = { elapsed: number; from: number; travel: number };
 
 
 function Hat({ yaw, count, reducedMotion, onSpin, onSelect, onReady, spin: spinMode = "none" }: HatSceneProps) {
@@ -60,7 +69,8 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect, onReady, spin: spinM
   const gl = useThree((state) => state.gl);
   // Extra spin speed from the transition, rad/s. Mounting mid-transition, the
   // hat is already at full speed.
-  const spin = useRef(spinMode === "hold" && !reducedMotion ? ZOOM_SPIN_MAX : 0);
+  const spin = useRef(spinMode === "hold" ? ZOOM_SPIN_MAX : 0);
+  const settle = useRef<Settle | null>(null);
   // Set once the texture is final; the next rendered frame then reports ready,
   // so the loader never uncovers a hat still wearing the bare weave.
   const settled = useRef(false);
@@ -155,21 +165,56 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect, onReady, spin: spinM
 
     const hat = group.current;
     if (!hat) return;
-    if (spinMode === "up" && !reducedMotion) {
+    if (spinMode === "up") {
       // Fling the hat round, faster and faster, as it flies at the viewer.
       spin.current = Math.min(spin.current + ZOOM_SPIN_ACCEL * delta, ZOOM_SPIN_MAX);
-    } else if (spinMode === "none") {
-      spin.current = Math.max(spin.current - ZOOM_SPIN_DECEL * delta, 0);
     }
-    if (spin.current > 0) {
+
+    if (spinMode === "none" && spin.current > 0 && !settle.current) {
+      // The spin is over: plan the landing. The section is reached going the
+      // same way the hat is turning, by a distance of at least
+      // SETTLE_MIN_TRAVEL, so the hat never has to stop and reverse.
+      const turn = Math.PI * 2;
+      const gap = shortestAngle(current.current, yaw);
+      settle.current = {
+        elapsed: 0,
+        from: current.current,
+        travel: gap + turn * Math.ceil((SETTLE_MIN_TRAVEL - gap) / turn),
+      };
+    }
+
+    if (settle.current && dragging.current) {
+      // Grabbed mid-landing: the drag takes over.
+      settle.current = null;
+      spin.current = 0;
+      goal.current = current.current;
+    } else if (settle.current) {
+      const landing = settle.current;
+      landing.elapsed += delta;
+      const s = Math.min(landing.elapsed / SETTLE_DURATION, 1);
+      // Cubic Hermite from the spin speed down to rest: it starts at exactly the
+      // speed the hat was turning at, and ends at zero on the section.
+      const speed = spin.current * SETTLE_DURATION;
+      current.current =
+        landing.from +
+        (s * s * s - 2 * s * s + s) * speed +
+        (3 * s * s - 2 * s * s * s) * landing.travel;
+      goal.current = current.current;
+      if (s === 1) {
+        settle.current = null;
+        spin.current = 0;
+      }
+    } else if (spin.current > 0) {
       current.current += spin.current * delta;
-      // Winding down, the easing below pulls the hat onto the current section.
-      goal.current =
-        spinMode === "none" ? current.current + shortestAngle(current.current, yaw) : current.current;
+      goal.current = current.current;
+    } else {
+      // Reduced motion snaps a click to its section instead of easing there.
+      const ease = reducedMotion ? 1 : 1 - Math.exp(-5 * delta);
+      current.current += (goal.current - current.current) * ease;
     }
-    const ease = reducedMotion ? 1 : 1 - Math.exp(-5 * delta);
-    current.current += (goal.current - current.current) * ease;
-    const sway = reducedMotion ? 0 : Math.sin(state.clock.elapsedTime * 0.6) * 0.06;
+    // Always on, even with reduced motion: ±3.4° over a ~10 s cycle is an idle
+    // breath, not the large or fast movement that setting exists to spare people.
+    const sway = Math.sin(state.clock.elapsedTime * 0.6) * 0.06;
     hat.rotation.y = current.current + sway;
 
     if (settled.current && !reported.current) {
