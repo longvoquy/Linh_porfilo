@@ -1,7 +1,7 @@
 # Online Exhibition — 3D Gallery Hall
 
 **Date:** 2026-10-03
-**Status:** Approved, not yet implemented
+**Status:** Approved, implementation in progress
 **Branch:** `feature/online-exhibition`
 **Scope:** new route `/exhibition`, a link from `/art-portfolio`, and an additive `MediaRef` change. Other sections are untouched.
 
@@ -30,14 +30,14 @@ Free walking, audio, painting no. 3 (not in the content), a separate lightbox, p
 
 ## Files
 
-- `app/exhibition/page.tsx` — Server Component, `export const revalidate = 3600`. Builds `ExhibitPiece[]` from `getSectionItems("art-portfolio")` (published only, first image media) and passes plain objects to the client.
+- `app/exhibition/page.tsx` — Server Component (no `revalidate`: the content is static JSON, unlike the Cloudinary-listed chapters). Builds `ExhibitPiece[]` from `getSectionItems("art-portfolio")` (published only, first image media) and passes plain objects to the client.
 - `components/exhibition/`
   - `roomLayout.ts` — pure: stop positions, painting size/position from aspect ratio.
   - `cameraRail.ts` — pure: easing and interpolation between stops.
-  - `ExhibitionScene.tsx` — R3F scene (room, frames, lights, textures). Loaded with `dynamic(..., { ssr: false })` from a Client Component.
+  - `ExhibitionScene.tsx` — R3F scene (room, frames, lights, textures). Loaded with `dynamic(..., { ssr: false })` from a Client Component. React context does not cross `<Canvas>`, so localized text is passed in as props.
   - `ExhibitionStage.tsx` — WebGL probe, fallback while loading or on error (error boundary), mirroring `HatStage`.
   - `ExhibitionHud.tsx` — info card, buttons, counter, key and swipe handling.
-  - `ExhibitionFallback.tsx` — vertical scroll-snap list of framed paintings, used without WebGL.
+  - `ExhibitionFallback.tsx` — plain vertical list of framed paintings, used without WebGL.
 - `app/art-portfolio/page.tsx` — add the link.
 - `lib/i18n/dictionaries/en.json` + `vi.json` — new UI strings (both).
 - `lib/types.ts` — `MediaRef` gains optional `width` and `height`.
