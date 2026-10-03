@@ -58,3 +58,9 @@ JSON content → `getSectionItems` → `ExhibitPiece[]` (server) → `Exhibition
 
 - `roomLayout.test.ts`, `cameraRail.test.ts` run by `pnpm test`; no React, DOM or three imports. They cover stop count, no overlapping paintings, aspect ratio kept, and easing endpoints. `pnpm test` globs `components/home/*.test.ts` today, so the script is extended to also cover `components/exhibition/*.test.ts`.
 - Visual check is manual (`pnpm dev`). Do not loop-restart the dev server with Playwright on this machine; run `pnpm build` and `pnpm lint` once.
+
+## Revisions
+
+- **2026-10-03:** `/` serves the exhibition (hat landing not routed); the nav bar is hidden over it and a language toggle sits in the HUD. The "View as a grid" links were removed.
+- **2026-10-03:** No artist name or entrance sign: the hall is just a gallery. Stop 0 is now an entrance view down the hall with a short intro card; the seal stamp is gone.
+- **2026-10-03:** Smoother drag: the canvas renders on demand (`frameloop="demand"`, invalidated while the camera moves or the look-around is off-centre), the HUD no longer uses `backdrop-blur` over the live canvas, and the look-around limit is soft (tanh) instead of a hard clamp.

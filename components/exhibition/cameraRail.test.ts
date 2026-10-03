@@ -8,6 +8,7 @@ import {
   damp,
   dampPose,
   fitDistance,
+  isSettled,
   paintingPose,
   poseForStop,
 } from "./cameraRail.ts";
@@ -83,6 +84,22 @@ describe("damp", () => {
   it("works downward too", () => {
     const v = damp(10, 5, 0.1, 4);
     assert.ok(v < 10 && v > 5);
+  });
+});
+
+describe("isSettled", () => {
+  it("is true for identical poses", () => assert.ok(isSettled(INTRO_POSE, INTRO_POSE)));
+  it("is true when the difference is invisible", () => {
+    const near = { position: [0, EYE_Y, 1.5001], target: [0, 1.7, 14] } as typeof INTRO_POSE;
+    assert.ok(isSettled(INTRO_POSE, near));
+  });
+  it("is false while the camera position is still travelling", () => {
+    const far = poseForStop(1, placements, DESKTOP, false);
+    assert.ok(!isSettled(INTRO_POSE, far));
+  });
+  it("is false while only the look-at point is still turning", () => {
+    const turning = { position: INTRO_POSE.position, target: [0.5, 1.7, 14] } as typeof INTRO_POSE;
+    assert.ok(!isSettled(INTRO_POSE, turning));
   });
 });
 

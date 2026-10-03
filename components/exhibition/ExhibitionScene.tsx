@@ -9,7 +9,15 @@ import {
   TextureLoader,
   type Texture,
 } from "three";
-import { INTRO_POSE, VERTICAL_FOV, damp, dampPose, poseForStop, type Pose } from "./cameraRail";
+import {
+  INTRO_POSE,
+  VERTICAL_FOV,
+  damp,
+  dampPose,
+  isSettled,
+  poseForStop,
+  type Pose,
+} from "./cameraRail";
 import { HALL_COLORS, createFloorTexture, createGlowTexture, createPlaqueTexture } from "./hallTextures";
 import { aspectOf, textureUrl, type ExhibitPiece } from "./pieces";
 import { HALL, hallLength, layoutPaintings, type Placement } from "./roomLayout";
@@ -18,7 +26,6 @@ export type SceneProps = {
   pieces: ExhibitPiece[];
   /** Label text for each painting, in piece order (already localized: context does not cross the canvas). */
   plates: { title: string; date?: string }[];
-  plaque: { title: string; subtitle: string };
   /** 0 is the entrance; 1..pieces.length are the paintings. */
   stop: number;
   closeUp: boolean;
@@ -30,7 +37,10 @@ export type SceneProps = {
 
 /** How quickly the camera closes in on its goal (per second). */
 const GLIDE_RATE = 3.2;
-/** How far dragging may turn the view, and how fast. Radians / radians per px. */
+/**
+ * How far dragging may turn the view, and how fast (radians / radians per px).
+ * The limit is soft: the view slows as it nears it rather than hitting a wall.
+ */
 const LOOK_LIMIT = 0.3;
 const LOOK_SPEED = 0.0025;
 const LOOK_RETURN_RATE = 5;
@@ -38,9 +48,14 @@ const LOOK_RETURN_RATE = 5;
 const CLICK_SLOP = 6;
 const FRAME_BORDER = 0.08;
 
+/** Raw drag offsets (radians); the camera turns by `soft()` of them. */
 type LookState = { yaw: number; pitch: number; dragging: boolean };
 
 const clamp = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value));
+/** Eases toward ±LOOK_LIMIT instead of stopping dead. */
+const soft = (raw: number) => LOOK_LIMIT * Math.tanh(raw / LOOK_LIMIT);
+/** Raw offsets beyond this add nothing (soft() has flattened) but would slow the return. */
+const RAW_LIMIT = LOOK_LIMIT * 3;
 
 /** Drags nudge the view a little; releasing eases it back. */
 function Rig({
@@ -57,12 +72,18 @@ function Rig({
   const camera = useThree((state) => state.camera);
   const dom = useThree((state) => state.gl.domElement);
   const aspect = useThree((state) => state.size.width / state.size.height);
+  const invalidate = useThree((state) => state.invalidate);
   const goal = useMemo(
     () => poseForStop(stop, placements, aspect, closeUp),
     [stop, placements, aspect, closeUp],
   );
   const pose = useRef<Pose | null>(null);
   const look = useRef<LookState>({ yaw: 0, pitch: 0, dragging: false });
+
+  // The canvas only renders on demand: wake it when the camera has somewhere new to go.
+  useEffect(() => {
+    invalidate();
+  }, [goal, reducedMotion, invalidate]);
 
   useEffect(() => {
     let lastX = 0;
@@ -80,11 +101,13 @@ function Rig({
       const dy = event.clientY - lastY;
       lastX = event.clientX;
       lastY = event.clientY;
-      state.yaw = clamp(state.yaw + dx * LOOK_SPEED, LOOK_LIMIT);
-      state.pitch = clamp(state.pitch + dy * LOOK_SPEED, LOOK_LIMIT);
+      state.yaw = clamp(state.yaw + dx * LOOK_SPEED, RAW_LIMIT);
+      state.pitch = clamp(state.pitch + dy * LOOK_SPEED, RAW_LIMIT);
+      invalidate();
     };
     const onUp = () => {
       look.current.dragging = false;
+      invalidate();
     };
     dom.addEventListener("pointerdown", onDown);
     dom.addEventListener("pointermove", onMove);
@@ -96,9 +119,9 @@ function Rig({
       dom.removeEventListener("pointerup", onUp);
       dom.removeEventListener("pointercancel", onUp);
     };
-  }, [dom]);
+  }, [dom, invalidate]);
 
-  useFrame((_, delta) => {
+  useFrame((frame, delta) => {
     const dt = Math.min(delta, 0.05);
     pose.current =
       !pose.current || reducedMotion ? goal : dampPose(pose.current, goal, dt, GLIDE_RATE);
@@ -110,8 +133,13 @@ function Rig({
       state.yaw = damp(state.yaw, 0, dt, LOOK_RETURN_RATE);
       state.pitch = damp(state.pitch, 0, dt, LOOK_RETURN_RATE);
     }
-    camera.rotateY(state.yaw);
-    camera.rotateX(state.pitch);
+    camera.rotateY(soft(state.yaw));
+    camera.rotateX(soft(state.pitch));
+
+    // Keep rendering until the camera has arrived and the view has come back to rest.
+    const atRest =
+      !state.dragging && Math.abs(state.yaw) < 1e-3 && Math.abs(state.pitch) < 1e-3;
+    if (!atRest || !isSettled(pose.current, goal)) frame.invalidate();
   });
 
   return null;
@@ -237,7 +265,7 @@ function Painting({
   );
 }
 
-function Hall({ length, plaque }: { length: number; plaque: SceneProps["plaque"] }) {
+function Hall({ length }: { length: number }) {
   const floor = useMemo(() => {
     const texture = createFloorTexture();
     texture.wrapS = texture.wrapT = RepeatWrapping;
@@ -245,21 +273,6 @@ function Hall({ length, plaque }: { length: number; plaque: SceneProps["plaque"]
     return texture;
   }, [length]);
   useEffect(() => () => floor.dispose(), [floor]);
-
-  const plaqueTexture = useMemo(
-    () =>
-      createPlaqueTexture(
-        [
-          { text: plaque.title, size: 120, color: HALL_COLORS.goldLit },
-          { text: plaque.subtitle, size: 56, color: HALL_COLORS.cream },
-        ],
-        HALL_COLORS.navy,
-        1024,
-        512,
-      ),
-    [plaque.title, plaque.subtitle],
-  );
-  useEffect(() => () => plaqueTexture.dispose(), [plaqueTexture]);
 
   const half = HALL.width / 2;
   const lanterns = Array.from({ length: Math.floor(length / 6) }, (_, i) => 3 + i * 6);
@@ -309,18 +322,6 @@ function Hall({ length, plaque }: { length: number; plaque: SceneProps["plaque"]
         </group>
       ))}
 
-      {/* The entrance sign. */}
-      <group position={[0, 2.3, 0.05]}>
-        <mesh>
-          <boxGeometry args={[3.4, 1.8, 0.1]} />
-          <meshStandardMaterial color={HALL_COLORS.goldLit} metalness={0.55} roughness={0.35} />
-        </mesh>
-        <mesh position={[0, 0, 0.052]}>
-          <planeGeometry args={[3.2, 1.6]} />
-          <meshBasicMaterial map={plaqueTexture} toneMapped={false} />
-        </mesh>
-      </group>
-
       {/* Paper lanterns down the middle of the ceiling. */}
       {lanterns.map((z) => (
         <group key={z} position={[0, HALL.height, z]}>
@@ -345,7 +346,6 @@ function Hall({ length, plaque }: { length: number; plaque: SceneProps["plaque"]
 export default function ExhibitionScene({
   pieces,
   plates,
-  plaque,
   stop,
   closeUp,
   reducedMotion,
@@ -361,6 +361,7 @@ export default function ExhibitionScene({
   return (
     <Canvas
       dpr={[1, 1.75]}
+      frameloop="demand"
       camera={{ fov: VERTICAL_FOV, near: 0.1, far: 80, position: INTRO_POSE.position }}
       onCreated={() => onReady?.()}
     >
@@ -370,7 +371,7 @@ export default function ExhibitionScene({
         closeUp={closeUp}
         reducedMotion={reducedMotion}
       />
-      <Hall length={length} plaque={plaque} />
+      <Hall length={length} />
       {pieces.map((piece, i) => (
         <Painting
           key={piece.slug}

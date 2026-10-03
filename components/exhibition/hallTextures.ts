@@ -64,7 +64,7 @@ type PlaqueLine = { text: string; size: number; color: string };
  */
 const PLAQUE_FONT = '"Times New Roman", "Noto Serif", serif';
 
-/** A flat plaque with centred lines of serif text — painting labels and the entrance sign. */
+/** A flat plaque with centred lines of serif text — the painting labels. */
 export function createPlaqueTexture(
   lines: PlaqueLine[],
   background: string,

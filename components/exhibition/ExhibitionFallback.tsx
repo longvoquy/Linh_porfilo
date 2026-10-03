@@ -1,6 +1,5 @@
 "use client";
 
-import { SealStamp } from "@/components/decor/SealStamp";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { textureUrl, type ExhibitPiece } from "./pieces";
@@ -15,7 +14,6 @@ export function ExhibitionFallback({ pieces }: { pieces: ExhibitPiece[] }) {
         <LanguageToggle />
       </div>
       <header className="mb-12 text-center">
-        <SealStamp className="mx-auto mb-4 h-12 w-12" />
         <h1 className="font-heading text-4xl font-semibold text-navy">{t("exhibition.title")}</h1>
         <p className="mt-2 text-navy/70">{t("exhibition.subtitle")}</p>
       </header>

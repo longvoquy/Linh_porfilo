@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { SealStamp } from "@/components/decor/SealStamp";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { ExhibitPiece } from "./pieces";
@@ -16,7 +15,7 @@ type Props = {
 };
 
 const buttonClass =
-  "pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-ivory/90 text-xl text-navy shadow backdrop-blur transition-opacity hover:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink disabled:cursor-default disabled:opacity-30";
+  "pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-ivory/95 text-xl text-navy shadow transition-opacity hover:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink disabled:cursor-default disabled:opacity-30";
 
 /**
  * Everything the visitor reads or presses. The canvas is decorative; this layer
@@ -70,7 +69,7 @@ export function ExhibitionHud({ pieces, stop, closeUp, onGo, onToggleCloseUp }: 
       <section
         key={stop}
         aria-live="polite"
-        className="pointer-events-auto absolute inset-x-4 bottom-4 rounded-2xl border border-gold/30 bg-ivory/90 p-5 text-navy shadow-lg backdrop-blur md:inset-x-auto md:bottom-8 md:left-8 md:max-w-md"
+        className="pointer-events-auto absolute inset-x-4 bottom-4 rounded-2xl border border-gold/30 bg-ivory/95 p-5 text-navy shadow-lg md:inset-x-auto md:bottom-8 md:left-8 md:max-w-md"
       >
         {piece ? (
           <>
@@ -91,13 +90,8 @@ export function ExhibitionHud({ pieces, stop, closeUp, onGo, onToggleCloseUp }: 
           </>
         ) : (
           <>
-            <div className="flex items-center gap-3">
-              <SealStamp className="h-11 w-11 shrink-0" />
-              <div>
-                <p className="text-xs tracking-widest text-gold-ink uppercase">{t("exhibition.entrance")}</p>
-                <p className="font-heading text-2xl font-semibold">{t("exhibition.subtitle")}</p>
-              </div>
-            </div>
+            <p className="text-xs tracking-widest text-gold-ink uppercase">{t("exhibition.entrance")}</p>
+            <p className="font-heading mt-1 text-2xl font-semibold">{t("exhibition.subtitle")}</p>
             <p className="mt-3 text-sm text-navy/80">{t("exhibition.intro")}</p>
             <button
               type="button"

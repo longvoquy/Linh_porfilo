@@ -46,7 +46,6 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
     () => pieces.map((piece) => ({ title: localize(piece.title), date: piece.date })),
     [pieces, localize],
   );
-  const plaque = useMemo(() => ({ title: "Vũ Khánh Linh", subtitle: t("exhibition.title") }), [t]);
 
   if (pieces.length === 0) return <ComingSoon />;
   if (webgl === false) return <ExhibitionFallback pieces={pieces} />;
@@ -81,7 +80,6 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
         <ExhibitionScene
           pieces={pieces}
           plates={plates}
-          plaque={plaque}
           stop={stop}
           closeUp={closeUp}
           reducedMotion={reducedMotion}

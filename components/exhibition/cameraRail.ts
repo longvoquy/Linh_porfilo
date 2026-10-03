@@ -14,8 +14,8 @@ const MIN_DISTANCE = 2.6;
 /** The hall is 8 wide; keep the camera inside it when a narrow screen needs to stand far back. */
 const MAX_DISTANCE = 7.5;
 
-/** At the entrance, looking down the hall at the plaque on the entrance wall (z = 0). */
-export const INTRO_POSE: Pose = { position: [0, EYE_Y, 4.5], target: [0, 2.1, 0] };
+/** At the entrance, looking down the length of the hall. */
+export const INTRO_POSE: Pose = { position: [0, EYE_Y, 1.5], target: [0, 1.7, 14] };
 
 /** How far from a painting the camera must stand for it to fit the viewport. */
 export function fitDistance(
@@ -52,6 +52,15 @@ export function poseForStop(
   const p = placements[stop - 1];
   const distance = fitDistance(p.width, p.height, viewportAspect) * (closeUp ? CLOSE_UP_FACTOR : 1);
   return paintingPose(p, distance);
+}
+
+/** True when `a` and `b` are so close that no further movement would be visible. */
+export function isSettled(a: Pose, b: Pose, epsilon = 0.002): boolean {
+  return [0, 1, 2].every(
+    (i) =>
+      Math.abs(a.position[i] - b.position[i]) < epsilon &&
+      Math.abs(a.target[i] - b.target[i]) < epsilon,
+  );
 }
 
 /** Frame-rate independent ease toward `goal`: `rate` is how quickly it closes in (per second). */
