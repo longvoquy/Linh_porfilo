@@ -20,7 +20,7 @@ const ExhibitionScene = dynamic(() => import("./ExhibitionScene"), {
 /** A touch swipe must travel at least this far (px), and be clearly horizontal. */
 const SWIPE_MIN = 60;
 
-const frameClass = "relative h-[calc(100svh-4.5rem)] min-h-[32rem] w-full overflow-hidden bg-navy";
+const frameClass = "relative h-svh min-h-[32rem] w-full overflow-hidden bg-navy";
 
 export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
   const { t, localize } = useTranslation();

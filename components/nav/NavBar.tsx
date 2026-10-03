@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type MouseEvent, type PointerEvent as ReactPointerEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandMark } from "@/components/decor/BrandMark";
-import { useRouteTransition } from "@/components/transition/RouteTransition";
 import { useTransitionLink } from "@/components/transition/useTransitionLink";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { DictionaryKey } from "@/lib/i18n/useTranslation";
@@ -97,7 +96,6 @@ export function NavBar() {
   // usually follows keep it open instead of toggling it shut again.
   const hoverCloseTimer = useRef<number>(undefined);
   const openedByHover = useRef(false);
-  const { goHome } = useRouteTransition();
   const transitionClick = useTransitionLink();
 
   const [scrolled, setScrolled] = useState(false);
@@ -106,13 +104,9 @@ export function NavBar() {
   // An open menu keeps the bar on screen, whatever the scroll direction.
   const hidden = scrolledDown && !openMenu && !openPortfolio;
 
-  // Links home play the hat transition backwards. Modified clicks (new tab,
-  // etc.) keep native behaviour; so does a click on Home while already there.
-  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (pathname === "/" || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    goHome();
-  };
+  // "/" is the exhibition on this branch, which has no hat to fly back to:
+  // Home is an ordinary link with the plain page-to-page transition.
+  const handleHomeClick = (event: MouseEvent<HTMLAnchorElement>) => transitionClick("/")(event);
 
   const handlePortfolioEnter = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== "mouse") return;
@@ -187,6 +181,9 @@ export function NavBar() {
     `relative touch-manipulation py-1 text-sm transition-colors ${
       active ? "font-medium text-navy" : "text-navy/70 hover:text-navy"
     }`;
+
+  // The exhibition is a standalone page: no navigation bar over the hall.
+  if (pathname === "/" || pathname === "/exhibition") return null;
 
   return (
     <header

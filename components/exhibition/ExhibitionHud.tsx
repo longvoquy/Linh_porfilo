@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { SealStamp } from "@/components/decor/SealStamp";
+import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { ExhibitPiece } from "./pieces";
 
@@ -50,6 +51,10 @@ export function ExhibitionHud({ pieces, stop, closeUp, onGo, onToggleCloseUp }: 
       >
         {t("exhibition.backToGrid")}
       </Link>
+
+      <div className="pointer-events-auto absolute right-4 top-4">
+        <LanguageToggle />
+      </div>
 
       <button
         type="button"
