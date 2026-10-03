@@ -1,0 +1,37 @@
+name: Guard main
+
+# This branch is a standalone deployment: it replaces the Home landing, so it
+# must never be merged into main. This check fails any pull request into main
+# that comes from it or carries it. Make it required (see .github/EXHIBITION_ONLY)
+# so GitHub refuses the merge button.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  block-exhibition-branch:
+    name: block-exhibition-branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # For pull_request events this is the result of merging the PR into main,
+      # so it also catches a branch that was cut from the exhibition branch.
+      - uses: actions/checkout@v4
+
+      - name: Refuse to merge the exhibition branch into main
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if [ "$HEAD_REF" = "feature/online-exhibition" ]; then
+            echo "::error title=Do not merge::feature/online-exhibition is a standalone deployment and must not be merged into main."
+            exit 1
+          fi
+          if [ -f .github/EXHIBITION_ONLY ]; then
+            echo "::error title=Do not merge::This change contains the exhibition-only marker (.github/EXHIBITION_ONLY): it comes from the standalone exhibition branch and must not be merged into main."
+            exit 1
+          fi
+          echo "OK: nothing from the exhibition branch in this pull request."

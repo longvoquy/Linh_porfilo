@@ -1,0 +1,9 @@
+This file marks the standalone exhibition branch (feature/online-exhibition).
+
+Its presence in a pull request's merge result makes the "Guard main" workflow
+fail, so a branch cut from this one cannot be merged into main by accident.
+Never copy or keep this file on main.
+
+To make the guard enforceable, add a branch protection rule (or ruleset) for
+`main` in the GitHub repository settings and require the status check
+"block-exhibition-branch" (from the "Guard main" workflow) to pass before merging.

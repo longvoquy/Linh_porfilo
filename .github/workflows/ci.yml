@@ -1,0 +1,50 @@
+name: CI
+
+# Checks for the standalone exhibition branch. Deploys are done by Vercel's Git
+# integration (set this branch as the Production Branch there), not by this file.
+on:
+  push:
+    branches: [feature/online-exhibition]
+  pull_request:
+    branches: [feature/online-exhibition]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      # The pnpm version comes from "packageManager" in package.json.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Test
+        run: pnpm test
+
+      # No Cloudinary credentials here: galleries degrade to text-only, and the
+      # exhibition reads image URLs from content JSON, so the build still works.
+      - name: Build
+        run: pnpm build
