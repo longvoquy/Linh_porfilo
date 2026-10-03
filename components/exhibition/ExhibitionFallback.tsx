@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { SealStamp } from "@/components/decor/SealStamp";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
@@ -43,12 +42,6 @@ export function ExhibitionFallback({ pieces }: { pieces: ExhibitPiece[] }) {
           </li>
         ))}
       </ol>
-
-      <p className="mt-14 text-center">
-        <Link href="/art-portfolio" className="text-gold-ink underline underline-offset-4">
-          {t("exhibition.backToGrid")}
-        </Link>
-      </p>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { SealStamp } from "@/components/decor/SealStamp";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
@@ -44,13 +43,6 @@ export function ExhibitionHud({ pieces, stop, closeUp, onGo, onToggleCloseUp }: 
   return (
     <div className="pointer-events-none absolute inset-0">
       <h1 className="sr-only">{t("exhibition.title")}</h1>
-
-      <Link
-        href="/art-portfolio"
-        className="pointer-events-auto absolute left-4 top-4 rounded-full border border-gold/40 bg-ivory/90 px-4 py-2 text-sm text-navy shadow backdrop-blur hover:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
-      >
-        {t("exhibition.backToGrid")}
-      </Link>
 
       <div className="pointer-events-auto absolute right-4 top-4">
         <LanguageToggle />
