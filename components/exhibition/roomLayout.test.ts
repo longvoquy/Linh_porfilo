@@ -1,6 +1,14 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { HALL, MAX_PAINTING, fitPainting, hallLength, layoutPaintings } from "./roomLayout.ts";
+import {
+  FRAME_BORDER,
+  HALL,
+  LABEL,
+  MAX_PAINTING,
+  fitPainting,
+  hallLength,
+  layoutPaintings,
+} from "./roomLayout.ts";
 
 const close = (actual: number, expected: number) =>
   assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} !== ${expected}`);
@@ -53,6 +61,22 @@ describe("layoutPaintings", () => {
   });
   it("keeps each painting's aspect ratio", () => {
     placements.forEach((p, i) => close(p.width / p.height, ASPECTS[i]));
+  });
+  it("reserves room for the frame and the label under each picture", () => {
+    for (const p of placements) {
+      assert.ok(p.fitHeight > p.height + FRAME_BORDER + LABEL.offset);
+      // The label's lower edge sits inside the hanging's lower extent.
+      const labelBottom = p.height / 2 + LABEL.offset + LABEL.height / 2;
+      close(p.height / 2 + FRAME_BORDER + labelBottom, p.fitHeight);
+    }
+  });
+  it("centres the focus on the whole hanging, below the picture's centre", () => {
+    for (const p of placements) {
+      assert.ok(p.focusDrop > 0);
+      const top = p.height / 2 + FRAME_BORDER;
+      const bottom = p.height / 2 + LABEL.offset + LABEL.height / 2;
+      close(p.focusDrop, (bottom - top) / 2);
+    }
   });
   it("never overlaps paintings on the same wall", () => {
     for (const a of placements) {

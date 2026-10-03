@@ -9,7 +9,7 @@ export const VERTICAL_FOV = 50;
 export const CLOSE_UP_FACTOR = 0.55;
 
 /** Breathing room around a painting when fitting it to the view (1 = edge to edge). */
-const FIT_MARGIN = 1.3;
+const FIT_MARGIN = 1.15;
 const MIN_DISTANCE = 2.6;
 /** The hall is 8 wide; keep the camera inside it when a narrow screen needs to stand far back. */
 const MAX_DISTANCE = 7.5;
@@ -30,14 +30,14 @@ export function fitDistance(
   return Math.min(MAX_DISTANCE, Math.max(MIN_DISTANCE, needed));
 }
 
-/** Stand `distance` in front of the painting, at eye height, looking at its centre. */
-export function paintingPose(p: Placement, distance: number): Pose {
+/** Stand `distance` in front of the painting, at eye height, looking at its centre (or `focusDrop` below it). */
+export function paintingPose(p: Placement, distance: number, focusDrop = 0): Pose {
   const normalX = Math.sin(p.rotationY);
   const normalZ = Math.cos(p.rotationY);
   const [x, y, z] = p.position;
   return {
     position: [x + normalX * distance, EYE_Y, z + normalZ * distance],
-    target: [x, y, z],
+    target: [x, y - focusDrop, z],
   };
 }
 
@@ -50,8 +50,11 @@ export function poseForStop(
 ): Pose {
   if (stop <= 0) return INTRO_POSE;
   const p = placements[stop - 1];
-  const distance = fitDistance(p.width, p.height, viewportAspect) * (closeUp ? CLOSE_UP_FACTOR : 1);
-  return paintingPose(p, distance);
+  // The full view frames the picture and its label together; the close-up is on the picture alone.
+  const distance = fitDistance(p.width, p.fitHeight, viewportAspect);
+  return closeUp
+    ? paintingPose(p, distance * CLOSE_UP_FACTOR)
+    : paintingPose(p, distance, p.focusDrop);
 }
 
 /** True when `a` and `b` are so close that no further movement would be visible. */

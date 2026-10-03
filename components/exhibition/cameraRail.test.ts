@@ -61,9 +61,24 @@ describe("poseForStop", () => {
   it("stop 0 is the entrance", () => {
     assert.deepEqual(poseForStop(0, placements, DESKTOP, false), INTRO_POSE);
   });
-  it("stop 1 is the first painting", () => {
+  it("stop 1 looks at the first painting's hanging, picture and label together", () => {
+    const p = placements[0];
     const pose = poseForStop(1, placements, DESKTOP, false);
-    assert.deepEqual(pose.target, placements[0].position);
+    close(pose.target[0], p.position[0]);
+    close(pose.target[1], p.position[1] - p.focusDrop);
+    close(pose.target[2], p.position[2]);
+  });
+  it("the full view shows the label as well as the picture", () => {
+    const p = placements[1];
+    const pose = poseForStop(2, placements, DESKTOP, false);
+    const d = Math.abs(pose.position[0] - pose.target[0]);
+    const visibleHeight = 2 * d * Math.tan((VERTICAL_FOV * Math.PI) / 360);
+    assert.ok(visibleHeight >= p.fitHeight);
+  });
+  it("the close-up looks at the picture's centre", () => {
+    const p = placements[0];
+    const pose = poseForStop(1, placements, DESKTOP, true);
+    assert.deepEqual(pose.target, p.position);
   });
   it("the close-up is nearer by CLOSE_UP_FACTOR", () => {
     const far = poseForStop(2, placements, DESKTOP, false);

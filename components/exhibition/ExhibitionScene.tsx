@@ -20,7 +20,7 @@ import {
 } from "./cameraRail";
 import { HALL_COLORS, createFloorTexture, createGlowTexture, createPlaqueTexture } from "./hallTextures";
 import { aspectOf, textureUrl, type ExhibitPiece } from "./pieces";
-import { HALL, hallLength, layoutPaintings, type Placement } from "./roomLayout";
+import { FRAME_BORDER, HALL, LABEL, hallLength, layoutPaintings, type Placement } from "./roomLayout";
 
 export type SceneProps = {
   pieces: ExhibitPiece[];
@@ -37,27 +37,13 @@ export type SceneProps = {
 
 /** How quickly the camera closes in on its goal (per second). */
 const GLIDE_RATE = 3.2;
-/**
- * How far dragging may turn the view, and how fast (radians / radians per px).
- * The limit is soft: the view slows as it nears it rather than hitting a wall.
- */
-const LOOK_LIMIT = 0.3;
-const LOOK_SPEED = 0.0025;
-const LOOK_RETURN_RATE = 5;
-/** Pointer travel (px) above which a press counts as a drag, not a click. */
+/** The camera drifts a little toward a mouse pointer (world units at the screen edge): depth without dragging. */
+const PARALLAX = { x: 0.3, y: 0.12 };
+const PARALLAX_RATE = 4;
+/** Pointer travel (px) above which a press is not a click. */
 const CLICK_SLOP = 6;
-const FRAME_BORDER = 0.08;
 
-/** Raw drag offsets (radians); the camera turns by `soft()` of them. */
-type LookState = { yaw: number; pitch: number; dragging: boolean };
-
-const clamp = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value));
-/** Eases toward ±LOOK_LIMIT instead of stopping dead. */
-const soft = (raw: number) => LOOK_LIMIT * Math.tanh(raw / LOOK_LIMIT);
-/** Raw offsets beyond this add nothing (soft() has flattened) but would slow the return. */
-const RAW_LIMIT = LOOK_LIMIT * 3;
-
-/** Drags nudge the view a little; releasing eases it back. */
+/** Glides the camera between stops, with a light parallax toward a mouse pointer. */
 function Rig({
   placements,
   stop,
@@ -78,46 +64,29 @@ function Rig({
     [stop, placements, aspect, closeUp],
   );
   const pose = useRef<Pose | null>(null);
-  const look = useRef<LookState>({ yaw: 0, pitch: 0, dragging: false });
+  const shift = useRef({ x: 0, y: 0 });
+  const mouseOver = useRef(false);
 
   // The canvas only renders on demand: wake it when the camera has somewhere new to go.
   useEffect(() => {
     invalidate();
   }, [goal, reducedMotion, invalidate]);
 
+  // Only a mouse hovering the canvas draws the camera along; touch has no hover to follow.
   useEffect(() => {
-    let lastX = 0;
-    let lastY = 0;
-    const onDown = (event: PointerEvent) => {
-      look.current.dragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      dom.setPointerCapture?.(event.pointerId);
-    };
     const onMove = (event: PointerEvent) => {
-      const state = look.current;
-      if (!state.dragging) return;
-      const dx = event.clientX - lastX;
-      const dy = event.clientY - lastY;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      state.yaw = clamp(state.yaw + dx * LOOK_SPEED, RAW_LIMIT);
-      state.pitch = clamp(state.pitch + dy * LOOK_SPEED, RAW_LIMIT);
+      mouseOver.current = event.pointerType === "mouse";
       invalidate();
     };
-    const onUp = () => {
-      look.current.dragging = false;
+    const onLeave = () => {
+      mouseOver.current = false;
       invalidate();
     };
-    dom.addEventListener("pointerdown", onDown);
     dom.addEventListener("pointermove", onMove);
-    dom.addEventListener("pointerup", onUp);
-    dom.addEventListener("pointercancel", onUp);
+    dom.addEventListener("pointerleave", onLeave);
     return () => {
-      dom.removeEventListener("pointerdown", onDown);
       dom.removeEventListener("pointermove", onMove);
-      dom.removeEventListener("pointerup", onUp);
-      dom.removeEventListener("pointercancel", onUp);
+      dom.removeEventListener("pointerleave", onLeave);
     };
   }, [dom, invalidate]);
 
@@ -128,18 +97,19 @@ function Rig({
     camera.position.set(...pose.current.position);
     camera.lookAt(...pose.current.target);
 
-    const state = look.current;
-    if (!state.dragging || reducedMotion) {
-      state.yaw = damp(state.yaw, 0, dt, LOOK_RETURN_RATE);
-      state.pitch = damp(state.pitch, 0, dt, LOOK_RETURN_RATE);
-    }
-    camera.rotateY(soft(state.yaw));
-    camera.rotateX(soft(state.pitch));
+    // Slide the camera sideways without turning it, so near things shift against far ones.
+    const follow = mouseOver.current && !reducedMotion;
+    const wantX = follow ? frame.pointer.x * PARALLAX.x : 0;
+    const wantY = follow ? frame.pointer.y * PARALLAX.y : 0;
+    const offset = shift.current;
+    offset.x = damp(offset.x, wantX, dt, PARALLAX_RATE);
+    offset.y = damp(offset.y, wantY, dt, PARALLAX_RATE);
+    camera.translateX(offset.x);
+    camera.translateY(offset.y);
 
-    // Keep rendering until the camera has arrived and the view has come back to rest.
-    const atRest =
-      !state.dragging && Math.abs(state.yaw) < 1e-3 && Math.abs(state.pitch) < 1e-3;
-    if (!atRest || !isSettled(pose.current, goal)) frame.invalidate();
+    // Keep rendering until the camera has arrived and the parallax has come to rest.
+    const parallaxDone = Math.abs(offset.x - wantX) < 1e-3 && Math.abs(offset.y - wantY) < 1e-3;
+    if (!parallaxDone || !isSettled(pose.current, goal)) frame.invalidate();
   });
 
   return null;
@@ -260,8 +230,8 @@ function Painting({
         />
       </mesh>
 
-      <mesh position={[0, -height / 2 - 0.34, -0.04]}>
-        <planeGeometry args={[1.1, 0.275]} />
+      <mesh position={[0, -height / 2 - LABEL.offset, -0.04]}>
+        <planeGeometry args={[LABEL.width, LABEL.height]} />
         <meshBasicMaterial map={plateTexture} toneMapped={false} />
       </mesh>
     </group>

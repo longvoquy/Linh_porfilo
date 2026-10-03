@@ -22,6 +22,12 @@ export const HALL = {
 /** Largest box a painting may occupy; the painting is fitted inside it, keeping its aspect ratio. */
 export const MAX_PAINTING = { width: 2.8, height: 1.9 } as const;
 
+/** Border of a painting's frame, beyond the picture on every side. */
+export const FRAME_BORDER = 0.08;
+
+/** The label plate under each painting; `offset` runs from the picture's lower edge to the plate's centre. */
+export const LABEL = { width: 1.1, height: 0.275, offset: 0.34 } as const;
+
 export type Placement = {
   index: number;
   side: "left" | "right";
@@ -30,6 +36,10 @@ export type Placement = {
   rotationY: number;
   width: number;
   height: number;
+  /** Vertical extent of picture + frame + label: what the camera must fit to show the whole hanging. */
+  fitHeight: number;
+  /** How far below the picture's centre the middle of that whole hanging lies. */
+  focusDrop: number;
 };
 
 export function fitPainting(
@@ -46,6 +56,7 @@ export function layoutPaintings(aspects: number[]): Placement[] {
     const side = index % 2 === 0 ? "left" : "right";
     const sign = side === "left" ? -1 : 1;
     const { width, height } = fitPainting(aspect);
+    const labelBelow = LABEL.offset + LABEL.height / 2;
     return {
       index,
       side,
@@ -57,6 +68,8 @@ export function layoutPaintings(aspects: number[]): Placement[] {
       rotationY: (-sign * Math.PI) / 2,
       width,
       height,
+      fitHeight: height + FRAME_BORDER + labelBelow,
+      focusDrop: (labelBelow - FRAME_BORDER) / 2,
     };
   });
 }
