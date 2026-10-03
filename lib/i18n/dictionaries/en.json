@@ -43,5 +43,18 @@
   "home.scroll": "Scroll to explore more",
   "social.linkedin": "LinkedIn profile",
   "social.instagram": "Instagram profile",
-  "social.email": "Send an email"
+  "social.email": "Send an email",
+  "exhibition.title": "Online Exhibition",
+  "exhibition.subtitle": "Original paintings by Vũ Khánh Linh",
+  "exhibition.intro": "Walk the hall at your own pace — use the arrows, swipe, or tap a painting to look closer.",
+  "exhibition.begin": "Begin the tour",
+  "exhibition.visit": "Visit the exhibition",
+  "exhibition.previous": "Previous painting",
+  "exhibition.next": "Next painting",
+  "exhibition.closer": "Look closer",
+  "exhibition.stepBack": "Step back",
+  "exhibition.backToGrid": "View as a grid",
+  "exhibition.loading": "Opening the gallery…",
+  "exhibition.entrance": "Entrance",
+  "exhibition.hall": "3D exhibition hall"
 }
