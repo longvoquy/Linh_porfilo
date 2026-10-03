@@ -57,6 +57,13 @@ export function createGlowTexture(): CanvasTexture {
 
 type PlaqueLine = { text: string; size: number; color: string };
 
+/**
+ * Serif stack for plaque text. Not Georgia: it lacks some precomposed
+ * Vietnamese letters (ế, ể…) and draws their accents detached. Times New Roman
+ * covers them on Windows and macOS; Noto Serif on Android and Linux.
+ */
+const PLAQUE_FONT = '"Times New Roman", "Noto Serif", serif';
+
 /** A flat plaque with centred lines of serif text — painting labels and the entrance sign. */
 export function createPlaqueTexture(
   lines: PlaqueLine[],
@@ -77,8 +84,8 @@ export function createPlaqueTexture(
     for (const line of lines) {
       y += (line.size * 1.3) / 2;
       ctx.fillStyle = line.color;
-      ctx.font = `600 ${line.size}px Georgia, "Times New Roman", serif`;
-      ctx.fillText(line.text, w / 2, y, w - 80);
+      ctx.font = `600 ${line.size}px ${PLAQUE_FONT}`;
+      ctx.fillText(line.text.normalize("NFC"), w / 2, y, w - 80);
       y += (line.size * 1.3) / 2;
     }
   });
