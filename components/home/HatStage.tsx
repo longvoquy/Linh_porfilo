@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useAnimate, useReducedMotion } from "framer-motion";
 import { CLOSE_DURATION } from "@/components/transition/RouteTransition";
+import { useWebGLSupport } from "@/lib/webgl";
 import { HatErrorBoundary } from "./HatErrorBoundary";
 import { HatFallback } from "./HatFallback";
 import { SpinGuide } from "./SpinGuide";
@@ -14,28 +15,6 @@ const HatScene = dynamic(() => import("./HatScene"), {
   // PageLoader covers the page until the scene reports ready.
   loading: () => null,
 });
-
-let webglSupport: boolean | undefined;
-
-/**
- * r3f reports a failed WebGL context asynchronously, which an error boundary
- * cannot catch — so probe once up front instead of letting the scene mount.
- */
-function detectWebGL(): boolean {
-  if (webglSupport === undefined) {
-    try {
-      const canvas = document.createElement("canvas");
-      const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
-      webglSupport = gl !== null;
-      gl?.getExtension("WEBGL_lose_context")?.loseContext();
-    } catch {
-      webglSupport = false;
-    }
-  }
-  return webglSupport;
-}
-
-const subscribeNever = () => () => {};
 
 /**
  * How much the stage grows while zooming into the hat. The navy disc of the
@@ -70,8 +49,7 @@ export function HatStage({
   returning = false,
 }: Props) {
   const reduceMotion = useReducedMotion() ?? false;
-  // `null` on the server and during hydration, so the first client render matches the HTML.
-  const webgl = useSyncExternalStore<boolean | null>(subscribeNever, detectWebGL, () => null);
+  const webgl = useWebGLSupport();
   // Until the scene has drawn its final texture (or given up), it stays hidden.
   const [settled, setSettled] = useState(false);
 
