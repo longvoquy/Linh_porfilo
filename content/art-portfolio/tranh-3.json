@@ -1,0 +1,23 @@
+{
+  "slug": "tranh-3-tet-xua",
+  "section": "art-portfolio",
+  "title": {
+    "en": "Tết of Yesteryear",
+    "vi": "Tết xưa"
+  },
+  "caption": {
+    "en": "An original painting recalling Tết as it used to be, with a family gathered to wrap bánh chưng.",
+    "vi": "Một bức tranh gốc gợi lại không khí Tết xưa, khi cả nhà quây quần gói bánh chưng."
+  },
+  "media": [
+    {
+      "type": "image",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791029581/portfolio/art/tranh-3-tet-xua.jpg",
+      "alt": {
+        "en": "Painting titled Tết of Yesteryear",
+        "vi": "Tranh Tết xưa"
+      }
+    }
+  ],
+  "status": "published"
+}

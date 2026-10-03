@@ -14,6 +14,7 @@ const DENSITY_SCALE = 200 / 72; // ~200 DPI (pdf.js default viewport is 72 DPI)
 // Some source PDFs don't carry a correct /Rotate flag, so pdf.js renders
 // them sideways. Degrees are clockwise, applied after rendering.
 const ROTATION_OVERRIDES = {
+  "Tranh 3 - Tết xưa": 90,
   "Tranh 5 - Cố đô hoài niệm": -90,
   "Tranh 9 - Góc phố bình yên": -90,
 };

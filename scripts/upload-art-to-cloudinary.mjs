@@ -49,7 +49,18 @@ async function main() {
     .filter((e) => e.isFile() && e.name.toLowerCase().endsWith(".jpg"))
     .map((e) => path.join(CONVERTED_DIR, e.name));
 
-  const filesToUpload = [...jpgEntries, ...convertedJpgEntries];
+  // A converted PDF is the newer source: when it shares a name with a loose JPG
+  // (a painting re-supplied as a PDF), it wins. Names given on the command line
+  // limit the upload — `node scripts/upload-art-to-cloudinary.mjs "Tranh 3"` —
+  // otherwise everything is uploaded.
+  const byName = new Map();
+  for (const file of [...jpgEntries, ...convertedJpgEntries]) {
+    byName.set(path.basename(file, path.extname(file)), file);
+  }
+  const only = process.argv.slice(2);
+  const filesToUpload = [...byName.values()].filter(
+    (file) => only.length === 0 || only.some((name) => path.basename(file).startsWith(name)),
+  );
 
   if (filesToUpload.length === 0) {
     console.log("No files found to upload.");
