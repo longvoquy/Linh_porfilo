@@ -12,6 +12,7 @@ import soccerVarsity from "./leadership/soccer-varsity.json";
 import sunriseProject from "./leadership/sunrise-project.json";
 import tranh1 from "./art-portfolio/tranh-1.json";
 import tranh2 from "./art-portfolio/tranh-2.json";
+import tranh3 from "./art-portfolio/tranh-3.json";
 import tranh4 from "./art-portfolio/tranh-4.json";
 import tranh5 from "./art-portfolio/tranh-5.json";
 import tranh6 from "./art-portfolio/tranh-6.json";
@@ -38,6 +39,7 @@ export const allItems: ActivityItem[] = [
   sunriseProject as ActivityItem,
   tranh1 as ActivityItem,
   tranh2 as ActivityItem,
+  tranh3 as ActivityItem,
   tranh4 as ActivityItem,
   tranh5 as ActivityItem,
   tranh6 as ActivityItem,

@@ -13,13 +13,13 @@
   "media": [
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786783972/portfolio/art/tranh-2-am-vang-nguon-coi.jpg",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791029578/portfolio/art/tranh-2-am-vang-nguon-coi.jpg",
       "alt": {
         "en": "Painting titled Echoes of Heritage",
         "vi": "Tranh Âm vang nguồn cội"
       },
-      "width": 960,
-      "height": 1280
+      "width": 2339,
+      "height": 3307
     }
   ],
   "status": "published"
