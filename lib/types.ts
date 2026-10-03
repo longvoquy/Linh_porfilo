@@ -14,6 +14,9 @@ export type MediaRef = {
   /** Poster/thumbnail image URL shown in cards and grids (required for pdf/video). */
   thumbnail?: string;
   alt?: LocalizedString;
+  /** Pixel size of the source image, when known — lets layouts reserve its aspect ratio before it loads. */
+  width?: number;
+  height?: number;
 };
 
 export type ActivityStatus = "published" | "coming-soon";
