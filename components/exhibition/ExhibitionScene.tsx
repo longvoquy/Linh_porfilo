@@ -369,7 +369,11 @@ export default function ExhibitionScene({
       dpr={[1, 1.75]}
       frameloop="demand"
       camera={{ fov: VERTICAL_FOV, near: 0.1, far: 80, position: INTRO_POSE.position }}
-      onCreated={() => onReady?.()}
+      onCreated={({ camera }) => {
+        // Face down the hall from the first frame (walking starts from wherever the camera looks).
+        camera.lookAt(...INTRO_POSE.target);
+        onReady?.();
+      }}
     >
       {mode === "walk" ? (
         <WalkRig

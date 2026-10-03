@@ -71,6 +71,32 @@ h6 {
   font-family: var(--font-heading), Georgia, serif;
 }
 
+/**
+ * Beaten gold leaf, for display text only — the highlight band is kept narrow
+ * so the run of letters still reads as dark gold. Falls back to a flat
+ * `gold-ink` wherever the text clip is unavailable, rather than to invisible.
+ */
+.text-gold-leaf {
+  color: var(--gold-ink);
+}
+
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .text-gold-leaf {
+    background: linear-gradient(
+      100deg,
+      #6f5423 0%,
+      var(--gold) 30%,
+      #e7cd96 48%,
+      var(--gold-lit) 56%,
+      var(--gold) 74%,
+      #6f5423 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
 /* Every interactive element gets the same visible focus ring. */
 a:focus-visible,
 button:focus-visible {

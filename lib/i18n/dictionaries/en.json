@@ -38,5 +38,13 @@
   "exhibition.walk": "Explore freely",
   "exhibition.walkExit": "Back to the tour",
   "exhibition.walkHint": "Move with W A S D (or the arrow keys) and hold Shift to run. Move the mouse to look around.",
-  "exhibition.walkResume": "Click the hall to look around — Esc releases the mouse"
+  "exhibition.walkResume": "Click the hall to look around — Esc releases the mouse",
+  "landing.welcome": "Welcome to",
+  "landing.title": "The Art Exhibition",
+  "landing.body": "Choose how you would like to walk through the gallery.",
+  "landing.normal": "Normal mode",
+  "landing.normalHint": "Glide from painting to painting",
+  "landing.walk": "WASD mode",
+  "landing.walkHint": "Walk the hall yourself",
+  "landing.walkUnavailable": "Needs a keyboard and mouse"
 }

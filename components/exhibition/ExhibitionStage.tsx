@@ -23,19 +23,27 @@ const SWIPE_MIN = 60;
 
 const frameClass = "relative h-svh min-h-[32rem] w-full overflow-hidden bg-navy";
 
-export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
+export function ExhibitionStage({
+  pieces,
+  initialMode = "tour",
+}: {
+  pieces: ExhibitPiece[];
+  /** Which mode the page opens in; walking falls back to the tour where there is no mouse and keyboard. */
+  initialMode?: "tour" | "walk";
+}) {
   const { t, localize } = useTranslation();
   const reducedMotion = useReducedMotion() ?? false;
   const webgl = useWebGLSupport();
   const [stop, setStop] = useState(0);
   const [closeUp, setCloseUp] = useState(false);
   const [ready, setReady] = useState(false);
-  const [mode, setMode] = useState<"tour" | "walk">("tour");
+  const [chosenMode, setMode] = useState<"tour" | "walk">(initialMode);
   // Set once the visitor has walked, so the tour glides back from where they stand.
   const [resume, setResume] = useState(false);
   const [walkFocus, setWalkFocus] = useState<number | null>(null);
   const [locked, setLocked] = useState(false);
   const canWalk = useCanWalk();
+  const mode = chosenMode === "walk" && !canWalk ? "tour" : chosenMode;
   const frameRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const last = pieces.length;

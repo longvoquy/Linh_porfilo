@@ -95,7 +95,7 @@ export function WalkRig({ placements, length, onFocusChange, onLockChange }: Pro
       walk.current = lookBy(walk.current, clampStep(event.movementX), clampStep(event.movementY));
     };
     const onLockChanged = () => onLockChange(document.pointerLockElement === dom);
-    const onClick = () => {
+    const capture = () => {
       if (document.pointerLockElement === dom) return;
       // The promise form rejects if the browser refuses (e.g. right after Esc); that is fine.
       const request = dom.requestPointerLock() as unknown as Promise<void> | undefined;
@@ -103,12 +103,14 @@ export function WalkRig({ placements, length, onFocusChange, onLockChange }: Pro
     };
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("pointerlockchange", onLockChanged);
-    dom.addEventListener("click", onClick);
+    dom.addEventListener("click", capture);
     onLockChanged();
+    // Arriving from the landing's button, the click may still count as a user gesture; if not, a click will.
+    capture();
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("pointerlockchange", onLockChanged);
-      dom.removeEventListener("click", onClick);
+      dom.removeEventListener("click", capture);
       if (document.pointerLockElement === dom) document.exitPointerLock();
       onLockChange(false);
     };

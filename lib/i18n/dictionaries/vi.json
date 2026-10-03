@@ -38,5 +38,13 @@
   "exhibition.walk": "Đi tham quan tự do",
   "exhibition.walkExit": "Về chế độ lướt",
   "exhibition.walkHint": "Di chuyển bằng W A S D (hoặc phím mũi tên), giữ Shift để chạy. Di chuột để nhìn quanh.",
-  "exhibition.walkResume": "Bấm vào phòng để nhìn quanh — nhấn Esc để nhả chuột"
+  "exhibition.walkResume": "Bấm vào phòng để nhìn quanh — nhấn Esc để nhả chuột",
+  "landing.welcome": "Chào mừng đến với",
+  "landing.title": "Triển lãm tranh",
+  "landing.body": "Chọn cách bạn muốn tham quan phòng tranh.",
+  "landing.normal": "Chế độ thường",
+  "landing.normalHint": "Lướt từng bức tranh",
+  "landing.walk": "Chế độ WASD",
+  "landing.walkHint": "Tự đi bộ trong phòng tranh",
+  "landing.walkUnavailable": "Cần bàn phím và chuột"
 }

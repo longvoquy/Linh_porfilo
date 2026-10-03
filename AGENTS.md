@@ -10,7 +10,7 @@ Bilingual (EN/VI) college-application portfolio. Next.js 16 (App Router), React 
 
 ## This branch: `feature/online-exhibition`
 
-A standalone deployment whose landing page (`/`, also `/exhibition`) is a 3D online gallery of the art-portfolio paintings. It is **not meant to be merged into `main`**: the nón lá Home landing was removed here, so a merge would delete it from `main`. CI (`.github/workflows/guard-main.yml`) fails any pull request from this branch into `main`. The rest of the site (other sections, nav) is unchanged and still routable by URL. Deploy this branch on its own (e.g. Vercel Production Branch = `feature/online-exhibition`).
+A standalone deployment of a 3D online gallery of the art-portfolio paintings. `/` is a landing page with two buttons — Normal mode (`/exhibition`, guided tour) and WASD mode (`/exhibition/walk`, first-person walking; disabled without a mouse and keyboard). It is **not meant to be merged into `main`**: the nón lá Home landing was removed here, so a merge would delete it from `main`. CI (`.github/workflows/guard-main.yml`) fails any pull request from this branch into `main`. The rest of the site (other sections, nav) is unchanged and still routable by URL. Deploy this branch on its own (e.g. Vercel Production Branch = `feature/online-exhibition`).
 
 ## Commands
 
@@ -22,13 +22,14 @@ Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/y
 
 ## Layout
 
-- `app/` — routes. `/` and `/exhibition` serve the exhibition (`app/page.tsx` re-exports `app/exhibition/page.tsx`). Nav (hidden over the exhibition): `/`, `/about`, `/timeline`, `/portfolio`, `/resume`, `/contact` (placeholders using `ComingSoon`). Portfolio sections live at `/<section.key>`.
+- `app/` — routes. `/` is the mode landing; `/exhibition` and `/exhibition/walk` are the gallery (same `ExhibitionStage`, different `initialMode`). Nav (hidden over the landing and the gallery): `/`, `/about`, `/timeline`, `/portfolio`, `/resume`, `/contact` (placeholders using `ComingSoon`). Portfolio sections live at `/<section.key>`.
 - `content/` — the content layer. `sections.ts` defines the 7 sections (key, bilingual label, order); `content/<section>/*.json` are `ActivityItem`s; `all.ts` imports every JSON file.
 - `lib/` — `types.ts` (shared types), `getContent.ts` (section/item queries), `chapters.ts` + `cloudinary.ts` (server-only gallery loading), `i18n/` (language context, `useTranslation`, `dictionaries/en.json` + `vi.json`).
+- `components/landing/` — `ModeLanding`: the two-button landing (pagoda and lotus cutouts from `public/decor/`; each button runs the page-to-page disc transition).
 - `components/exhibition/` — the 3D gallery: pure, node-tested `roomLayout` (hall + painting placement), `cameraRail` (camera poses, damping) and `pieces` (content → `ExhibitPiece[]`, Cloudinary texture URL); `ExhibitionScene` (r3f hall, frames, camera rig), `ExhibitionStage` (WebGL probe + `ExhibitionFallback` + error boundary, mode state), `ExhibitionHud` (DOM info card + controls). `walk/` is the optional first-person mode (`walkMath` pure + tested, `WalkRig`, `useCanWalk`).
 - `components/chapters/` — `VisualChapters` renderer (chapter + gallery + lightbox) used by Awards, Leadership, Volunteer.
 - `components/activity/` — `ActivityGrid`/`ActivityCard`/`ActivityDetail`, used by the other sections.
-- `components/decor/` — `BrandMark`. `components/nav/` — `NavBar`, `LanguageToggle`. `components/transition/` — page-to-page disc transition.
+- `components/decor/` — `BrandMark`, `Sparkles`. `components/nav/` — `NavBar`, `LanguageToggle`. `components/transition/` — page-to-page disc transition.
 - `scripts/` — one-off Node scripts (run with `node scripts/<name>.mjs`), not part of the build.
 - `docs/superpowers/specs|plans/` — design specs and plans for past features; read the relevant one before changing that feature.
 - `data/` — raw originals (gitignored, local only).

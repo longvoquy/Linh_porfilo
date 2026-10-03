@@ -182,8 +182,8 @@ export function NavBar() {
       active ? "font-medium text-navy" : "text-navy/70 hover:text-navy"
     }`;
 
-  // The exhibition is a standalone page: no navigation bar over the hall.
-  if (pathname === "/" || pathname === "/exhibition") return null;
+  // The landing and the exhibition are standalone pages: no navigation bar over them.
+  if (pathname === "/" || pathname.startsWith("/exhibition")) return null;
 
   return (
     <header
