@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { ActivityItem } from "@/lib/types";
-import { aspectOf, textureUrl, toExhibitPieces } from "./pieces.ts";
+import { aspectOf, pickEndWallPieces, textureUrl, toExhibitPieces } from "./pieces.ts";
 
 const SRC = "https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/v1/portfolio/art/x.jpg";
 
@@ -63,6 +63,34 @@ describe("aspectOf", () => {
   it("is width over height", () => {
     const [piece] = toExhibitPieces([item("tranh-1-x")]);
     assert.equal(aspectOf(piece), 2);
+  });
+});
+
+describe("pickEndWallPieces", () => {
+  const pieces = toExhibitPieces([item("tranh-1-a"), item("tranh-4-b"), item("tranh-6-c"), item("tranh-9-d")]);
+
+  it("uses the preferred slugs when they exist", () => {
+    const picked = pickEndWallPieces(pieces, { entrance: "tranh-4-b", far: "tranh-6-c" });
+    assert.equal(picked?.entrance.slug, "tranh-4-b");
+    assert.equal(picked?.far.slug, "tranh-6-c");
+  });
+  it("falls back to the first and last painting when a slug is missing", () => {
+    const picked = pickEndWallPieces(pieces, { entrance: "nope", far: "also-nope" });
+    assert.equal(picked?.entrance.slug, "tranh-1-a");
+    assert.equal(picked?.far.slug, "tranh-9-d");
+  });
+  it("falls back for one side only", () => {
+    const picked = pickEndWallPieces(pieces, { entrance: "tranh-4-b", far: "nope" });
+    assert.equal(picked?.entrance.slug, "tranh-4-b");
+    assert.equal(picked?.far.slug, "tranh-9-d");
+  });
+  it("still works with a single painting", () => {
+    const picked = pickEndWallPieces(pieces.slice(0, 1), { entrance: "x", far: "y" });
+    assert.equal(picked?.entrance.slug, "tranh-1-a");
+    assert.equal(picked?.far.slug, "tranh-1-a");
+  });
+  it("is null with no paintings", () => {
+    assert.equal(pickEndWallPieces([]), null);
   });
 });
 

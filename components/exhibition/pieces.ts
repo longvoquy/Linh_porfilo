@@ -51,3 +51,25 @@ export function aspectOf(piece: ExhibitPiece): number {
 export function textureUrl(src: string, maxWidth = 2048): string {
   return src.replace("/upload/f_auto,q_auto/", `/upload/f_auto,q_auto,c_limit,w_${maxWidth}/`);
 }
+
+/** The paintings hung on the two end walls, chosen by slug. */
+export const END_WALL_SLUGS = {
+  entrance: "tranh-4-am-sac-hoang-cung",
+  far: "tranh-6-hon-thieng-song-nui",
+} as const;
+
+/**
+ * The paintings for the entrance wall and the far wall: the preferred slugs
+ * where they exist, otherwise the first and last of the collection. Null when
+ * there are no paintings at all.
+ */
+export function pickEndWallPieces(
+  pieces: ExhibitPiece[],
+  preferred: { entrance: string; far: string } = END_WALL_SLUGS,
+): { entrance: ExhibitPiece; far: ExhibitPiece } | null {
+  if (pieces.length === 0) return null;
+  return {
+    entrance: pieces.find((p) => p.slug === preferred.entrance) ?? pieces[0],
+    far: pieces.find((p) => p.slug === preferred.far) ?? pieces[pieces.length - 1],
+  };
+}

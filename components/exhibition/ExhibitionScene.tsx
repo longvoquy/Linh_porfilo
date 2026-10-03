@@ -21,9 +21,17 @@ import {
   type Pose,
 } from "./cameraRail";
 import { HALL_COLORS, createFloorTexture, createGlowTexture, createPlaqueTexture } from "./hallTextures";
-import { aspectOf, textureUrl, type ExhibitPiece } from "./pieces";
+import { aspectOf, pickEndWallPieces, textureUrl, type ExhibitPiece } from "./pieces";
 import { WalkRig } from "./walk/WalkRig";
-import { FRAME_BORDER, HALL, LABEL, hallLength, layoutPaintings, type Placement } from "./roomLayout";
+import {
+  FRAME_BORDER,
+  HALL,
+  LABEL,
+  fitPainting,
+  hallLength,
+  layoutPaintings,
+  type Placement,
+} from "./roomLayout";
 
 export type SceneProps = {
   pieces: ExhibitPiece[];
@@ -176,6 +184,25 @@ function useArtTexture(src: string): Texture | null | "failed" {
   return texture;
 }
 
+type Plate = { title: string; date?: string };
+
+/** The label plate's texture: the painting's title and year on ivory. */
+function usePlateTexture(plate: Plate): Texture {
+  const texture = useMemo(
+    () =>
+      createPlaqueTexture(
+        [
+          { text: plate.title, size: 78, color: HALL_COLORS.navy },
+          ...(plate.date ? [{ text: plate.date, size: 56, color: HALL_COLORS.gold }] : []),
+        ],
+        HALL_COLORS.ivory,
+      ),
+    [plate.title, plate.date],
+  );
+  useEffect(() => () => texture.dispose(), [texture]);
+  return texture;
+}
+
 function Painting({
   piece,
   placement,
@@ -188,7 +215,7 @@ function Painting({
 }: {
   piece: ExhibitPiece;
   placement: Placement;
-  plate: { title: string; date?: string };
+  plate: Plate;
   glow: Texture;
   active: boolean;
   /** Clicking toggles the close-up; off while walking, where clicks belong to the mouse look. */
@@ -199,18 +226,7 @@ function Painting({
   const art = useArtTexture(piece.src);
   const { width, height } = placement;
 
-  const plateTexture = useMemo(
-    () =>
-      createPlaqueTexture(
-        [
-          { text: plate.title, size: 78, color: HALL_COLORS.navy },
-          ...(plate.date ? [{ text: plate.date, size: 56, color: HALL_COLORS.gold }] : []),
-        ],
-        HALL_COLORS.ivory,
-      ),
-    [plate.title, plate.date],
-  );
-  useEffect(() => () => plateTexture.dispose(), [plateTexture]);
+  const plateTexture = usePlateTexture(plate);
 
   return (
     <group position={placement.position} rotation={[0, placement.rotationY, 0]}>
@@ -267,54 +283,74 @@ function Painting({
   );
 }
 
-/** Pixel sizes of the etchings in public/decor/, so a panel keeps their proportions. */
-const ETCHINGS = {
-  pagoda: { src: "/decor/one-pillar-pagoda.webp", aspect: 900 / 716 },
-  lotus: { src: "/decor/lotus.webp", aspect: 900 / 697 },
-} as const;
+/** The largest a painting on an end wall may be: wider than the side-wall paintings, but still clear of the floor trim. */
+const END_WALL_MAX = { width: 3.6, height: 2.6 };
+const END_WALL_CENTER_Y = 2.3;
 
-const PANEL_WIDTH = 3.2;
+type EndWall = { piece: ExhibitPiece; plate: Plate };
 
 /**
- * A framed ink etching hung on an end wall: a gold frame, an ivory backing and
- * the picture. `dir` is 1 on the entrance wall (z = 0, facing +z) and -1 on the
- * far wall (facing -z).
+ * A painting hung on an end wall, framed and labelled like the others but not a
+ * stop of the tour. `dir` is 1 on the entrance wall (z = 0, facing +z) and -1 on
+ * the far wall (facing -z).
  */
-function WallPanel({
-  etching,
+function EndWallPainting({
+  piece,
+  plate,
+  glow,
   wallZ,
   dir,
-}: {
-  etching: (typeof ETCHINGS)[keyof typeof ETCHINGS];
-  wallZ: number;
-  dir: 1 | -1;
-}) {
-  const art = useArtTexture(etching.src);
-  const width = PANEL_WIDTH;
-  const height = PANEL_WIDTH / etching.aspect;
+}: EndWall & { glow: Texture; wallZ: number; dir: 1 | -1 }) {
+  const art = useArtTexture(piece.src);
+  const plateTexture = usePlateTexture(plate);
+  const { width, height } = fitPainting(aspectOf(piece), END_WALL_MAX);
 
   return (
-    <group position={[0, HALL.height / 2, wallZ + dir * 0.05]} rotation={[0, dir === 1 ? 0 : Math.PI, 0]}>
+    <group
+      position={[0, END_WALL_CENTER_Y, wallZ + dir * 0.05]}
+      rotation={[0, dir === 1 ? 0 : Math.PI, 0]}
+    >
+      <mesh position={[0, 0.1, -0.045]}>
+        <planeGeometry args={[width + 2.4, height + 2.4]} />
+        <meshBasicMaterial
+          map={glow}
+          transparent
+          depthWrite={false}
+          blending={AdditiveBlending}
+          toneMapped={false}
+        />
+      </mesh>
       <mesh>
-        <boxGeometry args={[width + 0.3, height + 0.3, 0.1]} />
+        <boxGeometry args={[width + FRAME_BORDER * 2, height + FRAME_BORDER * 2, 0.1]} />
         <meshStandardMaterial color={HALL_COLORS.goldLit} metalness={0.55} roughness={0.35} />
       </mesh>
       <mesh position={[0, 0, 0.052]}>
         <planeGeometry args={[width, height]} />
-        <meshStandardMaterial color={HALL_COLORS.ivory} roughness={0.9} />
+        {/* Rebuilt when the image arrives: see the key on the Painting material. */}
+        <meshBasicMaterial
+          key={art && art !== "failed" ? "image" : "blank"}
+          map={art === "failed" ? null : art}
+          color={art && art !== "failed" ? "#ffffff" : HALL_COLORS.cream}
+          toneMapped={false}
+        />
       </mesh>
-      {art && art !== "failed" && (
-        // Mounted only once the image is there, so its material is built with the map (see Painting).
-        <mesh position={[0, 0, 0.054]}>
-          <planeGeometry args={[width, height]} />
-          <meshBasicMaterial map={art} transparent depthWrite={false} toneMapped={false} />
-        </mesh>
-      )}
+      <mesh position={[0, -height / 2 - LABEL.offset, -0.04]}>
+        <planeGeometry args={[LABEL.width, LABEL.height]} />
+        <meshBasicMaterial map={plateTexture} toneMapped={false} />
+      </mesh>
     </group>
   );
 }
 
-function Hall({ length }: { length: number }) {
+function Hall({
+  length,
+  endWall,
+  glow,
+}: {
+  length: number;
+  endWall: { entrance: EndWall; far: EndWall } | null;
+  glow: Texture;
+}) {
   const floor = useMemo(() => {
     const texture = createFloorTexture();
     texture.wrapS = texture.wrapT = RepeatWrapping;
@@ -388,9 +424,13 @@ function Hall({ length }: { length: number }) {
         );
       })}
 
-      {/* The etchings from the landing: the pagoda where you come in, the lotus at the far end. */}
-      <WallPanel etching={ETCHINGS.pagoda} wallZ={0} dir={1} />
-      <WallPanel etching={ETCHINGS.lotus} wallZ={length} dir={-1} />
+      {/* One of the collection on each end wall: you face the far one from the entrance. */}
+      {endWall && (
+        <>
+          <EndWallPainting {...endWall.entrance} glow={glow} wallZ={0} dir={1} />
+          <EndWallPainting {...endWall.far} glow={glow} wallZ={length} dir={-1} />
+        </>
+      )}
 
       {/* Paper lanterns down the middle of the ceiling. */}
       {lanterns.map((z) => (
@@ -429,6 +469,13 @@ export default function ExhibitionScene({
 }: SceneProps) {
   const placements = useMemo(() => layoutPaintings(pieces.map(aspectOf)), [pieces]);
   const length = hallLength(pieces.length);
+  const endWall = useMemo(() => {
+    const picked = pickEndWallPieces(pieces);
+    if (!picked) return null;
+    const entry = (piece: ExhibitPiece): EndWall => ({ piece, plate: plates[pieces.indexOf(piece)] });
+    return { entrance: entry(picked.entrance), far: entry(picked.far) };
+  }, [pieces, plates]);
+
   const glow = useMemo(() => createGlowTexture(), []);
   useEffect(() => () => glow.dispose(), [glow]);
 
@@ -459,7 +506,7 @@ export default function ExhibitionScene({
           resume={resume}
         />
       )}
-      <Hall length={length} />
+      <Hall length={length} endWall={endWall} glow={glow} />
       {pieces.map((piece, i) => (
         <Painting
           key={piece.slug}
