@@ -249,8 +249,11 @@ function Painting({
         }}
       >
         <planeGeometry args={[width, height]} />
-        {/* Unlit, so the painting's own colours are shown as painted. A frame whose image fails stays a cream blank. */}
+        {/* Unlit, so the painting's own colours are shown as painted. A frame whose image fails stays a cream blank.
+            The key rebuilds the material when the image arrives: three does not recompile a shader whose `map`
+            goes from empty to set, so without it the frame would be drawn as flat white. */}
         <meshBasicMaterial
+          key={art && art !== "failed" ? "image" : "blank"}
           map={art === "failed" ? null : art}
           color={art && art !== "failed" ? "#ffffff" : HALL_COLORS.cream}
           toneMapped={false}
