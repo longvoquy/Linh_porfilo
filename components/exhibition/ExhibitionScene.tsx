@@ -267,6 +267,53 @@ function Painting({
   );
 }
 
+/** Pixel sizes of the etchings in public/decor/, so a panel keeps their proportions. */
+const ETCHINGS = {
+  pagoda: { src: "/decor/one-pillar-pagoda.webp", aspect: 900 / 716 },
+  lotus: { src: "/decor/lotus.webp", aspect: 900 / 697 },
+} as const;
+
+const PANEL_WIDTH = 3.2;
+
+/**
+ * A framed ink etching hung on an end wall: a gold frame, an ivory backing and
+ * the picture. `dir` is 1 on the entrance wall (z = 0, facing +z) and -1 on the
+ * far wall (facing -z).
+ */
+function WallPanel({
+  etching,
+  wallZ,
+  dir,
+}: {
+  etching: (typeof ETCHINGS)[keyof typeof ETCHINGS];
+  wallZ: number;
+  dir: 1 | -1;
+}) {
+  const art = useArtTexture(etching.src);
+  const width = PANEL_WIDTH;
+  const height = PANEL_WIDTH / etching.aspect;
+
+  return (
+    <group position={[0, HALL.height / 2, wallZ + dir * 0.05]} rotation={[0, dir === 1 ? 0 : Math.PI, 0]}>
+      <mesh>
+        <boxGeometry args={[width + 0.3, height + 0.3, 0.1]} />
+        <meshStandardMaterial color={HALL_COLORS.goldLit} metalness={0.55} roughness={0.35} />
+      </mesh>
+      <mesh position={[0, 0, 0.052]}>
+        <planeGeometry args={[width, height]} />
+        <meshStandardMaterial color={HALL_COLORS.ivory} roughness={0.9} />
+      </mesh>
+      {art && art !== "failed" && (
+        // Mounted only once the image is there, so its material is built with the map (see Painting).
+        <mesh position={[0, 0, 0.054]}>
+          <planeGeometry args={[width, height]} />
+          <meshBasicMaterial map={art} transparent depthWrite={false} toneMapped={false} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
 function Hall({ length }: { length: number }) {
   const floor = useMemo(() => {
     const texture = createFloorTexture();
@@ -323,6 +370,27 @@ function Hall({ length }: { length: number }) {
           </mesh>
         </group>
       ))}
+
+      {/* The same trim across both end walls, so the hall reads as one closed box. */}
+      {[0, length].map((wallZ) => {
+        const dir = wallZ === 0 ? 1 : -1;
+        return (
+          <group key={wallZ}>
+            <mesh position={[0, 0.12, wallZ + dir * 0.025]}>
+              <boxGeometry args={[HALL.width, 0.24, 0.05]} />
+              <meshStandardMaterial color={HALL_COLORS.gold} metalness={0.5} roughness={0.4} />
+            </mesh>
+            <mesh position={[0, HALL.height - 0.1, wallZ + dir * 0.04]}>
+              <boxGeometry args={[HALL.width, 0.2, 0.08]} />
+              <meshStandardMaterial color={HALL_COLORS.gold} metalness={0.5} roughness={0.4} />
+            </mesh>
+          </group>
+        );
+      })}
+
+      {/* The etchings from the landing: the pagoda where you come in, the lotus at the far end. */}
+      <WallPanel etching={ETCHINGS.pagoda} wallZ={0} dir={1} />
+      <WallPanel etching={ETCHINGS.lotus} wallZ={length} dir={-1} />
 
       {/* Paper lanterns down the middle of the ceiling. */}
       {lanterns.map((z) => (

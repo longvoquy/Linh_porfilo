@@ -62,13 +62,14 @@ describe("stepWalk", () => {
     close(next.z, START.z + WALK_SPEED);
   });
   it("strafes right along +x at yaw 0", () => {
-    const next = stepWalk(START, { ...STILL, right: 1 }, 1, BOUNDS);
-    close(next.x, WALK_SPEED);
+    // Half a second keeps the step inside the side walls.
+    const next = stepWalk(START, { ...STILL, right: 1 }, 0.5, BOUNDS);
+    close(next.x, WALK_SPEED * 0.5);
     close(next.z, START.z);
   });
   it("walks toward where it faces after turning left 90 degrees", () => {
-    const next = stepWalk({ ...START, yaw: Math.PI / 2 }, { ...STILL, forward: 1 }, 1, BOUNDS);
-    close(next.x, -WALK_SPEED);
+    const next = stepWalk({ ...START, yaw: Math.PI / 2 }, { ...STILL, forward: 1 }, 0.5, BOUNDS);
+    close(next.x, -WALK_SPEED * 0.5);
     close(next.z, START.z);
   });
   it("does not go faster diagonally", () => {

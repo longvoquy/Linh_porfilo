@@ -13,7 +13,7 @@ export type WalkInput = { forward: number; right: number; run: boolean };
 export type Bounds = { minX: number; maxX: number; minZ: number; maxZ: number };
 
 /** Metres per second. */
-export const WALK_SPEED = 2.2;
+export const WALK_SPEED = 3.6;
 export const RUN_FACTOR = 1.8;
 /** Radians of turn per pixel of mouse travel. */
 export const LOOK_SENSITIVITY = 0.0022;
