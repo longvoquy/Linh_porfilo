@@ -7,6 +7,8 @@ import {
   RepeatWrapping,
   SRGBColorSpace,
   TextureLoader,
+  Vector3,
+  type Camera,
   type Texture,
 } from "three";
 import {
@@ -20,6 +22,7 @@ import {
 } from "./cameraRail";
 import { HALL_COLORS, createFloorTexture, createGlowTexture, createPlaqueTexture } from "./hallTextures";
 import { aspectOf, textureUrl, type ExhibitPiece } from "./pieces";
+import { WalkRig } from "./walk/WalkRig";
 import { FRAME_BORDER, HALL, LABEL, hallLength, layoutPaintings, type Placement } from "./roomLayout";
 
 export type SceneProps = {
@@ -30,8 +33,16 @@ export type SceneProps = {
   stop: number;
   closeUp: boolean;
   reducedMotion: boolean;
+  /** The guided tour, or walking the hall on foot. */
+  mode: "tour" | "walk";
+  /** Coming back to the tour from walking: glide from where the camera stands instead of snapping to the stop. */
+  resume: boolean;
   onSelect: (stop: number) => void;
   onToggleCloseUp: () => void;
+  /** Walking: the painting now in view, or null. */
+  onFocusChange: (index: number | null) => void;
+  /** Walking: whether the mouse is captured for looking around. */
+  onLockChange: (locked: boolean) => void;
   onReady?: () => void;
 };
 
@@ -43,17 +54,31 @@ const PARALLAX_RATE = 4;
 /** Pointer travel (px) above which a press is not a click. */
 const CLICK_SLOP = 6;
 
+const lookDirection = new Vector3();
+
+/** Where the camera stands and what it looks at, so a glide can start from there. */
+function poseFromCamera(camera: Camera): Pose {
+  camera.getWorldDirection(lookDirection);
+  const { x, y, z } = camera.position;
+  return {
+    position: [x, y, z],
+    target: [x + lookDirection.x * 8, y + lookDirection.y * 8, z + lookDirection.z * 8],
+  };
+}
+
 /** Glides the camera between stops, with a light parallax toward a mouse pointer. */
 function Rig({
   placements,
   stop,
   closeUp,
   reducedMotion,
+  resume,
 }: {
   placements: Placement[];
   stop: number;
   closeUp: boolean;
   reducedMotion: boolean;
+  resume: boolean;
 }) {
   const camera = useThree((state) => state.camera);
   const dom = useThree((state) => state.gl.domElement);
@@ -92,8 +117,8 @@ function Rig({
 
   useFrame((frame, delta) => {
     const dt = Math.min(delta, 0.05);
-    pose.current =
-      !pose.current || reducedMotion ? goal : dampPose(pose.current, goal, dt, GLIDE_RATE);
+    if (!pose.current) pose.current = resume ? poseFromCamera(camera) : goal;
+    else pose.current = reducedMotion ? goal : dampPose(pose.current, goal, dt, GLIDE_RATE);
     camera.position.set(...pose.current.position);
     camera.lookAt(...pose.current.target);
 
@@ -157,6 +182,7 @@ function Painting({
   plate,
   glow,
   active,
+  interactive,
   onSelect,
   onToggleCloseUp,
 }: {
@@ -165,6 +191,8 @@ function Painting({
   plate: { title: string; date?: string };
   glow: Texture;
   active: boolean;
+  /** Clicking toggles the close-up; off while walking, where clicks belong to the mouse look. */
+  interactive: boolean;
   onSelect: (stop: number) => void;
   onToggleCloseUp: () => void;
 }) {
@@ -206,13 +234,14 @@ function Painting({
       <mesh
         position={[0, 0, 0.052]}
         onClick={(event) => {
+          if (!interactive) return;
           event.stopPropagation();
           if (event.delta > CLICK_SLOP) return;
           if (active) onToggleCloseUp();
           else onSelect(placement.index + 1);
         }}
         onPointerOver={() => {
-          document.body.style.cursor = "pointer";
+          if (interactive) document.body.style.cursor = "pointer";
         }}
         onPointerOut={() => {
           document.body.style.cursor = "";
@@ -322,8 +351,12 @@ export default function ExhibitionScene({
   stop,
   closeUp,
   reducedMotion,
+  mode,
+  resume,
   onSelect,
   onToggleCloseUp,
+  onFocusChange,
+  onLockChange,
   onReady,
 }: SceneProps) {
   const placements = useMemo(() => layoutPaintings(pieces.map(aspectOf)), [pieces]);
@@ -338,12 +371,22 @@ export default function ExhibitionScene({
       camera={{ fov: VERTICAL_FOV, near: 0.1, far: 80, position: INTRO_POSE.position }}
       onCreated={() => onReady?.()}
     >
-      <Rig
-        placements={placements}
-        stop={stop}
-        closeUp={closeUp}
-        reducedMotion={reducedMotion}
-      />
+      {mode === "walk" ? (
+        <WalkRig
+          placements={placements}
+          length={length}
+          onFocusChange={onFocusChange}
+          onLockChange={onLockChange}
+        />
+      ) : (
+        <Rig
+          placements={placements}
+          stop={stop}
+          closeUp={closeUp}
+          reducedMotion={reducedMotion}
+          resume={resume}
+        />
+      )}
       <Hall length={length} />
       {pieces.map((piece, i) => (
         <Painting
@@ -353,6 +396,7 @@ export default function ExhibitionScene({
           plate={plates[i]}
           glow={glow}
           active={stop === i + 1}
+          interactive={mode === "tour"}
           onSelect={onSelect}
           onToggleCloseUp={onToggleCloseUp}
         />

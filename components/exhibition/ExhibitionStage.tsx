@@ -10,6 +10,7 @@ import { ExhibitionErrorBoundary } from "./ExhibitionErrorBoundary";
 import { ExhibitionFallback } from "./ExhibitionFallback";
 import { ExhibitionHud } from "./ExhibitionHud";
 import type { ExhibitPiece } from "./pieces";
+import { useCanWalk } from "./walk/useCanWalk";
 
 // three.js is only needed here, and needs a browser: load it on the client only.
 const ExhibitionScene = dynamic(() => import("./ExhibitionScene"), {
@@ -29,6 +30,13 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
   const [stop, setStop] = useState(0);
   const [closeUp, setCloseUp] = useState(false);
   const [ready, setReady] = useState(false);
+  const [mode, setMode] = useState<"tour" | "walk">("tour");
+  // Set once the visitor has walked, so the tour glides back from where they stand.
+  const [resume, setResume] = useState(false);
+  const [walkFocus, setWalkFocus] = useState<number | null>(null);
+  const [locked, setLocked] = useState(false);
+  const canWalk = useCanWalk();
+  const frameRef = useRef<HTMLDivElement>(null);
   const swipeStart = useRef<{ x: number; y: number } | null>(null);
   const last = pieces.length;
 
@@ -41,6 +49,21 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
   );
   const toggleCloseUp = useCallback(() => setCloseUp((current) => !current), []);
   const markReady = useCallback(() => setReady(true), []);
+
+  const enterWalk = useCallback(() => {
+    setMode("walk");
+    setCloseUp(false);
+    setWalkFocus(null);
+    // This click is the user gesture that pointer lock requires, so capture the mouse now.
+    const canvas = frameRef.current?.querySelector("canvas");
+    const request = canvas?.requestPointerLock() as unknown as Promise<void> | undefined;
+    request?.catch?.(() => {});
+  }, []);
+  const exitWalk = useCallback(() => {
+    setMode("tour");
+    setResume(true);
+    setWalkFocus(null);
+  }, []);
 
   const plates = useMemo(
     () => pieces.map((piece) => ({ title: localize(piece.title), date: piece.date })),
@@ -71,6 +94,7 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
   return (
     <ExhibitionErrorBoundary fallback={<ExhibitionFallback pieces={pieces} />}>
       <div
+        ref={frameRef}
         className={`${frameClass} [&_canvas]:touch-pan-y`}
         role="region"
         aria-label={t("exhibition.hall")}
@@ -83,8 +107,12 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
           stop={stop}
           closeUp={closeUp}
           reducedMotion={reducedMotion}
+          mode={mode}
+          resume={resume}
           onSelect={go}
           onToggleCloseUp={toggleCloseUp}
+          onFocusChange={setWalkFocus}
+          onLockChange={setLocked}
           onReady={markReady}
         />
         {!ready && (
@@ -98,6 +126,10 @@ export function ExhibitionStage({ pieces }: { pieces: ExhibitPiece[] }) {
           closeUp={closeUp}
           onGo={go}
           onToggleCloseUp={toggleCloseUp}
+          canWalk={canWalk}
+          walk={mode === "walk" ? { focus: walkFocus, locked } : null}
+          onEnterWalk={enterWalk}
+          onExitWalk={exitWalk}
         />
       </div>
     </ExhibitionErrorBoundary>

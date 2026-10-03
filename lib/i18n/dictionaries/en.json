@@ -55,5 +55,9 @@
   "exhibition.stepBack": "Step back",
   "exhibition.loading": "Opening the gallery…",
   "exhibition.entrance": "Entrance",
-  "exhibition.hall": "3D exhibition hall"
+  "exhibition.hall": "3D exhibition hall",
+  "exhibition.walk": "Explore freely",
+  "exhibition.walkExit": "Back to the tour",
+  "exhibition.walkHint": "Move with W A S D (or the arrow keys) and hold Shift to run. Move the mouse to look around.",
+  "exhibition.walkResume": "Click the hall to look around — Esc releases the mouse"
 }

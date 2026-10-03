@@ -55,5 +55,9 @@
   "exhibition.stepBack": "Lùi lại",
   "exhibition.loading": "Đang mở phòng tranh…",
   "exhibition.entrance": "Lối vào",
-  "exhibition.hall": "Phòng triển lãm 3D"
+  "exhibition.hall": "Phòng triển lãm 3D",
+  "exhibition.walk": "Đi tham quan tự do",
+  "exhibition.walkExit": "Về chế độ lướt",
+  "exhibition.walkHint": "Di chuyển bằng W A S D (hoặc phím mũi tên), giữ Shift để chạy. Di chuột để nhìn quanh.",
+  "exhibition.walkResume": "Bấm vào phòng để nhìn quanh — nhấn Esc để nhả chuột"
 }
