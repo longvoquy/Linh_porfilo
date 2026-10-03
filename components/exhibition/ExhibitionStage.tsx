@@ -93,7 +93,8 @@ export function ExhibitionStage({
   const onPointerUp = (event: PointerEvent) => {
     const start = swipeStart.current;
     swipeStart.current = null;
-    if (!start || event.pointerType === "mouse") return;
+    // In the close-up a drag pans across the picture, so it must not also change painting.
+    if (!start || event.pointerType === "mouse" || closeUp) return;
     const dx = event.clientX - start.x;
     const dy = event.clientY - start.y;
     if (Math.abs(dx) >= SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.5) go(stop + (dx < 0 ? 1 : -1));
@@ -103,7 +104,8 @@ export function ExhibitionStage({
     <ExhibitionErrorBoundary fallback={<ExhibitionFallback pieces={pieces} />}>
       <div
         ref={frameRef}
-        className={`${frameClass} [&_canvas]:touch-pan-y`}
+        // Vertical pans belong to the page, except in the close-up, where touch drags the picture both ways.
+        className={`${frameClass} ${closeUp ? "[&_canvas]:touch-none" : "[&_canvas]:touch-pan-y"}`}
         role="region"
         aria-label={t("exhibition.hall")}
         onPointerDown={onPointerDown}

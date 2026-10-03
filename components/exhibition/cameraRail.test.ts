@@ -5,11 +5,13 @@ import {
   EYE_Y,
   INTRO_POSE,
   VERTICAL_FOV,
+  closeUpPanRange,
   damp,
   dampPose,
   fitDistance,
   isSettled,
   paintingPose,
+  panRangeForStop,
   poseForStop,
 } from "./cameraRail.ts";
 import { layoutPaintings } from "./roomLayout.ts";
@@ -115,6 +117,58 @@ describe("isSettled", () => {
   it("is false while only the look-at point is still turning", () => {
     const turning = { position: INTRO_POSE.position, target: [0.5, 1.7, 14] } as typeof INTRO_POSE;
     assert.ok(!isSettled(INTRO_POSE, turning));
+  });
+});
+
+describe("closeUpPanRange", () => {
+  const painting = placements[0];
+
+  it("is zero when the whole picture fits the view", () => {
+    assert.deepEqual(closeUpPanRange(painting, 20, DESKTOP), { x: 0, y: 0 });
+  });
+  it("is positive on an axis where the picture overflows the view", () => {
+    const range = closeUpPanRange(painting, 1.5, DESKTOP);
+    assert.ok(range.y > 0);
+  });
+  it("lets the camera reach the picture's edge, a little past it", () => {
+    const distance = 1.5;
+    const visibleHeight = 2 * distance * Math.tan((VERTICAL_FOV * Math.PI) / 360);
+    const { y } = closeUpPanRange(painting, distance, DESKTOP);
+    // Panned all the way, the view's edge sits beyond the picture's edge.
+    assert.ok(visibleHeight / 2 - y <= painting.height / 2);
+  });
+  it("grows as the camera moves closer", () => {
+    const near = closeUpPanRange(painting, 1.2, DESKTOP);
+    const far = closeUpPanRange(painting, 1.8, DESKTOP);
+    assert.ok(near.x >= far.x);
+    assert.ok(near.y > far.y);
+  });
+  it("needs more sideways pan on a narrow screen", () => {
+    const phone = closeUpPanRange(painting, 3, PHONE);
+    const desktop = closeUpPanRange(painting, 3, DESKTOP);
+    assert.ok(phone.x > desktop.x);
+  });
+});
+
+describe("panRangeForStop", () => {
+  it("is zero outside the close-up", () => {
+    assert.deepEqual(panRangeForStop(1, placements, DESKTOP, false), { x: 0, y: 0 });
+  });
+  it("is zero at the entrance", () => {
+    assert.deepEqual(panRangeForStop(0, placements, DESKTOP, true), { x: 0, y: 0 });
+  });
+  it("lets the close-up on a painting move around it", () => {
+    const range = panRangeForStop(1, placements, DESKTOP, true);
+    assert.ok(range.x >= 0);
+    assert.ok(range.y > 0);
+  });
+  it("matches the close-up camera's distance", () => {
+    const pose = poseForStop(1, placements, DESKTOP, true);
+    const distance = Math.abs(pose.position[0] - pose.target[0]);
+    assert.deepEqual(
+      panRangeForStop(1, placements, DESKTOP, true),
+      closeUpPanRange(placements[0], distance, DESKTOP),
+    );
   });
 });
 

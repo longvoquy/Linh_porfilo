@@ -133,14 +133,17 @@ export function ExhibitionHud({
             {piece.date && <p className="text-sm text-gold-ink">{piece.date}</p>}
             <p className="mt-2 text-sm text-navy/80">{localize(piece.caption)}</p>
             {!walk && (
-              <button
-                type="button"
-                aria-pressed={closeUp}
-                onClick={onToggleCloseUp}
-                className="mt-4 rounded-full border border-navy/30 px-4 py-1.5 text-sm hover:bg-navy hover:text-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
-              >
-                {closeUp ? t("exhibition.stepBack") : t("exhibition.closer")}
-              </button>
+              <>
+                <button
+                  type="button"
+                  aria-pressed={closeUp}
+                  onClick={onToggleCloseUp}
+                  className="mt-4 rounded-full border border-navy/30 px-4 py-1.5 text-sm hover:bg-navy hover:text-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
+                >
+                  {closeUp ? t("exhibition.stepBack") : t("exhibition.closer")}
+                </button>
+                {closeUp && <p className="mt-2 text-xs text-navy/70">{t("exhibition.panHint")}</p>}
+              </>
             )}
           </>
         ) : walk ? (

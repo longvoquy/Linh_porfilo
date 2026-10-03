@@ -46,5 +46,6 @@
   "landing.normalHint": "Lướt từng bức tranh",
   "landing.walk": "Chế độ WASD",
   "landing.walkHint": "Tự đi bộ trong phòng tranh",
-  "landing.walkUnavailable": "Cần bàn phím và chuột"
+  "landing.walkUnavailable": "Cần bàn phím và chuột",
+  "exhibition.panHint": "Di chuột, hoặc kéo bằng ngón tay, để xem mọi phần của bức tranh."
 }

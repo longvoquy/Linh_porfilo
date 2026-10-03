@@ -17,6 +17,7 @@ import {
   damp,
   dampPose,
   isSettled,
+  panRangeForStop,
   poseForStop,
   type Pose,
 } from "./cameraRail";
@@ -59,6 +60,10 @@ const GLIDE_RATE = 3.2;
 /** The camera drifts a little toward a mouse pointer (world units at the screen edge): depth without dragging. */
 const PARALLAX = { x: 0.3, y: 0.12 };
 const PARALLAX_RATE = 4;
+/** How quickly the close-up follows the pointer when panning across a picture. */
+const PAN_RATE = 7;
+
+const clamp = (value: number, limit: number) => Math.max(-limit, Math.min(limit, value));
 /** Pointer travel (px) above which a press is not a click. */
 const CLICK_SLOP = 6;
 
@@ -96,32 +101,87 @@ function Rig({
     () => poseForStop(stop, placements, aspect, closeUp),
     [stop, placements, aspect, closeUp],
   );
+  // How far the close-up camera may slide to bring every part of the picture into view.
+  const panRange = useMemo(
+    () => panRangeForStop(stop, placements, aspect, closeUp),
+    [stop, placements, aspect, closeUp],
+  );
   const pose = useRef<Pose | null>(null);
   const shift = useRef({ x: 0, y: 0 });
   const mouseOver = useRef(false);
+  // Where a finger has dragged the close-up to (touch has no hover to follow).
+  const touchPan = useRef({ x: 0, y: 0 });
 
   // The canvas only renders on demand: wake it when the camera has somewhere new to go.
+  // A new stop or view starts from the middle of the picture.
   useEffect(() => {
+    touchPan.current.x = 0;
+    touchPan.current.y = 0;
     invalidate();
   }, [goal, reducedMotion, invalidate]);
 
-  // Only a mouse hovering the canvas draws the camera along; touch has no hover to follow.
+  // A mouse hovering the canvas draws the camera along: a light parallax in the full
+  // view, and in the close-up a pan across the whole picture. A finger drags the
+  // close-up instead.
   useEffect(() => {
+    // One pixel of screen is this much of the world, at the close-up's distance.
+    const unitsPerPixel =
+      (2 *
+        Math.hypot(
+          goal.position[0] - goal.target[0],
+          goal.position[1] - goal.target[1],
+          goal.position[2] - goal.target[2],
+        ) *
+        Math.tan((VERTICAL_FOV * Math.PI) / 360)) /
+      Math.max(1, dom.clientHeight);
+    let dragging = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    const onDown = (event: PointerEvent) => {
+      if (event.pointerType === "mouse" || !closeUp) return;
+      dragging = true;
+      lastX = event.clientX;
+      lastY = event.clientY;
+    };
     const onMove = (event: PointerEvent) => {
-      mouseOver.current = event.pointerType === "mouse";
+      if (event.pointerType === "mouse") {
+        mouseOver.current = true;
+        invalidate();
+        return;
+      }
+      if (!dragging) return;
+      const pan = touchPan.current;
+      // The picture follows the finger, so the camera goes the other way.
+      pan.x = clamp(pan.x - (event.clientX - lastX) * unitsPerPixel, panRange.x);
+      pan.y = clamp(pan.y + (event.clientY - lastY) * unitsPerPixel, panRange.y);
+      lastX = event.clientX;
+      lastY = event.clientY;
       invalidate();
+    };
+    const onUp = () => {
+      dragging = false;
     };
     const onLeave = () => {
-      mouseOver.current = false;
-      invalidate();
+      // In the close-up the view stays where it was panned, so the pointer can go to the buttons.
+      if (!closeUp) {
+        mouseOver.current = false;
+        invalidate();
+      }
     };
+    dom.addEventListener("pointerdown", onDown);
     dom.addEventListener("pointermove", onMove);
+    dom.addEventListener("pointerup", onUp);
+    dom.addEventListener("pointercancel", onUp);
     dom.addEventListener("pointerleave", onLeave);
     return () => {
+      dom.removeEventListener("pointerdown", onDown);
       dom.removeEventListener("pointermove", onMove);
+      dom.removeEventListener("pointerup", onUp);
+      dom.removeEventListener("pointercancel", onUp);
       dom.removeEventListener("pointerleave", onLeave);
     };
-  }, [dom, invalidate]);
+  }, [dom, invalidate, closeUp, goal, panRange]);
 
   useFrame((frame, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -130,13 +190,23 @@ function Rig({
     camera.position.set(...pose.current.position);
     camera.lookAt(...pose.current.target);
 
-    // Slide the camera sideways without turning it, so near things shift against far ones.
-    const follow = mouseOver.current && !reducedMotion;
-    const wantX = follow ? frame.pointer.x * PARALLAX.x : 0;
-    const wantY = follow ? frame.pointer.y * PARALLAX.y : 0;
+    // Slide the camera sideways without turning it. In the full view that is a small
+    // parallax toward the mouse; in the close-up it pans across the picture, to the
+    // mouse or to where a finger left it. Panning is the only way to see the parts
+    // that are off screen, so it stays on under reduced motion (only the easing goes).
+    let wantX = 0;
+    let wantY = 0;
+    if (closeUp) {
+      wantX = mouseOver.current ? frame.pointer.x * panRange.x : touchPan.current.x;
+      wantY = mouseOver.current ? frame.pointer.y * panRange.y : touchPan.current.y;
+    } else if (mouseOver.current && !reducedMotion) {
+      wantX = frame.pointer.x * PARALLAX.x;
+      wantY = frame.pointer.y * PARALLAX.y;
+    }
     const offset = shift.current;
-    offset.x = damp(offset.x, wantX, dt, PARALLAX_RATE);
-    offset.y = damp(offset.y, wantY, dt, PARALLAX_RATE);
+    const rate = reducedMotion ? 1000 : closeUp ? PAN_RATE : PARALLAX_RATE;
+    offset.x = damp(offset.x, wantX, dt, rate);
+    offset.y = damp(offset.y, wantY, dt, rate);
     camera.translateX(offset.x);
     camera.translateY(offset.y);
 

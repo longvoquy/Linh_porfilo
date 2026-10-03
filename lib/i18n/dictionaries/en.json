@@ -46,5 +46,6 @@
   "landing.normalHint": "Glide from painting to painting",
   "landing.walk": "WASD mode",
   "landing.walkHint": "Walk the hall yourself",
-  "landing.walkUnavailable": "Needs a keyboard and mouse"
+  "landing.walkUnavailable": "Needs a keyboard and mouse",
+  "exhibition.panHint": "Move the mouse, or drag with a finger, to see every part of the painting."
 }

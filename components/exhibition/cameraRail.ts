@@ -57,6 +57,39 @@ export function poseForStop(
     : paintingPose(p, distance, p.focusDrop);
 }
 
+/**
+ * How far, in world units, the camera may slide across the picture in the
+ * close-up (x sideways, y up and down), so that every part of it can be brought
+ * into view. On an axis where the picture fits the view the range is zero; where
+ * it overflows, the camera can reach its edge, and a little past it (`margin`)
+ * to show the frame.
+ */
+export function closeUpPanRange(
+  p: Placement,
+  distance: number,
+  viewportAspect: number,
+  vfovDeg: number = VERTICAL_FOV,
+  margin = 0.15,
+): { x: number; y: number } {
+  const visibleHeight = 2 * distance * Math.tan((vfovDeg * Math.PI) / 360);
+  const visibleWidth = visibleHeight * viewportAspect;
+  const reach = (size: number, visible: number) => Math.max(0, (size + 2 * margin - visible) / 2);
+  return { x: reach(p.width, visibleWidth), y: reach(p.height, visibleHeight) };
+}
+
+/** The close-up's pan range for a stop; zero when not in a close-up, or at the entrance. */
+export function panRangeForStop(
+  stop: number,
+  placements: Placement[],
+  viewportAspect: number,
+  closeUp: boolean,
+): { x: number; y: number } {
+  if (!closeUp || stop <= 0) return { x: 0, y: 0 };
+  const p = placements[stop - 1];
+  const distance = fitDistance(p.width, p.fitHeight, viewportAspect) * CLOSE_UP_FACTOR;
+  return closeUpPanRange(p, distance, viewportAspect);
+}
+
 /** True when `a` and `b` are so close that no further movement would be visible. */
 export function isSettled(a: Pose, b: Pose, epsilon = 0.002): boolean {
   return [0, 1, 2].every(
