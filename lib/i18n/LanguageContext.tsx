@@ -16,9 +16,12 @@ const STORAGE_KEY = "linh-portfolio-locale";
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("en");
 
+  // The stored locale is read after hydration, not in the initial state: the
+  // server cannot see localStorage, and reading it earlier would mismatch the HTML.
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (stored === "en" || stored === "vi") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLocaleState(stored);
     }
   }, []);

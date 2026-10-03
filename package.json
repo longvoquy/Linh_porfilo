@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test components/home/*.test.ts components/exhibition/*.test.ts components/exhibition/walk/*.test.ts"
+    "test": "node --test components/exhibition/*.test.ts components/exhibition/walk/*.test.ts"
   },
   "dependencies": {
     "@react-three/fiber": "^9.7.0",

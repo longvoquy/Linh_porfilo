@@ -8,26 +8,30 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Bilingual (EN/VI) college-application portfolio. Next.js 16 (App Router), React 19, Tailwind CSS v4, TypeScript, three.js via `@react-three/fiber`, framer-motion, Cloudinary for gallery images.
 
+## This branch: `feature/online-exhibition`
+
+A standalone deployment whose landing page (`/`, also `/exhibition`) is a 3D online gallery of the art-portfolio paintings. It is **not meant to be merged into `main`**: the nón lá Home landing was removed here, so a merge would delete it from `main`. CI (`.github/workflows/guard-main.yml`) fails any pull request from this branch into `main`. The rest of the site (other sections, nav) is unchanged and still routable by URL. Deploy this branch on its own (e.g. Vercel Production Branch = `feature/online-exhibition`).
+
 ## Commands
 
 Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/yarn or commit other lockfiles.
 
 - `pnpm dev` / `pnpm build` / `pnpm start`
 - `pnpm lint` — ESLint (flat config, `eslint-config-next`)
-- `pnpm test` — `node --test components/home/*.test.ts` (Node's built-in runner running TS directly; keep tested modules free of React/DOM/three imports)
+- `pnpm test` — `node --test components/exhibition/*.test.ts components/exhibition/walk/*.test.ts` (Node's built-in runner running TS directly; keep tested modules free of React/DOM/three imports)
 
 ## Layout
 
-- `app/` — routes. Nav: `/`, `/about`, `/timeline`, `/portfolio`, `/resume`, `/contact` (placeholders using `ComingSoon`). Portfolio sections live at `/<section.key>`.
+- `app/` — routes. `/` and `/exhibition` serve the exhibition (`app/page.tsx` re-exports `app/exhibition/page.tsx`). Nav (hidden over the exhibition): `/`, `/about`, `/timeline`, `/portfolio`, `/resume`, `/contact` (placeholders using `ComingSoon`). Portfolio sections live at `/<section.key>`.
 - `content/` — the content layer. `sections.ts` defines the 7 sections (key, bilingual label, order); `content/<section>/*.json` are `ActivityItem`s; `all.ts` imports every JSON file.
 - `lib/` — `types.ts` (shared types), `getContent.ts` (section/item queries), `chapters.ts` + `cloudinary.ts` (server-only gallery loading), `i18n/` (language context, `useTranslation`, `dictionaries/en.json` + `vi.json`).
-- `components/home/` — Home landing: 3D nón lá (`HatScene`, `hatGeometry`, `hatTexture`), `HatStage` (WebGL probe + `HatFallback` + error boundary), `ArchCarousel` driven by the hat's yaw (`carouselMath`), `HatHint`, `SpinGuide`.
+- `components/exhibition/` — the 3D gallery: pure, node-tested `roomLayout` (hall + painting placement), `cameraRail` (camera poses, damping) and `pieces` (content → `ExhibitPiece[]`, Cloudinary texture URL); `ExhibitionScene` (r3f hall, frames, camera rig), `ExhibitionStage` (WebGL probe + `ExhibitionFallback` + error boundary, mode state), `ExhibitionHud` (DOM info card + controls). `walk/` is the optional first-person mode (`walkMath` pure + tested, `WalkRig`, `useCanWalk`).
 - `components/chapters/` — `VisualChapters` renderer (chapter + gallery + lightbox) used by Awards, Leadership, Volunteer.
 - `components/activity/` — `ActivityGrid`/`ActivityCard`/`ActivityDetail`, used by the other sections.
-- `components/decor/` — `BrandMark`, `SealStamp`, `Sparkles`. `components/nav/` — `NavBar`, `LanguageToggle`.
+- `components/decor/` — `BrandMark`. `components/nav/` — `NavBar`, `LanguageToggle`. `components/transition/` — page-to-page disc transition.
 - `scripts/` — one-off Node scripts (run with `node scripts/<name>.mjs`), not part of the build.
 - `docs/superpowers/specs|plans/` — design specs and plans for past features; read the relevant one before changing that feature.
-- `asset/` — source artwork (committed). `data/` — raw originals (gitignored, local only). `public/decor/` — generated WebPs.
+- `data/` — raw originals (gitignored, local only).
 
 ## Content & sections
 
@@ -49,19 +53,20 @@ Caching uses route-segment `revalidate`, deliberately **not** `use cache` / `cac
 
 ## Design system
 
-- Palette is defined once in `app/globals.css` (`:root` + `@theme inline`): `cream`, `ivory`, `navy`, `gold`, `gold-ink`, `gold-lit`, `vermilion`. Use the Tailwind tokens (`text-navy`, `bg-cream`, …), not raw hex.
-- Contrast rules (documented in `globals.css`): `gold` is **not** a text colour on cream — use `gold-ink` for small accent text. `vermilion` is reserved for the seal stamp.
+- Palette is defined once in `app/globals.css` (`:root` + `@theme inline`): `cream`, `ivory`, `navy`, `gold`, `gold-ink`, `gold-lit`. Use the Tailwind tokens (`text-navy`, `bg-cream`, …), not raw hex.
+- Contrast rules (documented in `globals.css`): `gold` is **not** a text colour on cream — use `gold-ink` for small accent text.
 - Fonts: Geist (sans), Geist Mono, Cormorant Garamond (`font-heading`, headings).
-- three.js needs plain hex, so `hatTexture.ts` mirrors `--navy`/`--gold-lit` as `HAT_NAVY`/`HAT_GOLD`; keep them in sync with `globals.css`.
+- three.js needs plain hex, so `hallTextures.ts` mirrors the palette as `HALL_COLORS`; keep it in sync with `globals.css`.
 
-## Home hat (3D)
+## Exhibition (3D)
 
-- `HatScene` is loaded with `dynamic(..., { ssr: false })`; `HatStage` probes WebGL first and falls back to `HatFallback` (SVG) — keep both visually in step when the hat design changes.
-- The hat surface is `/decor/hat-disc.webp`: a top-down disc painting (`asset/test2.png`) unrolled into a 2560×512 strip by `scripts/prepare-decor.mjs`. The texture size there must match `WIDTH`/`HEIGHT` in `hatTexture.ts`. `PANEL_OFFSET` rotates the artwork so the front faces the initial section (`INITIAL_SECTION = "research"` in `HomeLanding.tsx`).
-- `HomeLanding` social links are `"#"` placeholders — fill in real URLs before publishing.
+- `ExhibitionScene` is loaded with `dynamic(..., { ssr: false })`; `ExhibitionStage` probes WebGL first (`lib/webgl.ts`) and falls back to `ExhibitionFallback` (a plain list). React context does not cross `<Canvas>`, so localized text reaches the scene as props.
+- The scene renders on demand (`frameloop="demand"`): anything that moves must call `invalidate()` while it moves (the tour rig does; `WalkRig` invalidates every frame). Changing a material's `map` from empty to set needs the material rebuilt (see the `key` on the painting material).
+- Painting sizes come from `width`/`height` in each content image (`scripts/add-art-dimensions.mjs` fills them from Cloudinary). Plaque and label text is drawn on a canvas: use a font with full Vietnamese coverage (not Georgia).
+- Walking mode is desktop-only (hover + fine pointer) and uses pointer lock; keep `walkMath` free of three/DOM imports so it stays testable.
 
 ## Asset scripts
 
-- `prepare-decor.mjs` — turns `asset/` etchings (lotus, One Pillar Pagoda) into transparent sepia-ink WebPs and builds `hat-disc.webp`. Re-run after changing any source in `asset/`, and commit the regenerated `public/decor/*.webp`.
+- `add-art-dimensions.mjs` — writes each art-portfolio image's pixel size into its content JSON (via Cloudinary `fl_getinfo`). Re-run after adding a painting.
 - `upload-*-to-cloudinary.mjs` — upload local `data/<Section>/` folders to `portfolio/<section>/<slug>/` (certificates go in a `certificates/` subfolder, excluded from galleries).
 - `convert-art-pdfs.mjs` — renders art-portfolio PDFs to images (with per-file rotation overrides).

@@ -5,51 +5,27 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 /**
- * The "into the hat" navigation, both ways. A navy disc — the hat's own colour
- * — opens from the middle of the screen, covers the page while the next route
- * loads, then closes back to the middle to reveal it.
- *
- *   in   Home → a section: the hat zooms at the viewer, the disc opens behind
- *        it (after ZOOM_LEAD), then closes over the section.
- *   out  anywhere → Home, the same film run backwards: the disc opens, then
- *        closes onto a hat that starts huge in the middle, spinning, and
- *        shrinks back into its place. Home reports `arrived` once its hat is
- *        drawn, so the disc never closes onto an empty stage.
- *   across  one section to another: no hat is on the page, so it is just the
- *        disc, opening at once and closing over the new section.
+ * Page-to-page navigation: a navy disc opens from the middle of the screen,
+ * covers the page while the next route loads, then closes back to the middle
+ * to reveal it.
  *
  * It lives in the root layout so the cover survives the route change: the old
  * page unmounts under it, and the new one is only revealed once it is in.
  *
- *   zoom     the disc is opening (and, going in, the hat zooming)
+ *   zoom     the disc is opening
  *   covered  the disc is full; navigating, waiting for the new page
  *   reveal   the disc closes (derived: covered + the new page is in)
  */
-export type TransitionStage = "idle" | "zoom" | "covered" | "reveal";
-export type TransitionDirection = "in" | "out" | "across";
+type TransitionStage = "idle" | "zoom" | "covered" | "reveal";
 
-/** Going in, the hat zooms on its own for this long before the disc opens. */
-const ZOOM_LEAD = 0.35;
 const OPEN_DURATION = 0.5;
-export const CLOSE_DURATION = 0.6;
+const CLOSE_DURATION = 0.6;
 /** Reveal anyway if the new page never arrives, so the site cannot stay covered. */
 const COVER_TIMEOUT_MS = 10_000;
 
 type RouteTransitionValue = {
-  stage: TransitionStage;
-  direction: TransitionDirection;
-  /** Into a section from Home; ignored while a transition is running. */
-  enter: (href: string) => void;
-  /** Back to Home; ignored while a transition is running. */
-  goHome: () => void;
-  /**
-   * To any other page, with the film that fits where we are: from Home the hat
-   * zooms (`in`), from anywhere else it is just the disc (`across`). Ignored
-   * while a transition is running, or when already there.
-   */
+  /** To another page, under the disc; ignored while a transition is running, or when already there. */
   navigate: (href: string) => void;
-  /** Home's hat is on screen, so a transition heading home may reveal it. */
-  arrived: () => void;
 };
 
 const RouteTransitionContext = createContext<RouteTransitionValue | null>(null);
@@ -67,49 +43,32 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [phase, setPhase] = useState<Phase>("idle");
-  const [direction, setDirection] = useState<TransitionDirection>("in");
   const [target, setTarget] = useState<string | null>(null);
-  const [homeArrived, setHomeArrived] = useState(false);
   // Disc geometry, measured at the click: the screen's centre, and a radius
   // that reaches its farthest corner.
   const [disc, setDisc] = useState({ x: 0, y: 0, r: 0 });
   const timeout = useRef<number | undefined>(undefined);
 
   // The new page is in once the pathname matches: without a loading.tsx the
-  // router only commits the route after its data has arrived. Home also has
-  // to have drawn its hat.
-  const pageIn = pathname === target && (direction !== "out" || homeArrived);
+  // router only commits the route after its data has arrived.
+  const pageIn = pathname === target;
   const stage: TransitionStage =
     phase === "forced" || (phase === "covered" && pageIn) ? "reveal" : phase;
 
-  const start = useCallback(
-    (href: string, dir: TransitionDirection) => {
+  const navigate = useCallback(
+    (href: string) => {
       if (phase !== "idle" || href === pathname) return;
       const x = window.innerWidth / 2;
       const y = window.innerHeight / 2;
       setDisc({ x, y, r: Math.hypot(x, y) });
       setTarget(href);
-      setDirection(dir);
-      setHomeArrived(false);
       setPhase("zoom");
       router.prefetch(href);
     },
     [phase, pathname, router],
   );
 
-  const enter = useCallback((href: string) => start(href, "in"), [start]);
-  const goHome = useCallback(() => start("/", "out"), [start]);
-  // Like the `in` and `out` films, this plays whatever the reduced-motion setting says.
-  const navigate = useCallback(
-    (href: string) => start(href, pathname === "/" ? "in" : "across"),
-    [pathname, start],
-  );
-  const arrived = useCallback(() => setHomeArrived(true), []);
-
-  const value = useMemo(
-    () => ({ stage, direction, enter, goHome, navigate, arrived }),
-    [stage, direction, enter, goHome, navigate, arrived],
-  );
+  const value = useMemo(() => ({ navigate }), [navigate]);
 
   const open = stage === "zoom" || stage === "covered";
 
@@ -146,17 +105,13 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
             animate={{ scale: open ? 1 : 0 }}
             transition={
               open
-                ? {
-                    delay: direction === "in" ? ZOOM_LEAD : 0,
-                    duration: OPEN_DURATION,
-                    ease: [0.64, 0, 0.78, 0],
-                  }
+                ? { duration: OPEN_DURATION, ease: [0.64, 0, 0.78, 0] }
                 : { duration: CLOSE_DURATION, ease: [0.22, 1, 0.36, 1] }
             }
             onAnimationComplete={handleComplete}
           />
-          {/* Only if the next page is slow: a gold thread, like the first-load
-              loader, fading in once the disc has been full for a moment. */}
+          {/* Only if the next page is slow: a gold thread, with a bead of gold
+              running along it, fading in once the disc has been full for a moment. */}
           <div
             className={`relative h-px w-40 overflow-hidden bg-gold/25 transition-opacity ${
               stage === "covered" ? "opacity-100 delay-500 duration-500" : "opacity-0 duration-150"
