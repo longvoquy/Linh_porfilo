@@ -1,6 +1,17 @@
 export type ProfilePoint = { r: number; y: number };
 
 /**
+ * How deep the hat is front to back, as a share of how wide it is. The rim is a
+ * circle seen from 20° above, so at full depth the bottom corners come round in
+ * a wide curve and the sides look like they bulge into a bowl. Pressing the hat
+ * a quarter flatter front to back leaves its width and height alone but makes
+ * the rim a narrower ellipse, so the sides run straight down to a sharper
+ * corner. It is applied outside the spin, so the width never changes as the hat
+ * turns.
+ */
+export const HAT_DEPTH = 0.75;
+
+/**
  * Side profile of the hat, ordered from the rim (bottom) to the apex (top), for
  * `LatheGeometry`. The apex is at `y = height / 2` and the rim at `-height / 2`.
  *

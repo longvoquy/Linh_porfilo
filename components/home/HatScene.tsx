@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { DoubleSide, LatheGeometry, Vector2, type Group } from "three";
+import { BackSide, DoubleSide, LatheGeometry, Vector2, type Group } from "three";
 import { indexForYaw, shortestAngle, yawForIndex } from "./carouselMath";
-import { hatProfile } from "./hatGeometry";
-import { HAT_GOLD, createHatTexture } from "./hatTexture";
+import { HAT_DEPTH, hatProfile } from "./hatGeometry";
+import { HAT_GOLD, HAT_NAVY, createHatTexture } from "./hatTexture";
 
 export type HatSceneProps = {
   /** Target yaw in radians; the hat eases toward it, taking the short way round. */
@@ -35,12 +35,33 @@ const RADIUS = 1.7;
  * curve of the rim instead.
  */
 const HEIGHT = 1.5;
+/** Width of the outline round the silhouette, as a scale on the cone's radius. */
+const OUTLINE = 1.014;
+/**
+ * Towards the silhouette the painted surface fades to a dark navy. The artwork
+ * runs a gold divider or frame line down the side wherever the hat is turned
+ * so that one sits on the edge, and seen edge-on that is a long pale strip along
+ * the outline — which reads as if the side were dented. Darkening by how
+ * squarely the surface faces the eye keeps the contour a clean navy line
+ * whatever is painted there. 1 = facing the viewer, 0 = on the silhouette.
+ */
+const EDGE_FADE_START = 0.45;
+const EDGE_FADE_MIN = 0.2;
+
+function darkenSilhouette(shader: { fragmentShader: string }) {
+  shader.fragmentShader = shader.fragmentShader.replace(
+    "#include <map_fragment>",
+    `#include <map_fragment>
+    float facing = abs(dot(normalize(vNormal), normalize(vViewPosition)));
+    diffuseColor.rgb *= mix(${EDGE_FADE_MIN.toFixed(2)}, 1.0, smoothstep(0.0, ${EDGE_FADE_START.toFixed(2)}, facing));`,
+  );
+}
 /**
  * Aim below the hat's centre so the apex and the front of the brim sit an equal
  * distance from the top and bottom of the frame — otherwise the hat rides low
  * and the space above it is wasted.
  */
-const CAMERA_TARGET_Y = -0.55;
+const CAMERA_TARGET_Y = -0.475;
 const DRAG_SPEED = 0.008;
 /** Pointer travel (px) above which a click is treated as the end of a drag. */
 const CLICK_SLOP = 6;
@@ -224,22 +245,38 @@ function Hat({ yaw, count, reducedMotion, onSpin, onSelect, onReady, spin: spinM
   });
 
   return (
-    <group
-      ref={group}
-      position={[0, -0.1, 0]}
-      onClick={(event) => {
-        if (event.delta > CLICK_SLOP) return;
-        event.stopPropagation();
-        onSpin();
-      }}
-    >
-      <mesh geometry={shell}>
-        <meshStandardMaterial map={texture} metalness={0.35} roughness={0.45} side={DoubleSide} />
-      </mesh>
-      <mesh position={[0, -HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[RADIUS, 0.028, 16, 128]} />
-        <meshStandardMaterial color={HAT_GOLD} metalness={0.9} roughness={0.25} />
-      </mesh>
+    <group position={[0, -0.1, 0]} scale={[1, 1, HAT_DEPTH]}>
+      <group
+        ref={group}
+        onClick={(event) => {
+          if (event.delta > CLICK_SLOP) return;
+          event.stopPropagation();
+          onSpin();
+        }}
+      >
+        {/*
+          A navy outline: a slightly wider copy of the cone, drawn inside out so
+          only its rim shows past the real one. Where a gold divider or frame line
+          runs along the silhouette, the bright metal would otherwise fade into the
+          cream page and read as a dent in the side of the hat.
+        */}
+        <mesh geometry={shell} scale={[OUTLINE, 1, OUTLINE]}>
+          <meshBasicMaterial color={HAT_NAVY} side={BackSide} />
+        </mesh>
+        <mesh geometry={shell}>
+          <meshStandardMaterial
+            map={texture}
+            metalness={0.35}
+            roughness={0.45}
+            side={DoubleSide}
+            onBeforeCompile={darkenSilhouette}
+          />
+        </mesh>
+        <mesh position={[0, -HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[RADIUS, 0.028, 16, 128]} />
+          <meshStandardMaterial color={HAT_GOLD} metalness={0.9} roughness={0.25} />
+        </mesh>
+      </group>
     </group>
   );
 }

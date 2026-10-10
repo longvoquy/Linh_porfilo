@@ -211,15 +211,15 @@ const TEXTURE = { width: 2560, height: 512 }; // matches components/home/hatText
 
 /** Alpha at or below this is cut-out background. */
 const CUT = 16;
-/** Luminance above this is the paper the plate was rendered on. */
-const PAPER = 200;
 
 /**
- * Which pixels belong to the plate. Some sources come with their background
- * removed and some still sit on paper, so both are treated the same way: the
- * background is whatever the border can reach without crossing the plate. Gold
- * inside the plate is bright enough to pass for paper, and this is what saves
- * it — nothing reaches it from outside.
+ * Which pixels belong to the plate: the background is whatever the border can
+ * reach through cut-out (transparent) pixels without crossing the plate.
+ *
+ * Only transparency counts. The plate is a cut-out, and its own gold can be as
+ * light as paper — where the artwork runs right up to the canvas edge, as the
+ * rim does at twelve o'clock, a brightness test would let the border flood in
+ * and eat the rim.
  */
 function plateMask(data, width, height) {
   const outside = new Uint8Array(width * height);
@@ -227,9 +227,7 @@ function plateMask(data, width, height) {
   const push = (x, y) => {
     const i = y * width + x;
     if (outside[i]) return;
-    const o = i * 4;
-    const lum = 0.299 * data[o] + 0.587 * data[o + 1] + 0.114 * data[o + 2];
-    if (data[o + 3] > CUT && lum <= PAPER) return;
+    if (data[i * 4 + 3] > CUT) return;
     outside[i] = 1;
     stack.push(i);
   };
@@ -318,7 +316,8 @@ async function prepareDisc({ source, output }) {
   const outH = TEXTURE.height;
   const far = Math.hypot(width, height);
   const ray = (i) => {
-    // The full turn, one column at a time. Column 0 points up the artwork.
+    // The full turn, one column at a time. Column 0 points down the artwork,
+    // and the middle column (outW / 2) points up.
     const angle = (((i + 0.5) / outW) * 2 - 1) * Math.PI;
     return { dx: -Math.sin(angle), dy: -Math.cos(angle) };
   };
@@ -351,6 +350,29 @@ async function prepareDisc({ source, output }) {
       }
     }
   }
+  // The artwork can be cropped by its own canvas: test2.png is a few pixels
+  // shorter than the disc is tall, so the rim is sliced off at twelve and six
+  // o'clock. A ray that ends on the canvas border has not found the rim — it
+  // has run out of picture — and read as it is, it would paint the band short
+  // and leave the rim missing. Those rays borrow their reach from the nearest
+  // rays that did reach the rim.
+  const clipped = new Uint8Array(outW);
+  for (let i = 0; i < outW; i++) {
+    const { dx, dy } = ray(i);
+    const toX = dx > 0 ? (width - 1 - centre.x) / dx : dx < 0 ? centre.x / -dx : Infinity;
+    const toY = dy > 0 ? (height - 1 - centre.y) / dy : dy < 0 ? centre.y / -dy : Infinity;
+    clipped[i] = reach[i] >= Math.min(toX, toY) - 1.5 ? 1 : 0;
+  }
+  for (let i = 0; i < outW; i++) {
+    if (!clipped[i]) continue;
+    let before = 1;
+    while (clipped[(i - before + outW) % outW]) before++;
+    let after = 1;
+    while (clipped[(i + after) % outW]) after++;
+    const a = reach[(i - before + outW) % outW];
+    const b = reach[(i + after) % outW];
+    reach[i] = a + ((b - a) * before) / (before + after);
+  }
   // A ray that grazes a notch in the edge, or that meets the centre rosette a
   // little late, would otherwise stretch its own column against its neighbours.
   const floor = median(reach) * 0.95;
@@ -367,10 +389,23 @@ async function prepareDisc({ source, output }) {
     for (let j = 0; j < outH; j++) {
       // Down the column: the painted band, from the point of the hat to the
       // rim, stopping a hair short of the edge — the last pixels of the disc
-      // are half-transparent and would fringe the rim.
+      // are half-transparent and would fringe the rim. Where the canvas crops
+      // the rim, `sample` holds the last pixel it has for the few rows beyond.
       const r = start[i] + ((j + 0.5) / outH) * (reach[i] * 0.995 - start[i]);
       sample(data, width, height, centre.x + dx * r, centre.y + dy * r, pixel);
       out.set(pixel, (j * outW + i) * 4);
+    }
+  }
+
+  // The edge of a hand-drawn disc is soft, so some columns end in a row or two
+  // of half-transparent pixels — over the hat's navy, a dark hairline along the
+  // rim. Carry the last solid row of the gold band down to the bottom instead.
+  for (let i = 0; i < outW; i++) {
+    let solid = outH - 1;
+    while (solid > outH - 17 && out[(solid * outW + i) * 4 + 3] < 200) solid--;
+    for (let j = solid + 1; j < outH; j++) {
+      out.copyWithin((j * outW + i) * 4, (solid * outW + i) * 4, (solid * outW + i) * 4 + 4);
+      out[(j * outW + i) * 4 + 3] = 255;
     }
   }
 

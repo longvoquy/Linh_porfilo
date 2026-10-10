@@ -1,16 +1,19 @@
+import { HAT_DEPTH } from "./hatGeometry";
+
 // Left side of the hat, apex → rim. The sides are straight, like the 3D cone;
 // hoops follow them, so each one is an arc between the two sides at that height.
 // The landmarks are measured off the 3D scene's own projection, so the static
 // hat and the one that replaces it are the same shape.
-const APEX = { x: 200, y: 32 };
-const RIM = { x: 18, y: 210 };
+const APEX = { x: 200, y: 43 };
+const RIM = { x: 18, y: 221 };
 /**
  * How far the front of a ring dips below its sides, as a share of its half
  * width. Every circle on the cone is seen at the same angle, so one number
- * serves the rim and every hoop: 0.83 as a quadratic's control offset puts the
- * front of the rim at y 286, where the scene's camera puts it.
+ * serves the rim and every hoop: 0.83 for a hat of full depth, times HAT_DEPTH
+ * for the one pressed flatter, as a quadratic's control offset puts the front of
+ * the rim at y 278, where the scene's camera puts it.
  */
-const DIP = 0.83;
+const DIP = 0.83 * HAT_DEPTH;
 
 function sideAt(t: number) {
   return { x: APEX.x + (RIM.x - APEX.x) * t, y: APEX.y + (RIM.y - APEX.y) * t };
