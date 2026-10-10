@@ -13,13 +13,13 @@
   "media": [
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786784755/portfolio/art/tranh-4-am-sac-hoang-cung.jpg",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791646108/portfolio/art/tranh-4-am-sac-hoang-cung.jpg",
       "alt": {
         "en": "Painting titled Sounds of the Royal Court",
         "vi": "Tranh Âm sắc hoàng cung"
       },
-      "width": 3308,
-      "height": 2338
+      "width": 3268,
+      "height": 2292
     }
   ],
   "status": "published"

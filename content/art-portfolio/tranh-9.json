@@ -13,13 +13,13 @@
   "media": [
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786785627/portfolio/art/tranh-9-goc-pho-binh-yen.jpg",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791646117/portfolio/art/tranh-9-goc-pho-binh-yen.jpg",
       "alt": {
         "en": "Painting titled A Peaceful Street Corner",
         "vi": "Tranh Góc phố bình yên"
       },
-      "width": 2338,
-      "height": 3308
+      "width": 2314,
+      "height": 3260
     }
   ],
   "status": "published"

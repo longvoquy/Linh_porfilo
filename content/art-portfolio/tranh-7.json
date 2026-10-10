@@ -13,13 +13,13 @@
   "media": [
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1786784760/portfolio/art/tranh-7-sac-mau.jpg",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791646114/portfolio/art/tranh-7-sac-mau.jpg",
       "alt": {
         "en": "Painting titled Colors",
         "vi": "Tranh Sắc màu"
       },
-      "width": 3307,
-      "height": 2339
+      "width": 3274,
+      "height": 2208
     }
   ],
   "status": "published"

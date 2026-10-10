@@ -12,13 +12,13 @@
   "media": [
     {
       "type": "image",
-      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791029581/portfolio/art/tranh-3-tet-xua.jpg",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/f_auto,q_auto/v1791646105/portfolio/art/tranh-3-tet-xua.jpg",
       "alt": {
         "en": "Painting titled Tết of Yesteryear",
         "vi": "Tranh Tết xưa"
       },
-      "width": 3307,
-      "height": 2339
+      "width": 3250,
+      "height": 2198
     }
   ],
   "status": "published"
