@@ -1,0 +1,29 @@
+{
+  "slug": "social-security-options-vietnam",
+  "section": "research",
+  "title": {
+    "en": "Financial Options for Social Security in Vietnam",
+    "vi": "Các phương án tài chính cho an sinh xã hội tại Việt Nam"
+  },
+  "org": {
+    "en": "UNDP",
+    "vi": "UNDP"
+  },
+  "date": "2025",
+  "caption": {
+    "en": "A solutions report on financial options for social security in Vietnam, prepared with UNDP (2025).",
+    "vi": "Báo cáo giải pháp về các phương án tài chính cho an sinh xã hội tại Việt Nam, thực hiện cùng UNDP (2025)."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/social-security-options-vietnam/certificates/bc-giai-phap-undp-en-23-10-2025-19-11-2025.pdf"
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/social-security-options-vietnam/certificates/bc-giai-phap-undp.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/research/social-security-options-vietnam",
+  "status": "published"
+}

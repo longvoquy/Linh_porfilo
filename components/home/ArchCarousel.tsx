@@ -8,7 +8,8 @@ import { useTranslation } from "@/lib/i18n/useTranslation";
 import { archBase, ringOffset, wrapIndex } from "./carouselMath";
 import { sectionIcons } from "./sectionIcons";
 
-const sections = getAllSections();
+// The hat artwork has seven painted panels, so the Home hat/carousel stay at seven until it is repainted for Interests.
+const sections = getAllSections().filter((section) => section.key !== "interests");
 
 /**
  * The arches stand on a ring that echoes the hat's brim: the front of an

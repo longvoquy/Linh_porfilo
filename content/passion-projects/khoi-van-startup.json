@@ -1,0 +1,19 @@
+{
+  "slug": "khoi-van-startup",
+  "section": "passion-projects",
+  "title": {
+    "en": "Startup: Khởi Vân",
+    "vi": "Dự án khởi nghiệp: Khởi Vân"
+  },
+  "org": {
+    "en": "Khởi Vân",
+    "vi": "Khởi Vân"
+  },
+  "caption": {
+    "en": "Photos from Khởi Vân, a startup project I worked on.",
+    "vi": "Hình ảnh từ Khởi Vân, một dự án khởi nghiệp mà mình thực hiện."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/passion-projects/khoi-van-startup",
+  "status": "published"
+}

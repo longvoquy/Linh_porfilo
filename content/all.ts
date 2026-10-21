@@ -20,6 +20,21 @@ import tranh8 from "./art-portfolio/tranh-8.json";
 import tranh9 from "./art-portfolio/tranh-9.json";
 import tranh10 from "./art-portfolio/tranh-10.json";
 import tranh11 from "./art-portfolio/tranh-11.json";
+import harvardCrimson2026_awards from "./awards/harvard-crimson-2026.json";
+import kangarooScience_awards from "./awards/kangaroo-science.json";
+import extraCurriculars_awards from "./awards/extra-curriculars.json";
+import exhibition_passionprojects from "./passion-projects/exhibition.json";
+import khoiVanStartup_passionprojects from "./passion-projects/khoi-van-startup.json";
+import socialSecurityOptionsVietnam_research from "./research/social-security-options-vietnam.json";
+import ceramicCulturalHeritage_research from "./research/ceramic-cultural-heritage.json";
+import vietinbank_internship from "./internship/vietinbank.json";
+import kingler_internship from "./internship/kingler.json";
+import youngBizfest2026_leadership from "./leadership/young-bizfest-2026.json";
+import sunriseAutismCenter_volunteer from "./volunteer/sunrise-autism-center.json";
+import quyUocMoXanh_volunteer from "./volunteer/quy-uoc-mo-xanh.json";
+import basketball_interests from "./interests/basketball.json";
+import musicalClub_interests from "./interests/musical-club.json";
+import soccerVarsity_interests from "./interests/soccer-varsity.json";
 
 /**
  * Every published/coming-soon item across all sections. Add a new item by
@@ -48,4 +63,19 @@ export const allItems: ActivityItem[] = [
   tranh9 as ActivityItem,
   tranh10 as ActivityItem,
   tranh11 as ActivityItem,
+  harvardCrimson2026_awards as ActivityItem,
+  kangarooScience_awards as ActivityItem,
+  extraCurriculars_awards as ActivityItem,
+  exhibition_passionprojects as ActivityItem,
+  khoiVanStartup_passionprojects as ActivityItem,
+  socialSecurityOptionsVietnam_research as ActivityItem,
+  ceramicCulturalHeritage_research as ActivityItem,
+  vietinbank_internship as ActivityItem,
+  kingler_internship as ActivityItem,
+  youngBizfest2026_leadership as ActivityItem,
+  sunriseAutismCenter_volunteer as ActivityItem,
+  quyUocMoXanh_volunteer as ActivityItem,
+  basketball_interests as ActivityItem,
+  musicalClub_interests as ActivityItem,
+  soccerVarsity_interests as ActivityItem,
 ];

@@ -13,7 +13,12 @@
     "en": "Part of the Student Council's organizing committee for a music and drama night.",
     "vi": "Tham gia ban tổ chức đêm nhạc kịch của Hội đồng học sinh."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/leadership/student-council-dem-nhac-kich/certificates/head-hr-cert.pdf"
+    }
+  ],
   "cloudinaryFolder": "portfolio/leadership/student-council-dem-nhac-kich",
   "status": "published"
 }

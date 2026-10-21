@@ -25,7 +25,8 @@ export type SectionKey =
   | "leadership"
   | "passion-projects"
   | "research"
-  | "volunteer";
+  | "volunteer"
+  | "interests";
 
 export type ActivityItem = {
   slug: string;

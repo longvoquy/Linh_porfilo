@@ -11,15 +11,23 @@
   },
   "date": "2025",
   "caption": {
-    "en": "Took part in the VEO competition.",
-    "vi": "Tham gia cuộc thi VEO."
+    "en": "Awarded an Encouragement Prize at the VEO competition.",
+    "vi": "Đạt Giải Khuyến khích tại cuộc thi VEO."
   },
   "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/veo/certificates/veo-giay-chung-nhan-giai-khuyen-khich.pdf"
+    },
     {
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788658/portfolio/awards/veo/certificates/veo-chung-nhan-tham-gia.pdf"
     }
   ],
   "cloudinaryFolder": "portfolio/awards/veo",
-  "status": "published"
+  "status": "published",
+  "tier": {
+    "en": "Encouragement Prize",
+    "vi": "Giải Khuyến khích"
+  }
 }

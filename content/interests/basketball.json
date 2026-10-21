@@ -1,0 +1,16 @@
+{
+  "slug": "basketball",
+  "section": "interests",
+  "title": {
+    "en": "Basketball",
+    "vi": "Bóng rổ"
+  },
+  "date": "2026",
+  "caption": {
+    "en": "Playing basketball.",
+    "vi": "Chơi bóng rổ."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/interests/basketball",
+  "status": "published"
+}

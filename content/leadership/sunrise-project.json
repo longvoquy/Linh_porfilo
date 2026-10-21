@@ -10,10 +10,14 @@
     "vi": "Sunrise Project"
   },
   "caption": {
-    "en": "Involved in the Sunrise Project.",
-    "vi": "Tham gia Sunrise Project."
+    "en": "Served as Vice President of the Sunrise Project.",
+    "vi": "Giữ vai trò Phó Chủ tịch của Sunrise Project."
   },
   "media": [],
   "cloudinaryFolder": "portfolio/leadership/sunrise-project",
-  "status": "published"
+  "status": "published",
+  "tier": {
+    "en": "Vice President",
+    "vi": "Phó Chủ tịch"
+  }
 }

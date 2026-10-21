@@ -1,0 +1,28 @@
+{
+  "slug": "vietinbank",
+  "section": "internship",
+  "title": {
+    "en": "VietinBank Internship",
+    "vi": "Thực tập tại VietinBank"
+  },
+  "org": {
+    "en": "VietinBank",
+    "vi": "VietinBank"
+  },
+  "caption": {
+    "en": "Completed an internship at VietinBank.",
+    "vi": "Hoàn thành kỳ thực tập tại VietinBank."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-ta.pdf"
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-tv.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/internship/vietinbank",
+  "status": "published"
+}

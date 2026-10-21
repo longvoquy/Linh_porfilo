@@ -1,19 +1,14 @@
-"use client";
+import { VisualChapters } from "@/components/chapters/VisualChapters";
+import { getChapters } from "@/lib/chapters";
+import { getSectionMeta } from "@/lib/getContent";
 
-import { ActivityGrid } from "@/components/activity/ActivityGrid";
-import { getSectionItems, getSectionMeta } from "@/lib/getContent";
-import { useTranslation } from "@/lib/i18n/useTranslation";
+/** Server Component: see app/awards/page.tsx for why this uses route-segment `revalidate`. */
+export const revalidate = 3600;
 
 const meta = getSectionMeta("passion-projects")!;
-const items = getSectionItems("passion-projects");
 
-export default function PassionProjectsPage() {
-  const { localize } = useTranslation();
+export default async function PassionProjectsPage() {
+  const chapters = await getChapters("passion-projects");
 
-  return (
-    <main className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="mb-10 text-3xl font-semibold text-navy">{localize(meta.label)}</h1>
-      <ActivityGrid items={items} />
-    </main>
-  );
+  return <VisualChapters chapters={chapters} label={meta.label} introKey="passion-projects.intro" />;
 }

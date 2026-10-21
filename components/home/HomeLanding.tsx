@@ -14,7 +14,8 @@ import { HatStage } from "./HatStage";
 import { PageLoader } from "./PageLoader";
 import { wrapIndex, yawForIndex } from "./carouselMath";
 
-const sections = getAllSections();
+// The hat artwork has seven painted panels, so the Home hat/carousel stay at seven until it is repainted for Interests.
+const sections = getAllSections().filter((section) => section.key !== "interests");
 /**
  * Set once the hat has loaded in this tab. Coming back to Home client-side
  * remounts it, and the full-page loader is only for the first visit.

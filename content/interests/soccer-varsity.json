@@ -1,0 +1,25 @@
+{
+  "slug": "soccer-varsity",
+  "section": "interests",
+  "title": {
+    "en": "Soccer Varsity",
+    "vi": "Đội bóng đá Varsity"
+  },
+  "org": {
+    "en": "Soccer Varsity Team",
+    "vi": "Đội bóng đá Varsity"
+  },
+  "date": "2025–2026",
+  "caption": {
+    "en": "Part of the school's Varsity Soccer team, 2025–2026.",
+    "vi": "Thành viên đội bóng đá Varsity của trường, 2025–2026."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/interests/soccer-varsity/certificates/bong-da-2025-ky-niem-chuong.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/interests/soccer-varsity",
+  "status": "published"
+}

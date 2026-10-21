@@ -19,7 +19,7 @@ Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/y
 ## Layout
 
 - `app/` — routes. Nav: `/`, `/about`, `/timeline`, `/portfolio`, `/resume`, `/contact` (placeholders using `ComingSoon`). Portfolio sections live at `/<section.key>`.
-- `content/` — the content layer. `sections.ts` defines the 7 sections (key, bilingual label, order); `content/<section>/*.json` are `ActivityItem`s; `all.ts` imports every JSON file.
+- `content/` — the content layer. `sections.ts` defines the 8 sections (key, bilingual label, order); `content/<section>/*.json` are `ActivityItem`s; `all.ts` imports every JSON file.
 - `lib/` — `types.ts` (shared types), `getContent.ts` (section/item queries), `chapters.ts` + `cloudinary.ts` (server-only gallery loading), `i18n/` (language context, `useTranslation`, `dictionaries/en.json` + `vi.json`).
 - `components/home/` — Home landing: 3D nón lá (`HatScene`, `hatGeometry`, `hatTexture`), `HatStage` (WebGL probe + `HatFallback` + error boundary), `ArchCarousel` driven by the hat's yaw (`carouselMath`), `HatHint`, `SpinGuide`.
 - `components/chapters/` — `VisualChapters` renderer (chapter + gallery + lightbox) used by Awards, Leadership, Volunteer.
@@ -37,8 +37,8 @@ Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/y
 
 ## Two page patterns
 
-1. **Visual chapters** (awards, leadership, volunteer): async Server Component calling `getChapters(sectionKey)`, with `export const revalidate = 3600`. Gallery images are discovered at request time from the item's `cloudinaryFolder` (direct children only; an asset named `cover` leads). Never paste image URLs into code — upload to the folder instead.
-2. **Activity grid** (art-portfolio, research, internship, passion-projects): `"use client"` page rendering `ActivityGrid` from `getSectionItems`.
+1. **Visual chapters** (awards, passion-projects, research, internship, leadership, volunteer, interests): async Server Component calling `getChapters(sectionKey)`, with `export const revalidate = 3600`. Gallery images are discovered at request time from the item's `cloudinaryFolder` (direct children only; an asset named `cover` leads). Never paste image URLs into code — upload to the folder instead.
+2. **Activity grid** (art-portfolio): `"use client"` page rendering `ActivityGrid` from `getSectionItems`.
 
 Caching uses route-segment `revalidate`, deliberately **not** `use cache` / `cacheComponents` (that would change rendering for every route). Don't switch without discussing it.
 
@@ -58,10 +58,12 @@ Caching uses route-segment `revalidate`, deliberately **not** `use cache` / `cac
 
 - `HatScene` is loaded with `dynamic(..., { ssr: false })`; `HatStage` probes WebGL first and falls back to `HatFallback` (SVG) — keep both visually in step when the hat design changes.
 - The hat surface is `/decor/hat-disc.webp`: a top-down disc painting (`asset/test2.png`) unrolled into a 2560×512 strip by `scripts/prepare-decor.mjs`. The texture size there must match `WIDTH`/`HEIGHT` in `hatTexture.ts`. `PANEL_OFFSET` rotates the artwork so the front faces the initial section (`INITIAL_SECTION = "research"` in `HomeLanding.tsx`).
+- The Home hat/carousel show only the first seven sections: the artwork has seven painted panels, so `interests` is filtered out in `HomeLanding`/`ArchCarousel` until it is repainted.
 - `HomeLanding` social links are `"#"` placeholders — fill in real URLs before publishing.
 
 ## Asset scripts
 
 - `prepare-decor.mjs` — turns `asset/` etchings (lotus, One Pillar Pagoda) into transparent sepia-ink WebPs and builds `hat-disc.webp`. Re-run after changing any source in `asset/`, and commit the regenerated `public/decor/*.webp`.
+- `sync-data2-to-cloudinary.mjs` — syncs `data2.0/` to Cloudinary (dry run by default; `--apply` uploads, `--prune` deletes assets no longer in `data2.0`, never ones `content/*.json` links to). Maps each local folder to `portfolio/<section>/<slug>/`; skips videos, `Copy of` duplicates and PDFs over 10 MB.
 - `upload-*-to-cloudinary.mjs` — upload local `data/<Section>/` folders to `portfolio/<section>/<slug>/` (certificates go in a `certificates/` subfolder, excluded from galleries).
 - `convert-art-pdfs.mjs` — renders art-portfolio PDFs to images (with per-file rotation overrides).

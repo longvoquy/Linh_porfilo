@@ -1,0 +1,28 @@
+{
+  "slug": "ceramic-cultural-heritage",
+  "section": "research",
+  "title": {
+    "en": "Cultural Heritage Values and Purchase Intention for Ceramic Products",
+    "vi": "Giá trị di sản văn hóa và ý định mua sản phẩm gốm ứng dụng"
+  },
+  "org": {
+    "en": "IOSR Journal of Humanities and Social Science",
+    "vi": "IOSR Journal of Humanities and Social Science"
+  },
+  "caption": {
+    "en": "A study of how cultural heritage values influence purchase intention for applied-design ceramic products inspired by Vietnamese fine arts, using the S-O-R framework.",
+    "vi": "Nghiên cứu về ảnh hưởng của giá trị di sản văn hóa đến ý định mua sản phẩm gốm thiết kế ứng dụng lấy cảm hứng từ mỹ thuật Việt Nam, theo khung S-O-R."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/f3108044051.pdf"
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/iosr-jhss-6-cert.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/research/ceramic-cultural-heritage",
+  "status": "published"
+}

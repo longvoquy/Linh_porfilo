@@ -1,0 +1,24 @@
+{
+  "slug": "quy-uoc-mo-xanh",
+  "section": "volunteer",
+  "title": {
+    "en": "Green Dreams Fund",
+    "vi": "Quỹ Ước mơ xanh"
+  },
+  "org": {
+    "en": "Green Dreams Fund",
+    "vi": "Quỹ Ước mơ xanh"
+  },
+  "caption": {
+    "en": "Contributed to the Green Dreams Fund.",
+    "vi": "Ủng hộ Quỹ Ước mơ xanh."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/volunteer/quy-uoc-mo-xanh/certificates/cert-ung-ho-quy-uoc-mo-xanh.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/volunteer/quy-uoc-mo-xanh",
+  "status": "published"
+}

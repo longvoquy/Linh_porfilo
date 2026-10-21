@@ -1,0 +1,24 @@
+{
+  "slug": "kingler",
+  "section": "internship",
+  "title": {
+    "en": "Kingler Internship",
+    "vi": "Thực tập tại Kingler"
+  },
+  "org": {
+    "en": "Kingler",
+    "vi": "Kingler"
+  },
+  "caption": {
+    "en": "Completed an internship at Kingler.",
+    "vi": "Hoàn thành kỳ thực tập tại Kingler."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/kingler/certificates/2-kingler-xac-nhan-thuc-tap.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/internship/kingler",
+  "status": "published"
+}

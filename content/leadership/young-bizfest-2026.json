@@ -1,0 +1,25 @@
+{
+  "slug": "young-bizfest-2026",
+  "section": "leadership",
+  "title": {
+    "en": "Young BizFest 2026",
+    "vi": "Hội chợ Young BizFest 2026"
+  },
+  "org": {
+    "en": "Young BizFest",
+    "vi": "Young BizFest"
+  },
+  "date": "2026",
+  "caption": {
+    "en": "Took part in the Young BizFest 2026 fair.",
+    "vi": "Tham gia hội chợ Young BizFest 2026."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/leadership/young-bizfest-2026/certificates/cert-hoi-cho-young-bizfest-2026.pdf"
+    }
+  ],
+  "cloudinaryFolder": "portfolio/leadership/young-bizfest-2026",
+  "status": "published"
+}

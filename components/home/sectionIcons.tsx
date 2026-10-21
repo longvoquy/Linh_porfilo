@@ -56,6 +56,12 @@ export const sectionIcons: Record<SectionKey, (props: IconProps) => ReactElement
       <path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z M21 21l-4.5-4.5" />
     </Icon>
   ),
+  interests: (p) => (
+    <Icon {...p}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+    </Icon>
+  ),
   internship: (p) => (
     <Icon {...p}>
       <path d="M4 8h16v11H4Z M9 8V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2 M4 13h16" />

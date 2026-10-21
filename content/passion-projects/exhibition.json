@@ -1,0 +1,15 @@
+{
+  "slug": "exhibition",
+  "section": "passion-projects",
+  "title": {
+    "en": "Exhibition",
+    "vi": "Triển lãm"
+  },
+  "caption": {
+    "en": "Moments from an exhibition I took part in.",
+    "vi": "Những khoảnh khắc từ một buổi triển lãm mà mình tham gia."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/passion-projects/exhibition",
+  "status": "published"
+}

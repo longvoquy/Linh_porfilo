@@ -1,0 +1,19 @@
+{
+  "slug": "kangaroo-science",
+  "section": "awards",
+  "title": {
+    "en": "International Kangaroo Science Contest",
+    "vi": "Cuộc thi Khoa học Kangaroo quốc tế"
+  },
+  "org": {
+    "en": "International Kangaroo Science Contest",
+    "vi": "Cuộc thi Khoa học Kangaroo quốc tế"
+  },
+  "caption": {
+    "en": "Took part in the International Kangaroo Science Contest.",
+    "vi": "Tham gia cuộc thi Khoa học Kangaroo quốc tế."
+  },
+  "media": [],
+  "cloudinaryFolder": "portfolio/awards/kangaroo-science",
+  "status": "published"
+}
