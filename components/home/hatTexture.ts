@@ -20,9 +20,10 @@ const PANEL_SRCS = ["/decor/hat-disc.webp"] as const;
 /**
  * How far round the artwork is turned, as a fraction of a turn. Chosen so the
  * Lạc birds face the viewer on the section the page opens on — the third of
- * seven (the hat shows seven sections), so the front of the hat sits 2/7 of a turn round.
+ * eight, so the front of the hat sits 2/8 of a turn round. (It was 0.089 for
+ * seven sections: going to eight moves the front by 2/7 - 2/8 = 1/28 of a turn.)
  */
-const PANEL_OFFSET = 0.089;
+const PANEL_OFFSET = 0.1247;
 
 /** Fractions of the height (0 = apex, 1 = rim) where the woven hoops sit. */
 const HOOP_START = 0.1;

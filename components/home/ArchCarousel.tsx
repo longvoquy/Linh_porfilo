@@ -24,8 +24,7 @@ import { useTranslation } from "@/lib/i18n/useTranslation";
 import { archBase, archOpacity, wrapIndex, wrapOffset } from "./carouselMath";
 import { sectionIcons } from "./sectionIcons";
 
-// Interests stays off the Home hat/carousel (reachable from the menu) until the carousel is redesigned.
-const sections = getAllSections().filter((section) => section.key !== "interests");
+const sections = getAllSections();
 
 /**
  * The arches stand on a ring that echoes the hat's brim: the front of an

@@ -14,8 +14,7 @@ import { HatStage } from "./HatStage";
 import { PageLoader } from "./PageLoader";
 import { wrapIndex, yawForIndex } from "./carouselMath";
 
-// Interests stays off the Home hat/carousel (reachable from the menu) until the carousel is redesigned.
-const sections = getAllSections().filter((section) => section.key !== "interests");
+const sections = getAllSections();
 /**
  * Set once the hat has loaded in this tab. Coming back to Home client-side
  * remounts it, and the full-page loader is only for the first visit.
