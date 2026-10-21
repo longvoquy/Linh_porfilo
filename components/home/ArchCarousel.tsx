@@ -57,6 +57,8 @@ const ACTIVE_SCALE = 1.04;
 const CLICK_SLOP = 6;
 /** One step of the wheel is the first neighbour's sideways offset: 88% of an arch's width. */
 const STEP_WIDTH_RATIO = 0.88;
+/** After a click on an arch: how long the hat gets to turn to it before the section opens. */
+const ENTER_DELAY_MS = 450;
 
 type Props = {
   activeIndex: number;
@@ -177,7 +179,18 @@ export function ArchCarousel({ activeIndex, onChange, onEnter }: Props) {
   const row = useRef<HTMLDivElement>(null);
   const count = sections.length;
 
-  const go = (delta: number) => onChange(wrapIndex(activeIndex + delta, count));
+  // A click on an arch turns the hat, then enters the section after a beat. Any
+  // other move in that beat (arrow, key, a new drag) cancels the entry.
+  const enterTimer = useRef<number | null>(null);
+  const cancelEnter = () => {
+    if (enterTimer.current !== null) window.clearTimeout(enterTimer.current);
+    enterTimer.current = null;
+  };
+
+  const go = (delta: number) => {
+    cancelEnter();
+    onChange(wrapIndex(activeIndex + delta, count));
+  };
 
   const settleTo = (target: number) => {
     settling.current?.stop();
@@ -196,7 +209,13 @@ export function ArchCarousel({ activeIndex, onChange, onEnter }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex]);
 
-  useEffect(() => () => settling.current?.stop(), []);
+  useEffect(
+    () => () => {
+      settling.current?.stop();
+      if (enterTimer.current !== null) window.clearTimeout(enterTimer.current);
+    },
+    [],
+  );
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "ArrowLeft") {
@@ -215,6 +234,7 @@ export function ArchCarousel({ activeIndex, onChange, onEnter }: Props) {
   // slop, so a plain click still reaches its link.
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) return;
+    cancelEnter();
     const arch = row.current?.querySelector("a");
     const width = arch?.getBoundingClientRect().width ?? 140;
     drag.current = {
@@ -272,8 +292,22 @@ export function ArchCarousel({ activeIndex, onChange, onEnter }: Props) {
     }
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    if (active) onEnter(event.currentTarget.getAttribute("href") ?? "/");
-    else onChange(index);
+    const href = event.currentTarget.getAttribute("href") ?? "/";
+    if (active) {
+      cancelEnter();
+      onEnter(href);
+    } else if (!enterTimer.current) {
+      // One click: bring the arch to the front, let the hat turn to it, then
+      // go in — without a second click.
+      onChange(index);
+      enterTimer.current = window.setTimeout(
+        () => {
+          enterTimer.current = null;
+          onEnter(href);
+        },
+        reduceMotion ? 0 : ENTER_DELAY_MS,
+      );
+    }
   };
 
   return (
