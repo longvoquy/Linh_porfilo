@@ -1,19 +1,6 @@
-import type { Metadata } from "next";
-import { ExhibitionStage } from "@/components/exhibition/ExhibitionStage";
-import { toExhibitPieces } from "@/components/exhibition/pieces";
-import { getPublishedItems } from "@/lib/getContent";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Art Exhibition",
-  description: "A walk through a gallery of original paintings, in 3D.",
-};
-
+/** The tour now lives at the home page; this keeps older links working. */
 export default function ExhibitionPage() {
-  const pieces = toExhibitPieces(getPublishedItems("art-portfolio"));
-
-  return (
-    <main>
-      <ExhibitionStage pieces={pieces} />
-    </main>
-  );
+  redirect("/");
 }

@@ -45,6 +45,12 @@ describe("toExhibitPieces", () => {
     assert.deepEqual(piece.alt, { en: "alt", vi: "alt" });
     assert.equal(piece.date, "2025");
   });
+  it("uses the description for the close-up, or the caption without one", () => {
+    const [plain] = toExhibitPieces([item("tranh-1-x")]);
+    assert.deepEqual(plain.description, { en: "c", vi: "c" });
+    const [described] = toExhibitPieces([item("tranh-1-x", { description: { en: "d", vi: "đ" } })]);
+    assert.deepEqual(described.description, { en: "d", vi: "đ" });
+  });
   it("falls back to the title for alt, and to 4:3 without a size", () => {
     const [piece] = toExhibitPieces([item("tranh-1-x", { media: [{ type: "image", src: SRC }] })]);
     assert.deepEqual(piece.alt, { en: "T tranh-1-x", vi: "V tranh-1-x" });

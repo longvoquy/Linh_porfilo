@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { ExhibitPiece } from "./pieces";
@@ -23,8 +24,108 @@ type Props = {
 const buttonClass =
   "pointer-events-auto grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-ivory/95 text-xl text-navy shadow transition-opacity hover:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink disabled:cursor-default disabled:opacity-30";
 
-const pillClass =
-  "pointer-events-auto absolute left-4 top-4 rounded-full border border-gold/40 bg-ivory/95 px-4 py-2 text-sm text-navy shadow hover:bg-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink";
+/**
+ * Normal / WASD, styled like the language toggle beside it. WASD needs a mouse
+ * and keyboard, so elsewhere it stays visible but disabled.
+ */
+function ModeSwitch({
+  walking,
+  canWalk,
+  onTour,
+  onWalk,
+}: {
+  walking: boolean;
+  canWalk: boolean;
+  onTour: () => void;
+  onWalk: () => void;
+}) {
+  const { t } = useTranslation();
+  const options = [
+    { key: "tour", label: t("exhibition.modeNormal"), active: !walking, enabled: true, select: onTour },
+    {
+      key: "walk",
+      label: t("exhibition.modeWalk"),
+      active: walking,
+      enabled: canWalk,
+      select: onWalk,
+    },
+  ];
+
+  return (
+    <div
+      role="group"
+      aria-label={t("exhibition.mode")}
+      className="relative flex items-center rounded-full border border-gold/30 bg-ivory/95 p-1 text-sm font-medium shadow"
+    >
+      {options.map(({ key, label, active, enabled, select }) => (
+        <button
+          key={key}
+          type="button"
+          aria-pressed={active}
+          aria-disabled={!enabled}
+          title={enabled ? undefined : t("exhibition.modeWalkUnavailable")}
+          onClick={() => {
+            if (enabled && !active) select();
+          }}
+          className={`group relative z-10 touch-manipulation px-3 py-2 tracking-wide focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink sm:py-1.5 ${
+            enabled ? "" : "cursor-not-allowed"
+          }`}
+        >
+          {active && (
+            <motion.span
+              layoutId="mode-switch-pill"
+              className="absolute inset-0 -z-10 rounded-full bg-navy"
+              transition={{ type: "spring", stiffness: 500, damping: 35 }}
+            />
+          )}
+          <span
+            className={`transition-colors ${
+              active ? "text-cream" : enabled ? "text-navy/70 group-hover:text-navy" : "text-navy/40"
+            }`}
+          >
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * The note that opens beside a painting when the visitor looks closer. It is
+ * keyed by painting in the parent, so closing it lasts until the next close-up.
+ */
+function PaintingNote({ title, text }: { title: string; text: string }) {
+  const { t } = useTranslation();
+  const reducedMotion = useReducedMotion();
+  const [open, setOpen] = useState(true);
+  if (!open) return null;
+
+  return (
+    <motion.aside
+      aria-label={t("exhibition.noteLabel")}
+      initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      // Waits for the camera to settle on the painting before appearing.
+      transition={{ duration: reducedMotion ? 0 : 0.3, delay: reducedMotion ? 0 : 0.5 }}
+      className="pointer-events-auto absolute inset-x-4 top-20 rounded-2xl border border-gold/40 bg-ivory/95 p-5 pr-12 text-navy shadow-lg md:inset-x-auto md:right-8 md:top-1/2 md:w-80 md:-translate-y-1/2"
+    >
+      <button
+        type="button"
+        aria-label={t("exhibition.noteClose")}
+        onClick={() => setOpen(false)}
+        className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full text-navy/70 hover:bg-navy/10 hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
+      >
+        <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+          <path d="M3 3l10 10M13 3 3 13" />
+        </svg>
+      </button>
+      <p className="text-xs tracking-widest text-gold-ink uppercase">{t("exhibition.noteLabel")}</p>
+      <h3 className="font-heading mt-1 text-xl font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-navy/80">{text}</p>
+    </motion.aside>
+  );
+}
 
 /**
  * Everything the visitor reads or presses. The canvas is decorative; this layer
@@ -74,19 +175,8 @@ export function ExhibitionHud({
     <div className="pointer-events-none absolute inset-0">
       <h1 className="sr-only">{t("exhibition.title")}</h1>
 
-      {walk ? (
-        <button type="button" onClick={onExitWalk} className={pillClass}>
-          {t("exhibition.walkExit")}
-        </button>
-      ) : (
-        canWalk && (
-          <button type="button" onClick={onEnterWalk} className={pillClass}>
-            {t("exhibition.walk")}
-          </button>
-        )
-      )}
-
-      <div className="pointer-events-auto absolute right-4 top-4">
+      <div className="pointer-events-auto absolute right-4 top-4 flex items-center gap-2">
+        <ModeSwitch walking={walk !== null} canWalk={canWalk} onTour={onExitWalk} onWalk={onEnterWalk} />
         <LanguageToggle />
       </div>
 
@@ -117,6 +207,10 @@ export function ExhibitionHud({
             <span aria-hidden>›</span>
           </button>
         </>
+      )}
+
+      {closeUp && !walk && piece && (
+        <PaintingNote key={piece.slug} title={localize(piece.title)} text={localize(piece.description)} />
       )}
 
       <section

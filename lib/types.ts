@@ -40,6 +40,8 @@ export type ActivityItem = {
   date?: string;
   tier?: LocalizedString;
   caption: LocalizedString;
+  /** A longer note about the work, for places with room for it (the exhibition's close-up). Falls back to `caption`. */
+  description?: LocalizedString;
   media: MediaRef[];
   /**
    * Cloudinary folder whose images make up this item's gallery, e.g.

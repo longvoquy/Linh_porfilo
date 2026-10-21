@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { ModeLanding } from "@/components/landing/ModeLanding";
+import { ExhibitionStage } from "@/components/exhibition/ExhibitionStage";
+import { toExhibitPieces } from "@/components/exhibition/pieces";
+import { getPublishedItems } from "@/lib/getContent";
 
 export const metadata: Metadata = {
   title: "Art Exhibition",
-  description: "A gallery of original paintings, in 3D. Choose how to walk through it.",
+  description: "A walk through a gallery of original paintings, in 3D.",
 };
 
+/** The exhibition's guided tour. WASD mode is a switch in the corner (and /exhibition/walk). */
 export default function Home() {
-  return <ModeLanding />;
+  const pieces = toExhibitPieces(getPublishedItems("art-portfolio"));
+
+  return (
+    <main>
+      <ExhibitionStage pieces={pieces} />
+    </main>
+  );
 }

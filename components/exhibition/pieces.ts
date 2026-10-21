@@ -6,6 +6,8 @@ export type ExhibitPiece = {
   title: LocalizedString;
   date?: string;
   caption: LocalizedString;
+  /** Shown in the close-up; the caption when the item has no description of its own. */
+  description: LocalizedString;
   alt: LocalizedString;
   src: string;
   width: number;
@@ -33,6 +35,7 @@ export function toExhibitPieces(items: ActivityItem[]): ExhibitPiece[] {
           title: item.title,
           date: item.date,
           caption: item.caption,
+          description: item.description ?? item.caption,
           alt: image.alt ?? item.title,
           src: image.src,
           width: image.width ?? FALLBACK_SIZE.width,

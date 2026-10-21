@@ -16,7 +16,7 @@ export default function ArtPortfolioPage() {
       <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-3xl font-semibold text-navy">{localize(meta.label)}</h1>
         <Link
-          href="/exhibition"
+          href="/"
           className="rounded-full bg-navy px-5 py-2 text-sm text-cream hover:bg-navy/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-ink"
         >
           {t("exhibition.visit")}
