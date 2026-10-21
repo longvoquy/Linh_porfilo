@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import type { ChapterImage } from "@/lib/types";
+import type { ChapterImage, ChapterVideo } from "@/lib/types";
 
 /**
  * SERVER ONLY. This module reads CLOUDINARY_API_SECRET and must never be
@@ -52,6 +52,51 @@ type CloudinaryResource = {
   height: number;
   created_at: string;
 };
+
+/**
+ * Lists the clips in `<folder>/videos/`. Same contract as `listFolderImages`:
+ * never throws, `[]` without credentials or on an API error. Ordered by name
+ * with numbers compared as numbers, so "video-2" comes before "video-10".
+ */
+export async function listFolderVideos(folder: string): Promise<ChapterVideo[]> {
+  if (!configure()) return [];
+
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME!;
+  const prefix = `${folder.replace(/\/$/, "")}/videos/`;
+
+  const resources: CloudinaryResource[] = [];
+  try {
+    let nextCursor: string | undefined;
+    do {
+      const res = await cloudinary.api.resources({
+        type: "upload",
+        resource_type: "video",
+        prefix,
+        max_results: 500,
+        next_cursor: nextCursor,
+      });
+      resources.push(...(res.resources as CloudinaryResource[]));
+      nextCursor = res.next_cursor as string | undefined;
+    } while (nextCursor);
+  } catch (err) {
+    console.error(`[cloudinary] Failed to list videos in "${folder}":`, err instanceof Error ? err.message : err);
+    return [];
+  }
+
+  return resources
+    .filter((r) => !r.public_id.slice(prefix.length).includes("/"))
+    .sort((a, b) => a.public_id.localeCompare(b.public_id, undefined, { numeric: true }))
+    .map((r) => {
+      const base = `https://res.cloudinary.com/${cloudName}/video/upload`;
+      return {
+        id: r.public_id,
+        src: `${base}/f_mp4,q_auto/v${r.version}/${r.public_id}.mp4`,
+        poster: `${base}/so_0,f_jpg,q_auto/v${r.version}/${r.public_id}.jpg`,
+        width: r.width,
+        height: r.height,
+      };
+    });
+}
 
 /**
  * Lists the images that live *directly* inside `folder`, ignoring nested

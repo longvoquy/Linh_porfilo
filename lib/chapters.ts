@@ -1,4 +1,4 @@
-import { listFolderImages } from "@/lib/cloudinary";
+import { listFolderImages, listFolderVideos } from "@/lib/cloudinary";
 import { getPublishedItems } from "@/lib/getContent";
 import type { Chapter, SectionKey } from "@/lib/types";
 
@@ -18,9 +18,12 @@ export async function getChapters(sectionKey: SectionKey): Promise<Chapter[]> {
 
   // Folders are independent — list them concurrently rather than in series.
   return Promise.all(
-    items.map(async (item) => ({
-      item,
-      images: item.cloudinaryFolder ? await listFolderImages(item.cloudinaryFolder) : [],
-    })),
+    items.map(async (item) => {
+      const folder = item.cloudinaryFolder;
+      const [images, videos] = folder
+        ? await Promise.all([listFolderImages(folder), listFolderVideos(folder)])
+        : [[], []];
+      return { item, images, videos };
+    }),
   );
 }

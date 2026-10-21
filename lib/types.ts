@@ -14,6 +14,9 @@ export type MediaRef = {
   /** Poster/thumbnail image URL shown in cards and grids (required for pdf/video). */
   thumbnail?: string;
   alt?: LocalizedString;
+  /** Pixel size (or any size with the same aspect ratio, e.g. 16 x 9) — lets layouts reserve space and tell a portrait clip from a landscape one. */
+  width?: number;
+  height?: number;
 };
 
 export type ActivityStatus = "published" | "coming-soon";
@@ -72,6 +75,20 @@ export type Chapter = {
   item: ActivityItem;
   /** Primary/cover image first, then the rest in deterministic order. */
   images: ChapterImage[];
+  /** Clips hosted on Cloudinary, in the chapter folder's `videos/` subfolder. YouTube videos live in `item.media`. */
+  videos: ChapterVideo[];
+};
+
+/** One Cloudinary-hosted clip, with delivery URLs precomputed server-side. */
+export type ChapterVideo = {
+  /** Cloudinary public_id — stable React key. */
+  id: string;
+  /** MP4 delivery URL (Cloudinary transcodes whatever was uploaded). */
+  src: string;
+  /** Still from the first frame. */
+  poster: string;
+  width: number;
+  height: number;
 };
 
 export type SectionMeta = {

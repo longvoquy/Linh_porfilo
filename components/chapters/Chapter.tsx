@@ -20,11 +20,18 @@ type Props = {
  * item this renders is entirely decided by the caller (`VisualChapters`),
  * which in turn only ever holds one section's chapters.
  */
+/** A video taller than it is wide (a phone clip) is shown at a fixed height instead of full column width. */
+function isPortrait(media: { width?: number; height?: number }): boolean {
+  return media.width !== undefined && media.height !== undefined && media.height > media.width;
+}
+
 export function Chapter({ chapter, index, onOpenImage }: Props) {
   const { localize, t } = useTranslation();
   const { item } = chapter;
 
   const documents = item.media.filter((m) => m.type === "pdf" && m.src);
+  // YouTube clips are linked from the content file; Cloudinary clips arrive on `chapter.videos`.
+  const youtube = item.media.filter((m) => m.type === "video" && m.externalUrl);
   const number = String(index + 1).padStart(2, "0");
   // Prefixed with the section so two sections can never collide on this id,
   // even though slugs are already unique per content file today.
@@ -97,6 +104,43 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
           onOpen={onOpenImage}
           title={localize(item.title)}
         />
+
+        {(chapter.videos.length > 0 || youtube.length > 0) && (
+          <div className={chapter.images.length > 0 ? "mt-10 sm:mt-14" : ""}>
+            <p className="text-center text-[11px] uppercase tracking-[0.28em] text-navy/50">{t("chapters.videos")}</p>
+            {/* One clip per row, centred and as large as the column allows; a phone clip is held to a narrower width. */}
+            <div className="mt-5 flex flex-col items-center gap-6 sm:gap-8">
+              {youtube.map((video, i) => (
+                <div key={video.externalUrl} className={`w-full overflow-hidden rounded-2xl bg-navy ${isPortrait(video) ? "max-w-sm" : "max-w-4xl"}`}>
+                  <iframe
+                    src={video.externalUrl}
+                    title={video.alt ? localize(video.alt) : `${localize(item.title)} — video ${i + 1}`}
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                    allowFullScreen
+                    style={{ aspectRatio: `${video.width ?? 16} / ${video.height ?? 9}` }}
+                    className="block w-full border-0"
+                  />
+                </div>
+              ))}
+              {chapter.videos.map((video, i) => (
+                <div key={video.id} className={`w-full overflow-hidden rounded-2xl bg-navy ${isPortrait(video) ? "max-w-sm" : "max-w-4xl"}`}>
+                  <video
+                    controls
+                    playsInline
+                    preload="none"
+                    poster={video.poster}
+                    src={video.src}
+                    aria-label={`${localize(item.title)} — video ${youtube.length + i + 1}`}
+                    style={{ aspectRatio: `${video.width} / ${video.height}` }}
+                    className="block max-h-[80vh] w-full bg-navy object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </motion.section>
     </MotionConfig>
   );
