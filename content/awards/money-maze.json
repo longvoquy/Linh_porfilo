@@ -14,7 +14,12 @@
     "en": "Took part in the Money Maze competition, including its The Debate Arena round.",
     "vi": "Tham gia cuộc thi Money Maze, bao gồm phần thi The Debate Arena."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://drive.google.com/file/d/1bjSc-lqrpeXuFVzFcr3kcKOpyqN3dagf/view?usp=sharing"
+    }
+  ],
   "cloudinaryFolder": "portfolio/awards/money-maze",
   "status": "published"
 }
