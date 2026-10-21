@@ -2,10 +2,12 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import {
   archBase,
+  archOpacity,
   indexForYaw,
   ringOffset,
   shortestAngle,
   wrapIndex,
+  wrapOffset,
   yawForIndex,
 } from "./carouselMath.ts";
 
@@ -97,5 +99,32 @@ describe("archBase", () => {
       assert.ok(at(offset).y < at(offset - 1).y, `not rising at ${offset}`);
       assert.ok(at(offset).x > at(offset - 1).x, `not spreading at ${offset}`);
     }
+  });
+});
+
+describe("wrapOffset", () => {
+  it("matches ringOffset at whole positions", () => {
+    for (let index = 0; index < 7; index++) {
+      for (let pos = 0; pos < 7; pos++) {
+        close(wrapOffset(index, pos, 7), ringOffset(index, pos, 7));
+      }
+    }
+  });
+
+  it("is fractional between stops and wraps past either end", () => {
+    close(wrapOffset(3, 2.5, 7), 0.5);
+    close(wrapOffset(0, 6.5, 7), 0.5);
+    close(wrapOffset(6, 0.5, 7), -1.5);
+    close(wrapOffset(1, 12, 7), 3);
+  });
+});
+
+describe("archOpacity", () => {
+  it("is 1 out to the outermost arch and 0 at the back of the ring", () => {
+    close(archOpacity(0, 7), 1);
+    close(archOpacity(3, 7), 1);
+    close(archOpacity(-3.25, 7), 0.5);
+    close(archOpacity(3.5, 7), 0);
+    close(archOpacity(-3.5, 7), 0);
   });
 });

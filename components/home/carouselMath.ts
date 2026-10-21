@@ -52,3 +52,23 @@ export function archBase(
   const t = offset * stepDeg * (Math.PI / 180);
   return { x: a * Math.sin(t), y: -b * (1 - Math.cos(t)) };
 }
+
+/**
+ * Signed distance of item `index` from a fractional wheel position `pos`, on a
+ * ring of `count` items, in `[-count / 2, count / 2)`. The continuous cousin of
+ * `ringOffset`: it is what lets the arches follow a finger between two stops.
+ */
+export function wrapOffset(index: number, pos: number, count: number): number {
+  const half = count / 2;
+  return ((((index - pos + half) % count) + count) % count) - half;
+}
+
+/**
+ * Opacity of an arch `offset` steps from the front. Fully visible out to the
+ * outermost resting arch, then fading over half a step so an arch crossing the
+ * back of the ring slips away instead of popping to the other side.
+ */
+export function archOpacity(offset: number, count: number): number {
+  const fade = (count / 2 - Math.abs(offset)) / 0.5;
+  return Math.min(1, Math.max(0, fade));
+}
