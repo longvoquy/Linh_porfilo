@@ -9,7 +9,7 @@
  * Layout (same as the older upload-*.mjs scripts):
  *   portfolio/<section>/<slug>/               photos (image), the site's gallery
  *   portfolio/<section>/<slug>/certificates/  PDFs (raw, extension kept in id)
- * Skipped: videos (gallery is images-only), "Copy of ..." duplicates, PDFs over
+ * Videos: only chapters in VIDEO_FOLDERS (Money Maze, Exhibition, Khởi Vân, Soccer) go to <chapter>/videos/. Skipped: "Copy of ..." duplicates, PDFs over
  * 10 MB. Existing public_ids are not re-uploaded. portfolio/art is untouched.
  */
 import { readdir, readFile, stat } from "node:fs/promises";
@@ -109,6 +109,16 @@ const SYNCED_PREFIXES = [
   "interests",
 ].map((s) => `portfolio/${s}`);
 const IMG = new Set([".jpg", ".jpeg", ".png", ".webp", ".heic"]);
+const VIDEO = new Set([".mp4", ".mov"]);
+/** Chapters whose videos are hosted on Cloudinary; every other video lives on YouTube (linked from content/*.json). */
+const VIDEO_FOLDERS = new Set([
+  "portfolio/awards/money-maze",
+  "portfolio/passion-projects/exhibition",
+  "portfolio/passion-projects/khoi-van-startup",
+  "portfolio/interests/soccer-varsity",
+]);
+/** Clips that live on YouTube instead (embedded from content/*.json), so they are not uploaded here too. Currently none. */
+const ON_YOUTUBE = new Set([]);
 
 async function loadEnv() {
   const c = await readFile(path.join(__dirname, "..", ".env"), "utf-8").catch(() => "");
@@ -143,8 +153,9 @@ async function plan() {
       }
       const isImg = IMG.has(ext);
       const isPdf = ext === ".pdf";
-      if (!isImg && !isPdf) {
-        skipped.push([e.name, "video/other (images-only)"]);
+      const isVideo = VIDEO.has(ext);
+      if (!isImg && !isPdf && !isVideo) {
+        skipped.push([e.name, "not an image, PDF or video"]);
         continue;
       }
       const size = (await stat(file)).size;
@@ -158,13 +169,18 @@ async function plan() {
         continue;
       }
       for (const f of [].concat(routed)) {
-        const folder = isImg ? f : `${f}/certificates`;
+        if (isVideo && (!VIDEO_FOLDERS.has(f) || ON_YOUTUBE.has(e.name))) {
+          skipped.push([e.name, "video not hosted on Cloudinary for this chapter (YouTube or skipped)"]);
+          continue;
+        }
+        const folder = isImg ? f : isVideo ? `${f}/videos` : `${f}/certificates`;
         const base = slugify(path.basename(e.name, ext)) || "file";
-        const suffix = isImg ? "" : ext;
+        const suffix = isPdf ? ext : "";
         let id = base;
         for (let i = 2; used.has(`${folder}/${id}${suffix}`); i++) id = `${base}-${i}`;
         used.add(`${folder}/${id}${suffix}`);
-        want.push({ file, folder, id: id + suffix, kind: isImg ? "image" : "raw", size, ext, name: e.name });
+        const kind = isImg ? "image" : isVideo ? "video" : "raw";
+        want.push({ file, folder, id: id + suffix, kind, size, ext, name: e.name });
       }
     }
   }
@@ -194,6 +210,14 @@ async function listRemote() {
 
 async function uploadOne(a) {
   const opts = { folder: a.folder, public_id: a.id, overwrite: true, resource_type: a.kind };
+  if (a.kind === "video") {
+    // Chunked, so a 50 MB clip does not have to go up in one request.
+    return new Promise((res, rej) =>
+      cloudinary.uploader.upload_large(a.file, { ...opts, chunk_size: 20 * 1024 * 1024 }, (e, r) =>
+        e ? rej(e) : res(r),
+      ),
+    );
+  }
   if (a.kind === "image" && a.size > MAX_BYTES && a.ext !== ".heic") {
     const buf = await sharp(a.file)
       .rotate()
