@@ -24,7 +24,7 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
   const { localize, t } = useTranslation();
   const { item } = chapter;
 
-  const certificate = item.media.find((m) => m.type === "pdf");
+  const documents = item.media.filter((m) => m.type === "pdf" && m.src);
   const number = String(index + 1).padStart(2, "0");
   // Prefixed with the section so two sections can never collide on this id,
   // even though slugs are already unique per content file today.
@@ -56,15 +56,38 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
             {item.date && <span>{item.date}</span>}
           </div>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-navy/70">{localize(item.caption)}</p>
-          {certificate?.src && (
+          {documents.length === 1 && (
             <a
-              href={certificate.src}
+              href={documents[0].src}
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-block text-sm font-medium text-gold-ink underline underline-offset-4 transition hover:text-navy"
             >
-              {t("activity.viewCertificate")}
+              {documents[0].alt ? localize(documents[0].alt) : t("activity.viewCertificate")}
             </a>
+          )}
+          {/* Several documents (certificates, a paper and its report, EN/VI copies) get a labelled list. */}
+          {documents.length > 1 && (
+            <div className="mt-5">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-navy/50">{t("activity.documents")}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {documents.map((doc, i) => (
+                  <li key={doc.src}>
+                    <a
+                      href={doc.src}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-gold/40 px-4 py-1.5 text-sm text-gold-ink transition hover:border-navy hover:bg-navy hover:text-cream"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z M14 3v5h5 M9 13h6 M9 17h4" />
+                      </svg>
+                      {doc.alt ? localize(doc.alt) : `${t("activity.viewCertificate")} ${i + 1}`}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </header>
 

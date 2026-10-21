@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ChapterImage } from "@/lib/types";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 type Props = {
   images: ChapterImage[];
@@ -11,6 +13,10 @@ type Props = {
   /** Localized chapter title, used for image alt text. */
   title: string;
 };
+
+/** Galleries longer than this start collapsed to `COLLAPSED_COUNT` images. */
+const COLLAPSE_ABOVE = 12;
+const COLLAPSED_COUNT = 9;
 
 /** Widths the grid images may occupy, so the browser can pick a candidate. */
 const FEATURE_SIZES = "(min-width: 768px) 60vw, 100vw";
@@ -34,10 +40,16 @@ function imageAlt(title: string, index: number): string {
  * On mobile every template collapses to a single stacked column.
  */
 export function ChapterGallery({ images, chapterIndex, onOpen, title }: Props) {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
+
   if (images.length === 0) return null;
 
+  // A chapter with dozens of photos starts with a short selection so the page
+  // stays quick to scroll; the lightbox still steps through every image.
+  const collapsed = images.length > COLLAPSE_ABOVE && !expanded;
   const feature = images.slice(0, 3);
-  const overflow = images.slice(3);
+  const overflow = images.slice(3, collapsed ? COLLAPSED_COUNT : undefined);
   const template = chapterIndex % 3;
 
   return (
@@ -62,6 +74,19 @@ export function ChapterGallery({ images, chapterIndex, onOpen, title }: Props) {
               onOpen={() => onOpen(i + 3)}
             />
           ))}
+        </div>
+      )}
+
+      {images.length > COLLAPSE_ABOVE && (
+        <div className="flex justify-center pt-2">
+          <button
+            type="button"
+            onClick={() => setExpanded((open) => !open)}
+            aria-expanded={expanded}
+            className="rounded-full border border-gold/50 px-6 py-2.5 text-sm font-medium text-gold-ink transition hover:border-navy hover:bg-navy hover:text-cream"
+          >
+            {expanded ? t("chapters.showLess") : `${t("chapters.showAll")} (${images.length})`}
+          </button>
         </div>
       )}
     </div>

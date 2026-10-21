@@ -21,7 +21,51 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1792431841/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-quoc-gia-ta.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1792431841/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-quoc-gia-ta.pdf",
+      "alt": {
+        "en": "National certificate (English)",
+        "vi": "Chứng nhận quốc gia (Tiếng Anh)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-quoc-gia-tv.pdf",
+      "alt": {
+        "en": "National certificate (Vietnamese)",
+        "vi": "Chứng nhận quốc gia (Tiếng Việt)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-truong-ta.pdf",
+      "alt": {
+        "en": "School certificate (English)",
+        "vi": "Chứng nhận cấp trường (Tiếng Anh)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-truong-tv.pdf",
+      "alt": {
+        "en": "School certificate (Vietnamese)",
+        "vi": "Chứng nhận cấp trường (Tiếng Việt)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2026-cert-ta.pdf",
+      "alt": {
+        "en": "2026 certificate (English)",
+        "vi": "Chứng nhận 2026 (Tiếng Anh)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2026-cert-tv.pdf",
+      "alt": {
+        "en": "2026 certificate (Vietnamese)",
+        "vi": "Chứng nhận 2026 (Tiếng Việt)"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/bebras-2025-2026",

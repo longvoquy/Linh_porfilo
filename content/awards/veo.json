@@ -17,11 +17,19 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/veo/certificates/veo-giay-chung-nhan-giai-khuyen-khich.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/veo/certificates/veo-giay-chung-nhan-giai-khuyen-khich.pdf",
+      "alt": {
+        "en": "Encouragement Prize certificate",
+        "vi": "Giấy chứng nhận Giải Khuyến khích"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788658/portfolio/awards/veo/certificates/veo-chung-nhan-tham-gia.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788658/portfolio/awards/veo/certificates/veo-chung-nhan-tham-gia.pdf",
+      "alt": {
+        "en": "Participation certificate",
+        "vi": "Chứng nhận tham gia"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/veo",

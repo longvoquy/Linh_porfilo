@@ -13,35 +13,67 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/1-cert-clb-nhac-kich-2024-2025.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/1-cert-clb-nhac-kich-2024-2025.pdf",
+      "alt": {
+        "en": "Musical Theatre Club certificate (1)",
+        "vi": "Chứng nhận CLB nhạc kịch (1)"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/1-cert-movie-dubbing-competition-english-festival-20261-cert-long-tieng-phim-ta-2026-cua-truong.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/1-cert-movie-dubbing-competition-english-festival-20261-cert-long-tieng-phim-ta-2026-cua-truong.pdf",
+      "alt": {
+        "en": "Movie Dubbing Competition – English Festival 2026",
+        "vi": "Lồng tiếng phim – Lễ hội tiếng Anh 2026"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/2-cert-clb-nhac-kich-2024-2025.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/2-cert-clb-nhac-kich-2024-2025.pdf",
+      "alt": {
+        "en": "Musical Theatre Club certificate (2)",
+        "vi": "Chứng nhận CLB nhạc kịch (2)"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/3-cert-clb-beacon-2025-2026.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/3-cert-clb-beacon-2025-2026.pdf",
+      "alt": {
+        "en": "Beacon Club 2025–2026",
+        "vi": "CLB Beacon 2025–2026"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/4-cert-trai-he-2022-cua-gpa.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/4-cert-trai-he-2022-cua-gpa.pdf",
+      "alt": {
+        "en": "GPA Summer Camp 2022",
+        "vi": "Trại hè GPA 2022"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/5-bong-da-2025.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/5-bong-da-2025.pdf",
+      "alt": {
+        "en": "Football 2025",
+        "vi": "Bóng đá 2025"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/5-giay-chung-nhan-khoa-hoc-cau-long-2022-2023.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/5-giay-chung-nhan-khoa-hoc-cau-long-2022-2023.pdf",
+      "alt": {
+        "en": "Badminton course 2022–2023",
+        "vi": "Khóa học cầu lông 2022–2023"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/6-cert-tham-gia-cuoc-thi-ve-2018.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/6-cert-tham-gia-cuoc-thi-ve-2018.pdf",
+      "alt": {
+        "en": "Drawing contest 2018",
+        "vi": "Cuộc thi vẽ 2018"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/extra-curriculars",

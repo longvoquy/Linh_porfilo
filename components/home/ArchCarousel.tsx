@@ -8,7 +8,7 @@ import { useTranslation } from "@/lib/i18n/useTranslation";
 import { archBase, ringOffset, wrapIndex } from "./carouselMath";
 import { sectionIcons } from "./sectionIcons";
 
-// The hat artwork has seven painted panels, so the Home hat/carousel stay at seven until it is repainted for Interests.
+// Interests stays off the Home hat/carousel (reachable from the menu) until the carousel is redesigned.
 const sections = getAllSections().filter((section) => section.key !== "interests");
 
 /**

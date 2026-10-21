@@ -16,11 +16,19 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/f3108044051.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/f3108044051.pdf",
+      "alt": {
+        "en": "Full paper",
+        "vi": "Toàn văn bài báo"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/iosr-jhss-6-cert.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/iosr-jhss-6-cert.pdf",
+      "alt": {
+        "en": "IOSR-JHSS certificate",
+        "vi": "Giấy chứng nhận IOSR-JHSS"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/research/ceramic-cultural-heritage",

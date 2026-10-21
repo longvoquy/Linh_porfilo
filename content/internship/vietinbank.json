@@ -16,11 +16,19 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-ta.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-ta.pdf",
+      "alt": {
+        "en": "Internship confirmation (English)",
+        "vi": "Xác nhận thực tập (Tiếng Anh)"
+      }
     },
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-tv.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/vietinbank/certificates/1-vietinbank-xac-nhan-thuc-tap-tv.pdf",
+      "alt": {
+        "en": "Internship confirmation (Vietnamese)",
+        "vi": "Xác nhận thực tập (Tiếng Việt)"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/internship/vietinbank",
