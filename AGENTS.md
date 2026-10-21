@@ -34,6 +34,7 @@ Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/y
 - Add an item: drop a JSON file in `content/<section>/`, then import it in `content/all.ts`. A section with no items renders "coming soon" automatically.
 - Every user-facing string in content is a `LocalizedString` (`{ en, vi }`). UI strings go in **both** `lib/i18n/dictionaries/en.json` and `vi.json` and are read with `t(key)`; localized content is read with `localize(...)`.
 - `status: "coming-soon"` items are shown as placeholders; only `published` items become chapters.
+- Videos: clips in a chapter's Cloudinary `<cloudinaryFolder>/videos/` are listed and played inline under the gallery. A YouTube clip goes in the item's `media[]` as `{ "type": "video", "externalUrl": "<embed url>", "width", "height" }`, but the embed always shows the channel branding, so Cloudinary is preferred. PDFs over Cloudinary's 10 MB limit are linked from Google Drive as `type: "pdf"` media.
 
 ## Two page patterns
 
