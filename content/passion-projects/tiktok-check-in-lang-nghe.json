@@ -1,0 +1,27 @@
+{
+  "slug": "tiktok-check-in-lang-nghe",
+  "section": "passion-projects",
+  "title": {
+    "en": "Tiktok channel: Check-in Lang Nghe",
+    "vi": "Kênh Tiktok: Check-in Lang Nghe"
+  },
+  "org": {
+    "en": "Check-in Lang Nghe",
+    "vi": "Check-in Lang Nghe"
+  },
+  "caption": {
+    "en": "My TikTok channel, Check-in Lang Nghe.",
+    "vi": "Kênh TikTok của mình, Check-in Lang Nghe."
+  },
+  "media": [],
+  "links": [
+    {
+      "label": {
+        "en": "Visit the TikTok channel",
+        "vi": "Xem kênh TikTok"
+      },
+      "url": "https://www.tiktok.com/@checkin.langnghe?_r=1&_t=ZS-98lMRdfUqeK"
+    }
+  ],
+  "status": "published"
+}

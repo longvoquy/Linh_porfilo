@@ -6,8 +6,7 @@ import owlypia from "./awards/owlypia.json";
 import nguyenSieuScholarship from "./awards/nguyen-sieu-scholarship.json";
 import vinhThanh from "./volunteer/vinh-thanh.json";
 import mucHoaNguyetHoa from "./volunteer/muc-hoa-nguyet-hoa.json";
-import studentCouncilDemNhacKich from "./leadership/student-council-dem-nhac-kich.json";
-import studentCouncilNgayHoiAmApMuaXuan from "./leadership/student-council-ngay-hoi-am-ap-mua-xuan.json";
+import nguyenSieuStudentCouncil from "./leadership/nguyen-sieu-student-council.json";
 import sunriseProject from "./leadership/sunrise-project.json";
 import tranh1 from "./art-portfolio/tranh-1.json";
 import tranh2 from "./art-portfolio/tranh-2.json";
@@ -18,13 +17,12 @@ import tranh6 from "./art-portfolio/tranh-6.json";
 import tranh7 from "./art-portfolio/tranh-7.json";
 import tranh8 from "./art-portfolio/tranh-8.json";
 import tranh9 from "./art-portfolio/tranh-9.json";
-import tranh10 from "./art-portfolio/tranh-10.json";
-import tranh11 from "./art-portfolio/tranh-11.json";
 import harvardCrimson2026_awards from "./awards/harvard-crimson-2026.json";
 import kangarooScience_awards from "./awards/kangaroo-science.json";
 import extraCurriculars_awards from "./awards/extra-curriculars.json";
 import exhibition_passionprojects from "./passion-projects/exhibition.json";
 import khoiVanStartup_passionprojects from "./passion-projects/khoi-van-startup.json";
+import tiktok_passionprojects from "./passion-projects/tiktok-check-in-lang-nghe.json";
 import socialSecurityOptionsVietnam_research from "./research/social-security-options-vietnam.json";
 import ceramicCulturalHeritage_research from "./research/ceramic-cultural-heritage.json";
 import vietinbank_internship from "./internship/vietinbank.json";
@@ -49,8 +47,7 @@ export const allItems: ActivityItem[] = [
   nguyenSieuScholarship as ActivityItem,
   vinhThanh as ActivityItem,
   mucHoaNguyetHoa as ActivityItem,
-  studentCouncilDemNhacKich as ActivityItem,
-  studentCouncilNgayHoiAmApMuaXuan as ActivityItem,
+  nguyenSieuStudentCouncil as ActivityItem,
   sunriseProject as ActivityItem,
   tranh1 as ActivityItem,
   tranh2 as ActivityItem,
@@ -61,13 +58,12 @@ export const allItems: ActivityItem[] = [
   tranh7 as ActivityItem,
   tranh8 as ActivityItem,
   tranh9 as ActivityItem,
-  tranh10 as ActivityItem,
-  tranh11 as ActivityItem,
   harvardCrimson2026_awards as ActivityItem,
   kangarooScience_awards as ActivityItem,
   extraCurriculars_awards as ActivityItem,
   exhibition_passionprojects as ActivityItem,
   khoiVanStartup_passionprojects as ActivityItem,
+  tiktok_passionprojects as ActivityItem,
   socialSecurityOptionsVietnam_research as ActivityItem,
   ceramicCulturalHeritage_research as ActivityItem,
   vietinbank_internship as ActivityItem,

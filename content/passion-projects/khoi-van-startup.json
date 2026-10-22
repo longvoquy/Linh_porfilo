@@ -15,5 +15,21 @@
   },
   "media": [],
   "cloudinaryFolder": "portfolio/passion-projects/khoi-van-startup",
-  "status": "published"
+  "status": "published",
+  "links": [
+    {
+      "label": {
+        "en": "Facebook",
+        "vi": "Facebook"
+      },
+      "url": "https://www.facebook.com/khoivan4000"
+    },
+    {
+      "label": {
+        "en": "Shopee",
+        "vi": "Shopee"
+      },
+      "url": "https://shopee.vn/khoivan2009"
+    }
+  ]
 }

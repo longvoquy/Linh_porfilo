@@ -17,7 +17,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://drive.google.com/file/d/1bjSc-lqrpeXuFVzFcr3kcKOpyqN3dagf/view?usp=sharing"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/money-maze/certificates/cert-money-maze-the-debate-arena.pdf",
+      "alt": {
+        "en": "Certificate of participation",
+        "vi": "Chứng nhận tham gia"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/money-maze",
