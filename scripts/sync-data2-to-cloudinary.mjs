@@ -1,6 +1,8 @@
 /**
- * Syncs data2.0/ to Cloudinary: uploads what is new, and (with --prune) deletes
- * assets under the synced prefixes that data2.0 no longer contains.
+ * Syncs data3.0/ to Cloudinary: uploads what is new, and (with --prune) deletes
+ * assets under the synced prefixes that data3.0 no longer contains. Only the files
+ * directly inside each mapped folder count: the "... dự phòng (ko up web)" subfolders
+ * hold the spares that are deliberately kept off the site.
  *
  *   node scripts/sync-data2-to-cloudinary.mjs                    dry run: prints the plan
  *   node scripts/sync-data2-to-cloudinary.mjs --apply            upload only
@@ -9,8 +11,9 @@
  * Layout (same as the older upload-*.mjs scripts):
  *   portfolio/<section>/<slug>/               photos (image), the site's gallery
  *   portfolio/<section>/<slug>/certificates/  PDFs (raw, extension kept in id)
- * Videos: only chapters in VIDEO_FOLDERS (Money Maze, Exhibition, Khởi Vân, Soccer) go to <chapter>/videos/. Skipped: "Copy of ..." duplicates, PDFs over
- * 10 MB. Existing public_ids are not re-uploaded. portfolio/art is untouched.
+ * Videos: only chapters in VIDEO_FOLDERS go to <chapter>/videos/. Skipped: "Copy of ..." duplicates
+ * (only when the original sits next to it), PDFs over 10 MB (the Money Maze certificate is
+ * compressed and uploaded by hand). Existing public_ids are not re-uploaded. portfolio/art is untouched.
  */
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
@@ -19,7 +22,7 @@ import { v2 as cloudinary } from "cloudinary";
 import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SRC = path.join(__dirname, "..", "data2.0");
+const SRC = path.join(__dirname, "..", "data3.0");
 const APPLY = process.argv.includes("--apply");
 const PRUNE = process.argv.includes("--prune");
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -35,13 +38,11 @@ const slugify = (s) =>
 const nfc = (s) => s.normalize("NFC");
 
 /**
- * Each rule: local folder (under data2.0) -> function(fileName) returning the
+ * Each rule: local folder (under data3.0) -> function(fileName) returning the
  * Cloudinary chapter folder (string), an array of them, or null to skip.
  * Matching runs on slugified names, which is NFC/NFD-proof.
  */
 const fixed = (folder) => () => folder;
-const COUNCIL_NIGHT = "portfolio/leadership/student-council-dem-nhac-kich";
-const COUNCIL_SPRING = "portfolio/leadership/student-council-ngay-hoi-am-ap-mua-xuan";
 const RULES = [
   ["1. Honors & awards/Bebras 2025, 2026", fixed("portfolio/awards/bebras-2025-2026")],
   ["1. Honors & awards/Cuộc thi Money maze", fixed("portfolio/awards/money-maze")],
@@ -65,15 +66,7 @@ const RULES = [
   ],
   ["5. Leadership/1. Young BizFest 2026", fixed("portfolio/leadership/young-bizfest-2026")],
   ["5. Leadership/2. Sunrise Project", fixed("portfolio/leadership/sunrise-project")],
-  [
-    "5. Leadership/3. Nguyen Sieu Student Council",
-    (n) => {
-      const s = slugify(n);
-      if (s.includes("nhac-kich")) return COUNCIL_NIGHT;
-      if (s.includes("ngay-hoi")) return COUNCIL_SPRING;
-      return [COUNCIL_NIGHT, COUNCIL_SPRING]; // Head HR cert is council-wide
-    },
-  ],
+  ["5. Leadership/3. Nguyen Sieu Student Council", fixed("portfolio/leadership/nguyen-sieu-student-council")],
   [
     "6. Working experience_Done",
     (n) => {
@@ -88,13 +81,8 @@ const RULES = [
     "7. Volunteer & Philanthropy/2. Thiện nguyện ở Trung tâm trẻ tự kỷ",
     fixed("portfolio/volunteer/sunrise-autism-center"),
   ],
-  [
-    "7. Volunteer & Philanthropy/3. Thiện nguyện khác",
-    (n) =>
-      slugify(n).includes("uoc-mo-xanh")
-        ? "portfolio/volunteer/quy-uoc-mo-xanh"
-        : "portfolio/volunteer/muc-hoa-nguyet-hoa",
-  ],
+  ["7. Volunteer & Philanthropy/3. Mục họa nguyệt hoa", fixed("portfolio/volunteer/muc-hoa-nguyet-hoa")],
+  ["7. Volunteer & Philanthropy/4. Green Dream Fund", fixed("portfolio/volunteer/quy-uoc-mo-xanh")],
   ["8. Interests & skills/Basketball", fixed("portfolio/interests/basketball")],
   ["8. Interests & skills/CLB nhạc kịch 2024-2025", fixed("portfolio/interests/musical-club")],
   ["8. Interests & skills/Soccer Varsity", fixed("portfolio/interests/soccer-varsity")],
@@ -142,7 +130,8 @@ async function plan() {
     for (const e of entries.filter((x) => x.isFile())) {
       const ext = path.extname(e.name).toLowerCase();
       const file = path.join(dir, e.name);
-      if (/^copy of /i.test(e.name)) {
+      // A "Copy of X" is a duplicate only when X itself is in the folder; otherwise it is the real file.
+      if (/^copy of /i.test(e.name) && entries.some((x) => x.name === e.name.replace(/^copy of /i, ""))) {
         skipped.push([e.name, "duplicate 'Copy of'"]);
         continue;
       }
