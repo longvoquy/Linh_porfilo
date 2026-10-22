@@ -19,6 +19,12 @@ export type MediaRef = {
   height?: number;
 };
 
+/** An outbound link shown with an item (a shop, a social page, a channel). */
+export type ItemLink = {
+  label: LocalizedString;
+  url: string;
+};
+
 export type ActivityStatus = "published" | "coming-soon";
 
 export type SectionKey =
@@ -49,6 +55,8 @@ export type ActivityItem = {
    * (certificate PDFs) that are not part of the visual gallery.
    */
   cloudinaryFolder?: string;
+  /** External pages for this item, shown under the caption. */
+  links?: ItemLink[];
   status: ActivityStatus;
 };
 
