@@ -16,7 +16,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/volunteer/quy-uoc-mo-xanh/certificates/cert-ung-ho-quy-uoc-mo-xanh.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/volunteer/quy-uoc-mo-xanh/certificates/cert-ung-ho-quy-uoc-mo-xanh.pdf",
+      "alt": {
+        "en": "Green Dream Fund donation certificate",
+        "vi": "Chứng nhận ủng hộ Quỹ Ước mơ xanh"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/volunteer/quy-uoc-mo-xanh",

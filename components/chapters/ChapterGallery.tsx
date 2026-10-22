@@ -12,6 +12,8 @@ type Props = {
   onOpen: (imageIndex: number) => void;
   /** Localized chapter title, used for image alt text. */
   title: string;
+  /** Pins the focal image to one side; it then keeps its own proportions. Unset: the layout follows `chapterIndex`. */
+  featureSide?: "left" | "right";
 };
 
 /** Galleries longer than this start collapsed to `COLLAPSED_COUNT` images. */
@@ -39,7 +41,7 @@ function imageAlt(title: string, index: number): string {
  *
  * On mobile every template collapses to a single stacked column.
  */
-export function ChapterGallery({ images, chapterIndex, onOpen, title }: Props) {
+export function ChapterGallery({ images, chapterIndex, onOpen, title, featureSide }: Props) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
@@ -56,6 +58,8 @@ export function ChapterGallery({ images, chapterIndex, onOpen, title }: Props) {
     <div className="space-y-4 sm:space-y-6">
       {images.length === 1 ? (
         <SoloFeature image={images[0]} onOpen={onOpen} title={title} />
+      ) : featureSide ? (
+        <SplitFeature images={feature} onOpen={onOpen} title={title} mirrored={featureSide === "right"} keepRatio />
       ) : template === 2 ? (
         <StackedFeature images={feature} onOpen={onOpen} title={title} />
       ) : (
@@ -131,11 +135,14 @@ function SplitFeature({
   onOpen,
   title,
   mirrored,
+  keepRatio = false,
 }: {
   images: ChapterImage[];
   onOpen: (i: number) => void;
   title: string;
   mirrored: boolean;
+  /** Show the focal image uncropped; the others fill the column beside it. */
+  keepRatio?: boolean;
 }) {
   const [primary, ...secondary] = images;
 
@@ -158,7 +165,8 @@ function SplitFeature({
           image={primary}
           sizes={FEATURE_SIZES}
           alt={imageAlt(title, 0)}
-          className="aspect-[4/3] md:h-full"
+          className={keepRatio ? "" : "aspect-[4/3] md:h-full"}
+          style={keepRatio ? { aspectRatio: `${primary.width} / ${primary.height}` } : undefined}
           onOpen={() => onOpen(0)}
         />
       </div>

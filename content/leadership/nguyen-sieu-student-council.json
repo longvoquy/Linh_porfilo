@@ -16,7 +16,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/leadership/nguyen-sieu-student-council/certificates/head-hr-cert.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/leadership/nguyen-sieu-student-council/certificates/head-hr-cert.pdf",
+      "alt": {
+        "en": "Head of HR certificate",
+        "vi": "Chứng nhận Trưởng ban Nhân sự"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/leadership/nguyen-sieu-student-council",

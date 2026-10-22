@@ -21,7 +21,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788657/portfolio/awards/owlypia/certificates/owlypia-huy-chuong-bac.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788657/portfolio/awards/owlypia/certificates/owlypia-huy-chuong-bac.pdf",
+      "alt": {
+        "en": "Silver Medal certificate",
+        "vi": "Giấy chứng nhận Huy chương bạc"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/owlypia",

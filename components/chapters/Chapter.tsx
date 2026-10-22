@@ -82,18 +82,8 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
               ))}
             </ul>
           )}
-          {documents.length === 1 && (
-            <a
-              href={documents[0].src}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-4 inline-block text-sm font-medium text-gold-ink underline underline-offset-4 transition hover:text-navy"
-            >
-              {documents[0].alt ? localize(documents[0].alt) : t("activity.viewCertificate")}
-            </a>
-          )}
-          {/* Several documents (certificates, a paper and its report, EN/VI copies) get a labelled list. */}
-          {documents.length > 1 && (
+          {/* Every document (certificate, paper, report, EN/VI copy) is a labelled pill, even when there is just one. */}
+          {documents.length > 0 && (
             <div className="mt-5">
               <p className="text-[11px] uppercase tracking-[0.28em] text-navy/50">{t("activity.documents")}</p>
               <ul className="mt-3 flex flex-wrap gap-2">
@@ -122,6 +112,7 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
           chapterIndex={index}
           onOpen={onOpenImage}
           title={localize(item.title)}
+          featureSide={item.gallery?.featureSide}
         />
 
         {(chapter.videos.length > 0 || youtube.length > 0) && (

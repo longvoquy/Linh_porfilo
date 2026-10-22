@@ -17,7 +17,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/interests/soccer-varsity/certificates/bong-da-2025-ky-niem-chuong.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/interests/soccer-varsity/certificates/bong-da-2025-ky-niem-chuong.pdf",
+      "alt": {
+        "en": "Football 2025 commemorative certificate",
+        "vi": "Kỷ niệm chương Bóng đá 2025"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/interests/soccer-varsity",

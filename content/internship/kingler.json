@@ -16,7 +16,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/kingler/certificates/2-kingler-xac-nhan-thuc-tap.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/internship/kingler/certificates/2-kingler-xac-nhan-thuc-tap.pdf",
+      "alt": {
+        "en": "Internship confirmation",
+        "vi": "Xác nhận thực tập"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/internship/kingler",

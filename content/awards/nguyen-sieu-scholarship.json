@@ -21,7 +21,11 @@
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788659/portfolio/awards/nguyen-sieu-scholarship/certificates/giay-chung-nhan-hoc-bong-nguyen-sieu-2024-2025.pdf"
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1786788659/portfolio/awards/nguyen-sieu-scholarship/certificates/giay-chung-nhan-hoc-bong-nguyen-sieu-2024-2025.pdf",
+      "alt": {
+        "en": "Scholarship certificate 2024–2025",
+        "vi": "Giấy chứng nhận học bổng 2024–2025"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/nguyen-sieu-scholarship",

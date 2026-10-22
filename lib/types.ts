@@ -6,6 +6,7 @@ export type LocalizedString = {
 };
 
 export type MediaRef = {
+  /** "pdf" is a linked document: a PDF, or a certificate scanned as an image. */
   type: "image" | "pdf" | "video";
   /** Full URL to the hosted image/pdf (e.g. Cloudinary, Drive, Vercel Blob). Not committed to git. */
   src?: string;
@@ -55,6 +56,13 @@ export type ActivityItem = {
    * (certificate PDFs) that are not part of the visual gallery.
    */
   cloudinaryFolder?: string;
+  /** Overrides for how this item's Cloudinary gallery is arranged. */
+  gallery?: {
+    /** Image names (the last segment of the public_id, e.g. "img-6188") to show first, in this order. */
+    lead?: string[];
+    /** Pins the large focal image to one side of the feature block; it then keeps its own proportions instead of being cropped. */
+    featureSide?: "left" | "right";
+  };
   /** External pages for this item, shown under the caption. */
   links?: ItemLink[];
   status: ActivityStatus;
