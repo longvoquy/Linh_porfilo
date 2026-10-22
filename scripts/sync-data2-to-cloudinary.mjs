@@ -1,6 +1,6 @@
 /**
- * Syncs data3.0/ to Cloudinary: uploads what is new, and (with --prune) deletes
- * assets under the synced prefixes that data3.0 no longer contains. Only the files
+ * Syncs data4.0/ to Cloudinary: uploads what is new, and (with --prune) deletes
+ * assets under the synced prefixes that data4.0 no longer contains. Only the files
  * directly inside each mapped folder count: the "... dự phòng (ko up web)" subfolders
  * hold the spares that are deliberately kept off the site.
  *
@@ -22,7 +22,7 @@ import { v2 as cloudinary } from "cloudinary";
 import sharp from "sharp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SRC = path.join(__dirname, "..", "data3.0");
+const SRC = path.join(__dirname, "..", "data4.0");
 const APPLY = process.argv.includes("--apply");
 const PRUNE = process.argv.includes("--prune");
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -38,7 +38,7 @@ const slugify = (s) =>
 const nfc = (s) => s.normalize("NFC");
 
 /**
- * Each rule: local folder (under data3.0) -> function(fileName) returning the
+ * Each rule: local folder (under data4.0) -> function(fileName) returning the
  * Cloudinary chapter folder (string), an array of them, or null to skip.
  * Matching runs on slugified names, which is NFC/NFD-proof.
  */
@@ -162,7 +162,9 @@ async function plan() {
           skipped.push([e.name, "video not hosted on Cloudinary for this chapter (YouTube or skipped)"]);
           continue;
         }
-        const folder = isImg ? f : isVideo ? `${f}/videos` : `${f}/certificates`;
+        // A certificate scanned as an image ("Cert ....png") is a document: it goes beside the PDFs, out of the gallery.
+        const isCertImage = isImg && /^cert/i.test(e.name);
+        const folder = isVideo ? `${f}/videos` : isImg && !isCertImage ? f : `${f}/certificates`;
         const base = slugify(path.basename(e.name, ext)) || "file";
         const suffix = isPdf ? ext : "";
         let id = base;
