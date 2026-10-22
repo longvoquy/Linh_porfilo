@@ -11,5 +11,14 @@
   },
   "media": [],
   "cloudinaryFolder": "portfolio/passion-projects/exhibition",
-  "status": "published"
+  "status": "published",
+  "gallery": {
+    "lead": [
+      "img-6188",
+      "img-6199",
+      "img-6184",
+      "img-6125"
+    ],
+    "featureSide": "right"
+  }
 }

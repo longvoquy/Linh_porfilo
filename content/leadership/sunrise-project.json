@@ -13,7 +13,16 @@
     "en": "Served as Vice President of the Sunrise Project.",
     "vi": "Giữ vai trò Phó Chủ tịch của Sunrise Project."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/image/upload/portfolio/leadership/sunrise-project/certificates/cert-pho-tich-sunrise.png",
+      "alt": {
+        "en": "Vice President certificate",
+        "vi": "Chứng nhận Phó Chủ tịch"
+      }
+    }
+  ],
   "cloudinaryFolder": "portfolio/leadership/sunrise-project",
   "status": "published",
   "tier": {

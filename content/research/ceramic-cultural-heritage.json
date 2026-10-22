@@ -32,5 +32,14 @@
     }
   ],
   "cloudinaryFolder": "portfolio/research/ceramic-cultural-heritage",
-  "status": "published"
+  "status": "published",
+  "links": [
+    {
+      "label": {
+        "en": "Read the article in IOSR Journals",
+        "vi": "Xem bài báo trên IOSR Journals"
+      },
+      "url": "https://www.iosrjournals.org/iosr-jhss/pages/31(8)Series-4.html"
+    }
+  ]
 }
