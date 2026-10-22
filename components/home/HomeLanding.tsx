@@ -26,44 +26,17 @@ const LOADER_TIMEOUT_MS = 10_000;
 const INITIAL_SECTION = "research";
 
 /**
- * Placeholders: point these at the real profiles before publishing. Anything
- * still set to "#" renders as a non-interactive mark rather than a dead link.
+ * Contact links under the carousel. Anything set to "#" renders as a
+ * non-interactive mark rather than a dead link.
  */
-const SOCIALS = [
-  { key: "social.linkedin", href: "#", icon: LinkedInIcon },
-  { key: "social.instagram", href: "#", icon: InstagramIcon },
-  { key: "social.email", href: "#", icon: MailIcon },
-] as const;
+const SOCIALS: { key: "social.email"; href: string; icon: typeof MailIcon }[] = [
+  { key: "social.email", href: "mailto:vulinhkhanh2009@gmail.com", icon: MailIcon },
+];
 
 function Star({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 16 16" aria-hidden className={className} fill="currentColor">
       <path d="M8 0c.5 4.3 3.2 7 7.5 7.5v1C11.2 9 8.5 11.7 8 16c-.5-4.3-3.2-7-7.5-7.5v-1C4.8 7 7.5 4.3 8 0Z" />
-    </svg>
-  );
-}
-
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden className={className} fill="currentColor">
-      <path d="M3.2 5.7h2.1V13H3.2zM4.3 2.4a1.3 1.3 0 1 1 0 2.6 1.3 1.3 0 0 1 0-2.6ZM7 5.7h2v1a2.4 2.4 0 0 1 2.1-1.1c2 0 2.6 1.3 2.6 3.1V13h-2.1V9.1c0-1-.2-1.8-1.2-1.8s-1.4.7-1.4 1.7V13H7Z" />
-    </svg>
-  );
-}
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 16 16"
-      aria-hidden
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.3"
-    >
-      <rect x="2.4" y="2.4" width="11.2" height="11.2" rx="3.4" />
-      <circle cx="8" cy="8" r="2.7" />
-      <circle cx="11.4" cy="4.6" r="0.8" fill="currentColor" stroke="none" />
     </svg>
   );
 }
@@ -241,8 +214,8 @@ export function HomeLanding() {
                   <a
                     href={href}
                     aria-label={label}
-                    target="_blank"
-                    rel="noreferrer"
+                    title={href.startsWith("mailto:") ? href.slice("mailto:".length) : label}
+                    {...(href.startsWith("mailto:") ? {} : { target: "_blank", rel: "noreferrer" })}
                     className="grid h-9 w-9 place-items-center rounded-full bg-navy text-gold transition hover:bg-navy/90"
                   >
                     <Icon className="h-4 w-4" />

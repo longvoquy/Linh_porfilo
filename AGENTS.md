@@ -60,7 +60,7 @@ Caching uses route-segment `revalidate`, deliberately **not** `use cache` / `cac
 - `HatScene` is loaded with `dynamic(..., { ssr: false })`; `HatStage` probes WebGL first and falls back to `HatFallback` (SVG) — keep both visually in step when the hat design changes.
 - The hat surface is `/decor/hat-disc.webp`: a top-down disc painting (`asset/test2.png`) unrolled into a 2560×512 strip by `scripts/prepare-decor.mjs`. The texture size there must match `WIDTH`/`HEIGHT` in `hatTexture.ts`. `PANEL_OFFSET` rotates the artwork so the front faces the initial section (`INITIAL_SECTION = "research"` in `HomeLanding.tsx`).
 - The Home hat/carousel show all eight sections (a ring of eight; the carousel shows seven at rest and the eighth sits at the back of the ring). The hat painting is one continuous artwork, not per-section panels, but `PANEL_OFFSET` depends on the section count and the opening section: it puts that section at `index / count` of a turn (0.089 for 7 sections, 0.1247 for 8). Retune it when the count changes.
-- `HomeLanding` social links are `"#"` placeholders — fill in real URLs before publishing.
+- `HomeLanding` shows only the email contact (`mailto:` in `SOCIALS`); add LinkedIn/Instagram back there only with real URLs — anything left as `"#"` renders as a dead mark.
 
 ## Asset scripts
 
