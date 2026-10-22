@@ -128,6 +128,8 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
                 <div key={video.id} className={`w-full overflow-hidden rounded-2xl bg-navy ${isPortrait(video) ? "max-w-sm" : "max-w-4xl"}`}>
                   <video
                     controls
+                    controlsList="nodownload"
+                    onContextMenu={(event) => event.preventDefault()}
                     playsInline
                     preload="none"
                     poster={video.poster}
