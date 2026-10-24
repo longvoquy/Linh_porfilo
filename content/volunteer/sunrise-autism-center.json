@@ -15,5 +15,8 @@
   },
   "media": [],
   "cloudinaryFolder": "portfolio/volunteer/sunrise-autism-center",
+  "gallery": {
+    "lead": ["dscf6479", "thien-nguyen-sunrise-2", "thien-nguyen-sunrise-3", "thien-nguyen-sunrise", "thien-nguyen-sunrise-1"]
+  },
   "status": "published"
 }
