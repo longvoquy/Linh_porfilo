@@ -74,6 +74,14 @@
         "en": "Drawing contest 2018",
         "vi": "Cuộc thi vẽ 2018"
       }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/7-huy-chuong-bac-bong-ro-2026.pdf",
+      "alt": {
+        "en": "Basketball silver medal 2026",
+        "vi": "Huy chương bạc bóng rổ 2026"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/awards/extra-curriculars",
