@@ -2,69 +2,29 @@
   "slug": "bebras-2025-national-champion",
   "section": "awards",
   "title": {
-    "en": "National Champion 2025 & High Distinction 2026 – Bebras Vietnam Computational Thinking Challenge",
-    "vi": "Quán quân Quốc gia 2025 & High Distinction 2026 – Cuộc thi Tư duy Máy tính Bebras Việt Nam"
+    "en": "Bebras Vietnam Computational Thinking Challenge – National Champion 2025",
+    "vi": "Cuộc thi Tư duy Máy tính Bebras Việt Nam – Quán quân Quốc gia 2025"
   },
   "org": {
     "en": "Bebras Vietnam Computational Thinking Challenge",
     "vi": "Cuộc thi Tư duy Máy tính Bebras Việt Nam"
   },
-  "date": "2025–2026",
+  "date": "2025",
   "tier": {
-    "en": "National Champion 2025 · High Distinction 2026",
-    "vi": "Quán quân Quốc gia 2025 · High Distinction 2026"
+    "en": "National Champion",
+    "vi": "Quán quân Quốc gia"
   },
   "caption": {
-    "en": "Placed first nationally among Grade 10 students in Vietnam's Bebras Computational Thinking Challenge in 2025, then earned a High Distinction in 2026 as a Grade 11 student. Bebras is an international competition testing algorithmic and computational reasoning.",
-    "vi": "Đạt giải Nhất toàn quốc khối lớp 10 tại cuộc thi Tư duy Máy tính Bebras Việt Nam năm 2025, và đạt thành tích High Distinction năm 2026 khi học lớp 11. Bebras là cuộc thi quốc tế kiểm tra tư duy thuật toán và khả năng tính toán."
+    "en": "Bebras is an international competition testing algorithmic and computational reasoning. Placed National Champion in 2025.",
+    "vi": "Bebras là cuộc thi quốc tế kiểm tra tư duy thuật toán và khả năng tính toán. Đạt danh hiệu Quán quân Quốc gia năm 2025."
   },
   "media": [
     {
       "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/v1792783366/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-quoc-gia-ta.pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-national-champion-2025-certificate.pdf",
       "alt": {
-        "en": "National certificate (English)",
-        "vi": "Chứng nhận quốc gia (Tiếng Anh)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-quoc-gia-tv.pdf",
-      "alt": {
-        "en": "National certificate (Vietnamese)",
-        "vi": "Chứng nhận quốc gia (Tiếng Việt)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-truong-ta.pdf",
-      "alt": {
-        "en": "School certificate (English)",
-        "vi": "Chứng nhận cấp trường (Tiếng Anh)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2025-cert-truong-tv.pdf",
-      "alt": {
-        "en": "School certificate (Vietnamese)",
-        "vi": "Chứng nhận cấp trường (Tiếng Việt)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2026-cert-ta.pdf",
-      "alt": {
-        "en": "2026 certificate (English)",
-        "vi": "Chứng nhận 2026 (Tiếng Anh)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/bebras-2025-2026/certificates/bebras-2026-cert-tv.pdf",
-      "alt": {
-        "en": "2026 certificate (Vietnamese)",
-        "vi": "Chứng nhận 2026 (Tiếng Việt)"
+        "en": "National Champion 2025 certificate",
+        "vi": "Chứng nhận Quán quân Quốc gia 2025"
       }
     }
   ],

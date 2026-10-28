@@ -6,13 +6,17 @@
     "vi": "Các phương án tài chính cho an sinh xã hội tại Việt Nam"
   },
   "org": {
-    "en": "UNDP",
-    "vi": "UNDP"
+    "en": "United Nations Development Programme (UNDP)",
+    "vi": "Chương trình Phát triển Liên Hợp Quốc (UNDP)"
   },
   "date": "2025",
+  "tier": {
+    "en": "Research Assistant",
+    "vi": "Trợ lý nghiên cứu"
+  },
   "caption": {
-    "en": "A solutions report on financial options for social security in Vietnam, prepared with UNDP (2025).",
-    "vi": "Báo cáo giải pháp về các phương án tài chính cho an sinh xã hội tại Việt Nam, thực hiện cùng UNDP (2025)."
+    "en": "This research evaluated the financial sustainability and coverage gaps of Vietnam's social security system by analyzing national financial databases, domestic policies, and international models.",
+    "vi": "Nghiên cứu đánh giá tính bền vững tài chính và những khoảng trống bao phủ của hệ thống an sinh xã hội Việt Nam thông qua phân tích cơ sở dữ liệu tài chính quốc gia, chính sách trong nước và các mô hình quốc tế."
   },
   "media": [
     {

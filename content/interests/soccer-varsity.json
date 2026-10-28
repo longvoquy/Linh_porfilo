@@ -2,25 +2,25 @@
   "slug": "soccer-varsity",
   "section": "interests",
   "title": {
-    "en": "Soccer Varsity",
-    "vi": "Đội bóng đá Varsity"
+    "en": "Soccer",
+    "vi": "Bóng đá"
   },
-  "org": {
-    "en": "Soccer Varsity Team",
-    "vi": "Đội bóng đá Varsity"
+  "date": "2025",
+  "tier": {
+    "en": "Bronze Medal",
+    "vi": "Huy chương Đồng"
   },
-  "date": "2025–2026",
   "caption": {
-    "en": "Part of the school's Varsity Soccer team, 2025–2026.",
-    "vi": "Thành viên đội bóng đá Varsity của trường, 2025–2026."
+    "en": "Awarded a Bronze Medal with the Varsity Soccer team at Nguyễn Siêu Sports Week.",
+    "vi": "Đạt Huy chương Đồng cùng đội bóng đá Varsity tại Tuần lễ Thể thao Nguyễn Siêu."
   },
   "media": [
     {
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/interests/soccer-varsity/certificates/bong-da-2025-ky-niem-chuong.pdf",
       "alt": {
-        "en": "Football 2025 commemorative certificate",
-        "vi": "Kỷ niệm chương Bóng đá 2025"
+        "en": "Soccer bronze medal 2025",
+        "vi": "Huy chương đồng bóng đá 2025"
       }
     }
   ],

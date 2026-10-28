@@ -2,16 +2,21 @@
   "slug": "ceramic-cultural-heritage",
   "section": "research",
   "title": {
-    "en": "Cultural Heritage Values and Purchase Intention for Ceramic Products",
-    "vi": "Giá trị di sản văn hóa và ý định mua sản phẩm gốm ứng dụng"
+    "en": "The Influence of Cultural Heritage Values on Purchase Intention for Applied Design Ceramic Products Inspired by Vietnamese Fine Arts: An S-O-R Framework Approach",
+    "vi": "Ảnh hưởng của giá trị di sản văn hóa đến ý định mua sản phẩm gốm thiết kế ứng dụng lấy cảm hứng từ mỹ thuật Việt Nam: Tiếp cận theo khung S-O-R"
   },
   "org": {
     "en": "IOSR Journal of Humanities and Social Science",
     "vi": "IOSR Journal of Humanities and Social Science"
   },
+  "date": "2026",
+  "tier": {
+    "en": "Co-Author",
+    "vi": "Đồng tác giả"
+  },
   "caption": {
-    "en": "A study of how cultural heritage values influence purchase intention for applied-design ceramic products inspired by Vietnamese fine arts, using the S-O-R framework.",
-    "vi": "Nghiên cứu về ảnh hưởng của giá trị di sản văn hóa đến ý định mua sản phẩm gốm thiết kế ứng dụng lấy cảm hứng từ mỹ thuật Việt Nam, theo khung S-O-R."
+    "en": "Based on the S-O-R framework and PLS-SEM analysis of 216 participants, my research reveals that integrating cultural heritage values strongly drives consumer attitudes and perceived authenticity, which ultimately determines purchase intentions for Vietnamese fine arts-inspired ceramic products.",
+    "vi": "Dựa trên khung S-O-R và phân tích PLS-SEM với 216 người tham gia, nghiên cứu của mình cho thấy việc tích hợp giá trị di sản văn hóa tác động mạnh đến thái độ và cảm nhận về tính chân thực của người tiêu dùng, từ đó quyết định ý định mua các sản phẩm gốm lấy cảm hứng từ mỹ thuật Việt Nam."
   },
   "media": [
     {
@@ -32,7 +37,6 @@
     }
   ],
   "cloudinaryFolder": "portfolio/research/ceramic-cultural-heritage",
-  "status": "published",
   "links": [
     {
       "label": {
@@ -41,5 +45,6 @@
       },
       "url": "https://www.iosrjournals.org/iosr-jhss/pages/31(8)Series-4.html"
     }
-  ]
+  ],
+  "status": "published"
 }

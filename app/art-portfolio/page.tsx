@@ -16,6 +16,7 @@ export default function ArtPortfolioPage() {
   return (
     <main className="mx-auto max-w-6xl px-6 py-16">
       <h1 className="text-3xl font-semibold text-navy">{localize(meta.label)}</h1>
+      <p className="mt-5 max-w-xl text-base leading-relaxed text-navy/70 sm:text-lg">{t("art.intro")}</p>
       <a
         href={EXHIBITION_URL}
         target="_blank"

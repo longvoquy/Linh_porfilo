@@ -2,16 +2,21 @@
   "slug": "kangaroo-science",
   "section": "awards",
   "title": {
-    "en": "International Kangaroo Science Contest",
-    "vi": "Cuộc thi Khoa học Kangaroo quốc tế"
+    "en": "International Kangaroo Science Contest – Bronze Medal",
+    "vi": "Cuộc thi Khoa học Kangaroo quốc tế – Huy chương Đồng"
   },
   "org": {
     "en": "International Kangaroo Science Contest",
     "vi": "Cuộc thi Khoa học Kangaroo quốc tế"
   },
+  "date": "2023",
+  "tier": {
+    "en": "Bronze Medal",
+    "vi": "Huy chương Đồng"
+  },
   "caption": {
-    "en": "Took part in the International Kangaroo Science Contest.",
-    "vi": "Tham gia cuộc thi Khoa học Kangaroo quốc tế."
+    "en": "The International Kangaroo Science Contest (IKSC) is a global competition dedicated to fostering curiosity, a passion for research, and scientific thinking in students worldwide. Awarded a Bronze Medal.",
+    "vi": "Cuộc thi Khoa học Kangaroo quốc tế (IKSC) là cuộc thi toàn cầu nhằm nuôi dưỡng sự tò mò, niềm đam mê nghiên cứu và tư duy khoa học cho học sinh trên khắp thế giới. Đạt Huy chương Đồng."
   },
   "media": [],
   "cloudinaryFolder": "portfolio/awards/kangaroo-science",

@@ -2,16 +2,21 @@
   "slug": "vietinbank",
   "section": "internship",
   "title": {
-    "en": "VietinBank Internship",
-    "vi": "Thực tập tại VietinBank"
+    "en": "SME Banking Division, VietinBank",
+    "vi": "Khối Khách hàng Doanh nghiệp vừa và nhỏ (SME), VietinBank"
   },
   "org": {
-    "en": "VietinBank",
-    "vi": "VietinBank"
+    "en": "Vietnam Joint Stock Commercial Bank for Industry and Trade (VietinBank)",
+    "vi": "Ngân hàng TMCP Công Thương Việt Nam (VietinBank)"
+  },
+  "date": "2026",
+  "tier": {
+    "en": "Intern",
+    "vi": "Thực tập sinh"
   },
   "caption": {
-    "en": "Completed an internship at VietinBank.",
-    "vi": "Hoàn thành kỳ thực tập tại VietinBank."
+    "en": "During my internship at VietinBank, I analyzed financial statements and business data to interpret credit risk and lending decisions, gaining firsthand exposure to how financial institutions strategically support SME growth.",
+    "vi": "Trong kỳ thực tập tại VietinBank, mình phân tích báo cáo tài chính và dữ liệu kinh doanh để đánh giá rủi ro tín dụng và các quyết định cho vay, qua đó trực tiếp tìm hiểu cách các tổ chức tài chính hỗ trợ chiến lược cho sự phát triển của doanh nghiệp vừa và nhỏ."
   },
   "media": [
     {

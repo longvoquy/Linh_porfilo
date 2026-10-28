@@ -2,16 +2,19 @@
   "slug": "exhibition",
   "section": "passion-projects",
   "title": {
+    "en": "Colors of the Village: Paintings & Photography Exhibition",
+    "vi": "Sắc màu làng quê: Triển lãm tranh & ảnh"
+  },
+  "org": {
     "en": "Exhibition",
     "vi": "Triển lãm"
   },
   "caption": {
-    "en": "Moments from an exhibition I took part in.",
-    "vi": "Những khoảnh khắc từ một buổi triển lãm mà mình tham gia."
+    "en": "“Colors of the Village” is an intimate art exhibition showcasing a collection of my unique paintings. Each piece serves as a visual window into the distinct cultural landscapes, timeless traditions, and vibrant souls of Northern, Central, and Southern Vietnam. Through a harmonious blend of colors and emotions, this exhibition invites you to travel across the country, celebrating the rich heritage and unified spirit that define the Vietnamese identity.\n\nThe exhibition also features photographic works and multisensory artifacts centered on traditional Vietnamese craft villages, offering the audience a more vivid and immersive experience.",
+    "vi": "“Sắc màu làng quê” là một triển lãm nghệ thuật nhỏ, ấm cúng, giới thiệu bộ sưu tập những bức tranh của mình. Mỗi tác phẩm là một ô cửa nhìn vào cảnh sắc văn hóa, những truyền thống vượt thời gian và tâm hồn sống động của ba miền Bắc, Trung, Nam. Qua sự hòa quyện giữa màu sắc và cảm xúc, triển lãm mời bạn du hành khắp đất nước, tôn vinh di sản phong phú và tinh thần đoàn kết làm nên bản sắc Việt Nam.\n\nTriển lãm còn có các tác phẩm nhiếp ảnh và hiện vật đa giác quan về các làng nghề truyền thống Việt Nam, mang đến cho người xem trải nghiệm sống động và chân thực hơn."
   },
   "media": [],
   "cloudinaryFolder": "portfolio/passion-projects/exhibition",
-  "status": "published",
   "gallery": {
     "lead": [
       "img-6188",
@@ -20,5 +23,6 @@
       "img-6125"
     ],
     "featureSide": "right"
-  }
+  },
+  "status": "published"
 }

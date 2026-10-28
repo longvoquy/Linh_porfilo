@@ -6,11 +6,24 @@
     "vi": "Bóng rổ"
   },
   "date": "2026",
-  "caption": {
-    "en": "Playing basketball.",
-    "vi": "Chơi bóng rổ."
+  "tier": {
+    "en": "Silver Medal",
+    "vi": "Huy chương Bạc"
   },
-  "media": [],
+  "caption": {
+    "en": "Awarded a Silver Medal at the Nguyễn Siêu Connection Day sports contest.",
+    "vi": "Đạt Huy chương Bạc tại cuộc thi thể thao Ngày hội Kết nối Nguyễn Siêu."
+  },
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/7-huy-chuong-bac-bong-ro-2026.pdf",
+      "alt": {
+        "en": "Basketball silver medal 2026",
+        "vi": "Huy chương bạc bóng rổ 2026"
+      }
+    }
+  ],
   "cloudinaryFolder": "portfolio/interests/basketball",
   "status": "published"
 }

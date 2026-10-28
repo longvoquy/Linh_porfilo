@@ -2,16 +2,20 @@
   "slug": "sunrise-project",
   "section": "leadership",
   "title": {
-    "en": "Sunrise Project",
-    "vi": "Sunrise Project"
+    "en": "Sunrise Project Club",
+    "vi": "CLB Sunrise Project"
   },
   "org": {
     "en": "Sunrise Project",
     "vi": "Sunrise Project"
   },
+  "tier": {
+    "en": "Vice President · 09/2024 – Present",
+    "vi": "Phó Chủ tịch · 09/2024 – nay"
+  },
   "caption": {
-    "en": "Served as Vice President of the Sunrise Project.",
-    "vi": "Giữ vai trò Phó Chủ tịch của Sunrise Project."
+    "en": "Led a student initiative empowering underprivileged youth in Hanoi through targeted cognitive development and social engagement programs.",
+    "vi": "Dẫn dắt một sáng kiến của học sinh nhằm hỗ trợ trẻ em có hoàn cảnh khó khăn tại Hà Nội thông qua các chương trình phát triển nhận thức và kết nối xã hội."
   },
   "media": [
     {
@@ -21,12 +25,16 @@
         "en": "Vice President certificate",
         "vi": "Chứng nhận Phó Chủ tịch"
       }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/leadership/sunrise-project/certificates/white-and-gold-minimalist-employee-of-the-month-certificate-8.pdf",
+      "alt": {
+        "en": "Tinh Mộng Khởi Hành – Vice Head of Organising Committee",
+        "vi": "Tinh Mộng Khởi Hành – Phó Trưởng ban Tổ chức"
+      }
     }
   ],
   "cloudinaryFolder": "portfolio/leadership/sunrise-project",
-  "status": "published",
-  "tier": {
-    "en": "Vice President",
-    "vi": "Phó Chủ tịch"
-  }
+  "status": "published"
 }

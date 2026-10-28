@@ -2,21 +2,27 @@
   "slug": "sunrise-autism-center",
   "section": "volunteer",
   "title": {
-    "en": "Volunteering at an Autism Support Centre",
-    "vi": "Thiện nguyện tại Trung tâm trẻ tự kỷ"
+    "en": "Sunrise Project – Art therapy for autistic children at the Albert Einstein Center",
+    "vi": "Sunrise Project – Trị liệu nghệ thuật cho trẻ tự kỷ tại Trung tâm Albert Einstein"
   },
   "org": {
-    "en": "Sunrise",
-    "vi": "Sunrise"
+    "en": "Albert Einstein Center",
+    "vi": "Trung tâm Albert Einstein"
   },
   "caption": {
-    "en": "Volunteered at a centre supporting children with autism.",
-    "vi": "Tham gia thiện nguyện tại trung tâm hỗ trợ trẻ tự kỷ."
+    "en": "At the Albert Einstein Center, I facilitated dedicated art therapy sessions and interactive activities for over 50 autistic children. This initiative successfully cultivated a supportive environment that enhanced their communication, social interaction, and creative confidence, empowering them to express themselves more freely and connect deeply with others.",
+    "vi": "Tại Trung tâm Albert Einstein, mình tổ chức các buổi trị liệu nghệ thuật và hoạt động tương tác cho hơn 50 trẻ tự kỷ. Hoạt động đã tạo nên một môi trường hỗ trợ giúp các em cải thiện khả năng giao tiếp, tương tác xã hội và sự tự tin sáng tạo, để các em tự do thể hiện bản thân và gắn kết sâu sắc hơn với mọi người."
   },
   "media": [],
   "cloudinaryFolder": "portfolio/volunteer/sunrise-autism-center",
   "gallery": {
-    "lead": ["dscf6479", "thien-nguyen-sunrise-2", "thien-nguyen-sunrise-3", "thien-nguyen-sunrise", "thien-nguyen-sunrise-1"]
+    "lead": [
+      "dscf6479",
+      "thien-nguyen-sunrise-2",
+      "thien-nguyen-sunrise-3",
+      "thien-nguyen-sunrise",
+      "thien-nguyen-sunrise-1"
+    ]
   },
   "status": "published"
 }

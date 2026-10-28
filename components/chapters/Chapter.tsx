@@ -62,7 +62,8 @@ export function Chapter({ chapter, index, onOpenImage }: Props) {
             {item.tier && item.date && <span aria-hidden="true">·</span>}
             {item.date && <span>{item.date}</span>}
           </div>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-navy/70">{localize(item.caption)}</p>
+          {/* pre-line keeps the line breaks in multi-paragraph captions (e.g. Khởi Vân's). */}
+          <p className="mt-4 max-w-2xl whitespace-pre-line text-base leading-relaxed text-navy/70">{localize(item.caption)}</p>
           {item.links && item.links.length > 0 && (
             <ul className="mt-5 flex flex-wrap gap-2">
               {item.links.map((link) => (

@@ -12,12 +12,12 @@
   "art.exhibition": "Visit the online exhibition",
   "chapters.showAll": "Show all photos",
   "chapters.showLess": "Show fewer",
-  "awards.intro": "A collection of achievements, competitions, scholarships and memorable milestones.",
-  "volunteer.intro": "Community service, fundraising, and outreach in support of children and families in need.",
-  "leadership.intro": "Student leadership, school organizing, and team involvement in student life.",
-  "passion-projects.intro": "Self-driven projects, from exhibitions to a startup, pursued out of curiosity and passion.",
-  "research.intro": "Research papers and reports exploring social and cultural questions.",
-  "internship.intro": "Work experience gained through internships.",
+  "awards.intro": "On my journey of self-improvement throughout high school, academic and business competitions have been indispensable milestones. Although each competition presented its own unique nature and challenges—ranging from business case solves and market research to startup pitching—through every experience, I felt my goal of becoming an economic analyst / strategic leader drawn closer and closer. Here are some of the achievements I am truly proud of:",
+  "volunteer.intro": "I believe student volunteerism and philanthropy represent a powerful commitment to driving grassroots social impact and fostering community resilience. By dedicating my time, skills, and creative energy to underrepresented groups, young leaders bridge critical socioeconomic gaps and champion meaningful equity.",
+  "leadership.intro": "As a high school student, I think true leadership goes beyond holding titles; it is about taking the initiative to empower peers, bridge diverse ideas, and turn shared visions into action. By serving as Head of HR in the Student Council and spearheading impactful projects such as Sunrise and Youngbiz Fest, I listened closely to the needs of the school community. A student leader fosters an environment where every voice feels valued.",
+  "passion-projects.intro": "Beyond my academic pursuits in economics, I explore the intersection of art, commerce, and digital media. What began as a personal passion for painting evolved into a hands-on business venture where I launched a start-up and created a TikTok channel to show my fantastic journey to explore traditional culture.",
+  "research.intro": "Growing up in Vietnam, I witnessed a sharp contrast between our rich cultural past and the rapid, modern economic shifts changing our society. This sparked a dual curiosity in me. I wanted to understand how our heritage could survive commercially, and how our people could be protected financially. This curiosity drove me to my major research.",
+  "internship.intro": "My working journey provided a dynamic opportunity to apply rigorous econometric frameworks and financial analysis to real-world development challenges in Vietnam. By collaborating with experts from VietinBank & Kingler, I had experience to bridge the gap between academic economic theory and impactful, evidence-based policy solutions.",
   "interests.intro": "The sports, clubs and activities I enjoy outside of class.",
   "hero.greeting": "Hi, I'm",
   "home.portfolio": "Portfolio",
@@ -50,5 +50,6 @@
   "pager.next": "Next section",
   "home.quoteAuthor": "Khởi Vân",
   "home.scroll": "Scroll to explore more",
-  "social.email": "Send an email"
+  "social.email": "Send an email",
+  "art.intro": "My art portfolio offers a distinct glimpse into the cultural landscapes, enduring traditions, and vibrant character of Vietnam's North, Center, and South. Through a vivid interplay of color and sentiment, this exhibition takes you on a nationwide journey that honors the diverse heritage and unified essence of the Vietnamese identity."
 }

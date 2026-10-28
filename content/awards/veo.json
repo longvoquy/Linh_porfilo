@@ -2,17 +2,21 @@
   "slug": "veo",
   "section": "awards",
   "title": {
-    "en": "VEO",
-    "vi": "Cuộc thi VEO"
+    "en": "Vietnam Economics Olympiad (VEO) – Encouragement Prize",
+    "vi": "Olympic Kinh tế Việt Nam (VEO) – Giải Khuyến khích"
   },
   "org": {
-    "en": "VEO",
-    "vi": "VEO"
+    "en": "Vietnam Economics Olympiad (VEO)",
+    "vi": "Olympic Kinh tế Việt Nam (VEO)"
   },
   "date": "2025",
+  "tier": {
+    "en": "Encouragement Prize",
+    "vi": "Giải Khuyến khích"
+  },
   "caption": {
-    "en": "Awarded an Encouragement Prize at the VEO competition.",
-    "vi": "Đạt Giải Khuyến khích tại cuộc thi VEO."
+    "en": "Vietnam Economics Olympiad (VEO) is an annual national competition in economics, finance and business for middle and high school students in Vietnam. Awarded an Encouragement Prize.",
+    "vi": "Olympic Kinh tế Việt Nam (VEO) là cuộc thi toàn quốc thường niên về kinh tế, tài chính và kinh doanh dành cho học sinh THCS và THPT tại Việt Nam. Đạt Giải Khuyến khích."
   },
   "media": [
     {
@@ -33,9 +37,5 @@
     }
   ],
   "cloudinaryFolder": "portfolio/awards/veo",
-  "status": "published",
-  "tier": {
-    "en": "Encouragement Prize",
-    "vi": "Giải Khuyến khích"
-  }
+  "status": "published"
 }

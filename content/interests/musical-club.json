@@ -7,10 +7,27 @@
   },
   "date": "2024–2025",
   "caption": {
-    "en": "Member of the school's musical theatre club, 2024–2025.",
-    "vi": "Thành viên câu lạc bộ nhạc kịch của trường, 2024–2025."
+    "en": "Took part in the school's musical theatre club.",
+    "vi": "Tham gia câu lạc bộ nhạc kịch của trường."
   },
-  "media": [],
+  "media": [
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/1-cert-clb-nhac-kich-2024-2025.pdf",
+      "alt": {
+        "en": "Musical Theatre Club certificate (1)",
+        "vi": "Chứng nhận CLB nhạc kịch (1)"
+      }
+    },
+    {
+      "type": "pdf",
+      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/extra-curriculars/certificates/2-cert-clb-nhac-kich-2024-2025.pdf",
+      "alt": {
+        "en": "Musical Theatre Club certificate (2)",
+        "vi": "Chứng nhận CLB nhạc kịch (2)"
+      }
+    }
+  ],
   "cloudinaryFolder": "portfolio/interests/musical-club",
   "status": "published"
 }

@@ -12,12 +12,12 @@
   "art.exhibition": "Tham quan triển lãm trực tuyến",
   "chapters.showAll": "Xem tất cả ảnh",
   "chapters.showLess": "Thu gọn",
-  "awards.intro": "Tuyển tập những thành tích, cuộc thi, học bổng và dấu mốc đáng nhớ.",
-  "volunteer.intro": "Hoạt động thiện nguyện, quyên góp và hỗ trợ cộng đồng dành cho trẻ em và gia đình có hoàn cảnh khó khăn.",
-  "leadership.intro": "Hoạt động lãnh đạo học sinh, tổ chức sự kiện trường học và tham gia các đội nhóm trong đời sống học đường.",
-  "passion-projects.intro": "Những dự án tự thực hiện, từ triển lãm đến khởi nghiệp, xuất phát từ sự tò mò và đam mê.",
-  "research.intro": "Các bài nghiên cứu và báo cáo về những vấn đề xã hội và văn hóa.",
-  "internship.intro": "Kinh nghiệm làm việc có được qua các kỳ thực tập.",
+  "awards.intro": "Trên hành trình hoàn thiện bản thân suốt những năm trung học, các cuộc thi học thuật và kinh doanh là những dấu mốc không thể thiếu. Dù mỗi cuộc thi mang một tính chất và thử thách riêng — từ giải tình huống kinh doanh, nghiên cứu thị trường đến gọi vốn khởi nghiệp — qua từng trải nghiệm, mình cảm thấy mục tiêu trở thành một nhà phân tích kinh tế / nhà lãnh đạo chiến lược ngày càng đến gần hơn. Dưới đây là những thành tích mà mình thực sự tự hào:",
+  "volunteer.intro": "Mình tin rằng hoạt động tình nguyện và thiện nguyện của học sinh là một cam kết mạnh mẽ nhằm tạo tác động xã hội từ cơ sở và vun đắp sức bền cho cộng đồng. Bằng cách dành thời gian, kỹ năng và năng lượng sáng tạo cho những nhóm yếu thế, những người trẻ có thể thu hẹp khoảng cách kinh tế – xã hội và lan tỏa sự công bằng ý nghĩa.",
+  "leadership.intro": "Là một học sinh trung học, mình nghĩ lãnh đạo thực sự không nằm ở chức danh; đó là chủ động trao quyền cho bạn bè, kết nối những ý tưởng khác biệt và biến tầm nhìn chung thành hành động. Khi giữ vai trò Trưởng ban Nhân sự của Hội đồng học sinh và dẫn dắt những dự án ý nghĩa như Sunrise và Youngbiz Fest, mình luôn lắng nghe nhu cầu của cộng đồng nhà trường. Một người lãnh đạo học sinh tạo nên môi trường nơi mọi tiếng nói đều được trân trọng.",
+  "passion-projects.intro": "Bên cạnh việc theo đuổi kinh tế học, mình khám phá giao điểm giữa nghệ thuật, thương mại và truyền thông số. Từ niềm đam mê hội họa cá nhân, mình bước vào một hành trình kinh doanh thực tế: khởi động một start-up và lập kênh TikTok để chia sẻ hành trình đầy thú vị khám phá văn hóa truyền thống.",
+  "research.intro": "Lớn lên ở Việt Nam, mình chứng kiến sự tương phản rõ rệt giữa quá khứ văn hóa phong phú và những chuyển dịch kinh tế hiện đại đang nhanh chóng thay đổi xã hội. Điều đó khơi dậy trong mình một sự tò mò kép: mình muốn hiểu di sản của chúng ta có thể tồn tại về mặt thương mại ra sao, và người dân có thể được bảo vệ về tài chính như thế nào. Chính sự tò mò này đã dẫn mình đến những nghiên cứu chính của mình.",
+  "internship.intro": "Hành trình làm việc cho mình cơ hội áp dụng các khung kinh tế lượng chặt chẽ và phân tích tài chính vào những thách thức phát triển thực tế tại Việt Nam. Khi làm việc cùng các chuyên gia tại VietinBank và Kingler, mình có trải nghiệm kết nối lý thuyết kinh tế học thuật với những giải pháp chính sách dựa trên bằng chứng và tạo tác động thực sự.",
   "interests.intro": "Những môn thể thao, câu lạc bộ và hoạt động mình yêu thích ngoài giờ học.",
   "hero.greeting": "Xin chào, mình là",
   "home.portfolio": "Hồ sơ",
@@ -50,5 +50,6 @@
   "pager.next": "Mục tiếp theo",
   "home.quoteAuthor": "Khởi Vân",
   "home.scroll": "Cuộn để khám phá thêm",
-  "social.email": "Gửi email"
+  "social.email": "Gửi email",
+  "art.intro": "Hồ sơ nghệ thuật của mình mở ra một góc nhìn riêng về cảnh sắc văn hóa, những truyền thống bền bỉ và nét đặc sắc sống động của ba miền Bắc, Trung, Nam. Qua sự đan xen sinh động giữa màu sắc và cảm xúc, bộ sưu tập đưa bạn qua một hành trình khắp đất nước, tôn vinh di sản đa dạng và tinh thần thống nhất của bản sắc Việt Nam."
 }

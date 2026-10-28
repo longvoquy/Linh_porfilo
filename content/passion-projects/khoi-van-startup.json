@@ -2,20 +2,19 @@
   "slug": "khoi-van-startup",
   "section": "passion-projects",
   "title": {
-    "en": "Startup: Khởi Vân",
-    "vi": "Dự án khởi nghiệp: Khởi Vân"
+    "en": "Start-up: Khởi Vân",
+    "vi": "Khởi nghiệp: Khởi Vân"
   },
   "org": {
-    "en": "Khởi Vân",
-    "vi": "Khởi Vân"
+    "en": "Start-up",
+    "vi": "Khởi nghiệp"
   },
   "caption": {
-    "en": "Photos from Khởi Vân, a startup project I worked on.",
-    "vi": "Hình ảnh từ Khởi Vân, một dự án khởi nghiệp mà mình thực hiện."
+    "en": "Some lines are more than decoration.\n\nThey carry memories. They carry time.\nThey carry the way a culture sees the world — and tells its own story.\nKhởi Vân is beginning a journey to bring the visual language of Vietnamese heritage into contemporary life.\n\nEvery line has a lineage.",
+    "vi": "Có những đường nét không chỉ để trang trí.\n\nChúng mang theo ký ức. Chúng mang theo thời gian.\nChúng mang theo cách một nền văn hóa nhìn thế giới — và kể câu chuyện của chính mình.\nKhởi Vân đang bắt đầu hành trình đưa ngôn ngữ thị giác của di sản Việt vào đời sống đương đại.\n\nMỗi đường nét đều có cội nguồn."
   },
   "media": [],
   "cloudinaryFolder": "portfolio/passion-projects/khoi-van-startup",
-  "status": "published",
   "links": [
     {
       "label": {
@@ -31,5 +30,6 @@
       },
       "url": "https://shopee.vn/khoivan2009"
     }
-  ]
+  ],
+  "status": "published"
 }
