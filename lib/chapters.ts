@@ -27,8 +27,8 @@ function leadWith(images: ChapterImage[], folder: string | undefined, lead: stri
   return [...images].sort((a, b) => rank(a) - rank(b));
 }
 
-export async function getChapters(sectionKey: SectionKey): Promise<Chapter[]> {
-  const items = getPublishedItems(sectionKey);
+export async function getChapters(sectionKey: SectionKey, onlySlugs?: string[]): Promise<Chapter[]> {
+  const items = getPublishedItems(sectionKey).filter((item) => !onlySlugs || onlySlugs.includes(item.slug));
 
   // Folders are independent — list them concurrently rather than in series.
   return Promise.all(

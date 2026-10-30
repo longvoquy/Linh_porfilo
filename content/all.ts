@@ -8,6 +8,7 @@ import vinhThanh from "./volunteer/vinh-thanh.json";
 import mucHoaNguyetHoa from "./volunteer/muc-hoa-nguyet-hoa.json";
 import nguyenSieuStudentCouncil from "./leadership/nguyen-sieu-student-council.json";
 import sunriseProject from "./leadership/sunrise-project.json";
+import lamor_leadership from "./leadership/lamor.json";
 import tranh1 from "./art-portfolio/tranh-1.json";
 import tranh2 from "./art-portfolio/tranh-2.json";
 import tranh3 from "./art-portfolio/tranh-3.json";
@@ -40,13 +41,32 @@ import soccerVarsity_interests from "./interests/soccer-varsity.json";
  * section with no entries here automatically renders as "coming soon".
  */
 export const allItems: ActivityItem[] = [
-  bebras as ActivityItem,
-  moneyMaze as ActivityItem,
-  veo as ActivityItem,
   owlypia as ActivityItem,
+  bebras as ActivityItem,
+  harvardCrimson2026_awards as ActivityItem,
+  veo as ActivityItem,
+  kangarooScience_awards as ActivityItem,
+  moneyMaze as ActivityItem,
   nguyenSieuScholarship as ActivityItem,
-  nguyenSieuStudentCouncil as ActivityItem,
+  extraCurriculars_awards as ActivityItem,
+  khoiVanStartup_passionprojects as ActivityItem,
+  tiktok_passionprojects as ActivityItem,
+  ceramicCulturalHeritage_research as ActivityItem,
+  socialSecurityOptionsVietnam_research as ActivityItem,
+  vietinbank_internship as ActivityItem,
+  kingler_internship as ActivityItem,
+  youngBizfest2026_leadership as ActivityItem,
   sunriseProject as ActivityItem,
+  nguyenSieuStudentCouncil as ActivityItem,
+  lamor_leadership as ActivityItem,
+  sunriseAutismCenter_volunteer as ActivityItem,
+  vinhThanh as ActivityItem,
+  mucHoaNguyetHoa as ActivityItem,
+  quyUocMoXanh_volunteer as ActivityItem,
+  basketball_interests as ActivityItem,
+  soccerVarsity_interests as ActivityItem,
+  musicalClub_interests as ActivityItem,
+  exhibition_passionprojects as ActivityItem,
   tranh1 as ActivityItem,
   tranh2 as ActivityItem,
   tranh3 as ActivityItem,
@@ -56,22 +76,4 @@ export const allItems: ActivityItem[] = [
   tranh7 as ActivityItem,
   tranh8 as ActivityItem,
   tranh9 as ActivityItem,
-  harvardCrimson2026_awards as ActivityItem,
-  kangarooScience_awards as ActivityItem,
-  extraCurriculars_awards as ActivityItem,
-  exhibition_passionprojects as ActivityItem,
-  khoiVanStartup_passionprojects as ActivityItem,
-  tiktok_passionprojects as ActivityItem,
-  ceramicCulturalHeritage_research as ActivityItem,
-  socialSecurityOptionsVietnam_research as ActivityItem,
-  vietinbank_internship as ActivityItem,
-  kingler_internship as ActivityItem,
-  youngBizfest2026_leadership as ActivityItem,
-  sunriseAutismCenter_volunteer as ActivityItem,
-  vinhThanh as ActivityItem,
-  mucHoaNguyetHoa as ActivityItem,
-  quyUocMoXanh_volunteer as ActivityItem,
-  basketball_interests as ActivityItem,
-  soccerVarsity_interests as ActivityItem,
-  musicalClub_interests as ActivityItem,
 ];

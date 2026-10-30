@@ -2,7 +2,7 @@
   "slug": "veo",
   "section": "awards",
   "title": {
-    "en": "Vietnam Economics Olympiad (VEO) – Encouragement Prize",
+    "en": "Vietnam Economics Olympiad (VEO) – Consolation Prize",
     "vi": "Olympic Kinh tế Việt Nam (VEO) – Giải Khuyến khích"
   },
   "org": {
@@ -11,7 +11,7 @@
   },
   "date": "2025",
   "tier": {
-    "en": "Encouragement Prize",
+    "en": "Consolation Prize",
     "vi": "Giải Khuyến khích"
   },
   "caption": {
@@ -23,8 +23,8 @@
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/veo/certificates/veo-giay-chung-nhan-giai-khuyen-khich.pdf",
       "alt": {
-        "en": "Encouragement Prize certificate",
-        "vi": "Giấy chứng nhận Giải Khuyến khích"
+        "en": "Consolation Prize certificate",
+        "vi": "Chứng nhận Giải Khuyến khích"
       }
     },
     {

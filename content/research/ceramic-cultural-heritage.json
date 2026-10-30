@@ -23,8 +23,8 @@
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/ceramic-cultural-heritage/certificates/f3108044051.pdf",
       "alt": {
-        "en": "Full paper",
-        "vi": "Toàn văn bài báo"
+        "en": "Read full paper",
+        "vi": "Đọc toàn văn"
       }
     },
     {
@@ -40,8 +40,8 @@
   "links": [
     {
       "label": {
-        "en": "Read the article in IOSR Journals",
-        "vi": "Xem bài báo trên IOSR Journals"
+        "en": "Link publication",
+        "vi": "Liên kết bài đăng"
       },
       "url": "https://www.iosrjournals.org/iosr-jhss/pages/31(8)Series-4.html"
     }

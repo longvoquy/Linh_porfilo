@@ -39,7 +39,7 @@ Package manager is **pnpm** (version pinned in `package.json`). Do not use npm/y
 ## Two page patterns
 
 1. **Visual chapters** (awards, passion-projects, research, internship, leadership, volunteer, interests): async Server Component calling `getChapters(sectionKey)`, with `export const revalidate = 3600`. Gallery images are discovered at request time from the item's `cloudinaryFolder` (direct children only; an asset named `cover` leads). Never paste image URLs into code — upload to the folder instead.
-2. **Activity grid** (art-portfolio): `"use client"` page rendering `ActivityGrid` from `getSectionItems`.
+2. **Arts** (art-portfolio): a Server Component (`revalidate = 3600`) rendering `ArtsView`: `01 / Exhibition` is a visual chapter (the `exhibition` item, photos from its Cloudinary folder), `02 / Art Portfolio` is the paintings in an `ActivityGrid` (the section's other items).
 
 Caching uses route-segment `revalidate`, deliberately **not** `use cache` / `cacheComponents` (that would change rendering for every route). Don't switch without discussing it.
 

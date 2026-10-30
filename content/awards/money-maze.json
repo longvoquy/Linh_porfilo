@@ -2,8 +2,8 @@
   "slug": "money-maze",
   "section": "awards",
   "title": {
-    "en": "Money Maze: The Debate Arena – The Best Debate Team",
-    "vi": "Money Maze: The Debate Arena – Đội tranh biện xuất sắc nhất"
+    "en": "Money Maze: The Debate Arena Season 2 – The Best Debate Team",
+    "vi": "Money Maze: The Debate Arena Mùa 2 – Đội tranh biện xuất sắc nhất"
   },
   "org": {
     "en": "Money Maze: The Debate Arena",
@@ -15,15 +15,15 @@
     "vi": "Đội tranh biện xuất sắc nhất"
   },
   "caption": {
-    "en": "Money Maze: The Debate Arena is an academic competition to enhance students' economic strategic thinking through real-world case studies. Placed The Best Debate Team.",
-    "vi": "Money Maze: The Debate Arena là cuộc thi học thuật giúp học sinh phát triển tư duy chiến lược kinh tế qua các tình huống thực tế. Đạt giải Đội tranh biện xuất sắc nhất."
+    "en": "Money Maze: The Debate Arena is an academic competition to enhance students' economic strategic thinking through real-world case studies. Placed The Best Debate Team in Season 2.",
+    "vi": "Money Maze: The Debate Arena là cuộc thi học thuật giúp học sinh phát triển tư duy chiến lược kinh tế qua các tình huống thực tế. Đạt giải Đội tranh biện xuất sắc nhất ở Mùa 2."
   },
   "media": [
     {
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/awards/money-maze/certificates/cert-money-maze-the-debate-arena.pdf",
       "alt": {
-        "en": "Certificate of participation",
+        "en": "Participation certificate",
         "vi": "Chứng nhận tham gia"
       }
     }

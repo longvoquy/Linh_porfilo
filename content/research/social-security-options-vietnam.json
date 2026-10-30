@@ -23,16 +23,8 @@
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/social-security-options-vietnam/certificates/bc-giai-phap-undp-en-23-10-2025-19-11-2025.pdf",
       "alt": {
-        "en": "Report (English)",
-        "vi": "Báo cáo (Tiếng Anh)"
-      }
-    },
-    {
-      "type": "pdf",
-      "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/research/social-security-options-vietnam/certificates/bc-giai-phap-undp.pdf",
-      "alt": {
-        "en": "Report (Vietnamese)",
-        "vi": "Báo cáo (Tiếng Việt)"
+        "en": "Read full paper (EN)",
+        "vi": "Đọc toàn văn (EN)"
       }
     }
   ],

@@ -1,16 +1,14 @@
 "use client";
 
-import { ComingSoon } from "@/components/ComingSoon";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 
-/** Placeholder route so the nav link resolves; swap `ComingSoon` for real content. */
 export default function AboutMePage() {
   const { t } = useTranslation();
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-16">
-      <h1 className="mb-10 text-3xl font-semibold text-navy">{t("nav.about")}</h1>
-      <ComingSoon />
+    <main className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+      <h1 className="text-4xl font-semibold text-navy sm:text-5xl">{t("nav.about")}</h1>
+      <p className="mt-6 max-w-2xl text-base leading-relaxed text-navy/70 sm:text-lg">{t("about.intro")}</p>
     </main>
   );
 }
