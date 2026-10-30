@@ -7,20 +7,20 @@
   },
   "date": "2025",
   "tier": {
-    "en": "Gold Medal",
-    "vi": "Huy chương Vàng"
+    "en": "Bronze Medal",
+    "vi": "Huy chương Đồng"
   },
   "caption": {
-    "en": "Awarded a Gold Medal with the Varsity Soccer team at Nguyễn Siêu Sports Week.",
-    "vi": "Đạt Huy chương Vàng cùng đội bóng đá Varsity tại Tuần lễ Thể thao Nguyễn Siêu."
+    "en": "Awarded a Bronze Medal with the Varsity Soccer team at Nguyễn Siêu Sports Week.",
+    "vi": "Đạt Huy chương Đồng cùng đội bóng đá Varsity tại Tuần lễ Thể thao Nguyễn Siêu."
   },
   "media": [
     {
       "type": "pdf",
       "src": "https://res.cloudinary.com/dcxpawids/raw/upload/portfolio/interests/soccer-varsity/certificates/bong-da-2025-ky-niem-chuong.pdf",
       "alt": {
-        "en": "Soccer medal 2025",
-        "vi": "Huy chương bóng đá 2025"
+        "en": "Soccer bronze medal 2025",
+        "vi": "Huy chương đồng bóng đá 2025"
       }
     }
   ],
