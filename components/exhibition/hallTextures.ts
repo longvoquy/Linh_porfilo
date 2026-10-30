@@ -55,6 +55,54 @@ export function createGlowTexture(): CanvasTexture {
   });
 }
 
+/**
+ * The exhibition's name as a long banner for the end walls: gold lettering on
+ * navy, a double gold rule, and a diamond between the name and its tagline.
+ */
+export function createBannerTexture(name: string, tagline: string, width = 2048, height = 168): CanvasTexture {
+  return canvasTexture(width, height, (ctx, w, h) => {
+    ctx.fillStyle = HALL_COLORS.navy;
+    ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = HALL_COLORS.goldLit;
+    ctx.lineWidth = 5;
+    ctx.strokeRect(8, 8, w - 16, h - 16);
+    ctx.lineWidth = 2;
+    ctx.strokeRect(20, 20, w - 40, h - 40);
+
+    ctx.textBaseline = "middle";
+    const y = h / 2 + 4;
+    const gap = 44;
+    const diamond = 14;
+    const nameFont = `700 88px ${PLAQUE_FONT}`;
+    const taglineFont = `italic 600 62px ${PLAQUE_FONT}`;
+    ctx.font = nameFont;
+    const nameWidth = ctx.measureText(name.toUpperCase()).width;
+    ctx.font = taglineFont;
+    const taglineWidth = ctx.measureText(tagline).width;
+    const total = nameWidth + gap * 2 + diamond * 2 + taglineWidth;
+    let x = (w - total) / 2;
+
+    ctx.textAlign = "left";
+    ctx.fillStyle = HALL_COLORS.goldLit;
+    ctx.font = nameFont;
+    ctx.fillText(name.toUpperCase().normalize("NFC"), x, y);
+    x += nameWidth + gap;
+
+    ctx.beginPath();
+    ctx.moveTo(x + diamond, y - diamond);
+    ctx.lineTo(x + diamond * 2, y);
+    ctx.lineTo(x + diamond, y + diamond);
+    ctx.lineTo(x, y);
+    ctx.closePath();
+    ctx.fill();
+    x += diamond * 2 + gap;
+
+    ctx.fillStyle = HALL_COLORS.cream;
+    ctx.font = taglineFont;
+    ctx.fillText(tagline.normalize("NFC"), x, y);
+  });
+}
+
 type PlaqueLine = { text: string; size: number; color: string };
 
 /**

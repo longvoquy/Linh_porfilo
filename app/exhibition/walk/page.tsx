@@ -4,7 +4,7 @@ import { toExhibitPieces } from "@/components/exhibition/pieces";
 import { getPublishedItems } from "@/lib/getContent";
 
 export const metadata: Metadata = {
-  title: "Art Exhibition — walk",
+  title: "Woven Hues: A Symphony of Identity — walk",
   description: "Walk through a gallery of original paintings in 3D with W A S D and the mouse.",
 };
 

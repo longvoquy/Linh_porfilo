@@ -1,5 +1,6 @@
 "use client";
 
+import { Flourish } from "@/components/decor/Flourish";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import { textureUrl, type ExhibitPiece } from "./pieces";
@@ -14,8 +15,13 @@ export function ExhibitionFallback({ pieces }: { pieces: ExhibitPiece[] }) {
         <LanguageToggle />
       </div>
       <header className="mb-12 text-center">
-        <h1 className="font-heading text-4xl font-semibold text-navy">{t("exhibition.title")}</h1>
-        <p className="mt-2 text-navy/70">{t("exhibition.subtitle")}</p>
+        <p className="text-xs tracking-widest text-gold-ink uppercase">{t("exhibition.subtitle")}</p>
+        <Flourish className="mx-auto mt-3 h-5 w-56 text-gold" />
+        <h1 className="mt-2 text-navy">
+          <span className="font-heading block text-5xl font-semibold tracking-wide">{t("exhibition.name")}</span>
+          <span className="font-heading mt-1 block text-2xl italic text-gold-ink">{t("exhibition.tagline")}</span>
+        </h1>
+        <Flourish className="mx-auto mt-3 h-5 w-56 rotate-180 text-gold" />
       </header>
 
       <ol className="space-y-16">

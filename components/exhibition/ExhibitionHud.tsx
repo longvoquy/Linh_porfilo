@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { Flourish } from "@/components/decor/Flourish";
 import { LanguageToggle } from "@/components/nav/LanguageToggle";
 import { useTranslation } from "@/lib/i18n/useTranslation";
 import type { ExhibitPiece } from "./pieces";
@@ -175,6 +176,17 @@ export function ExhibitionHud({
     <div className="pointer-events-none absolute inset-0">
       <h1 className="sr-only">{t("exhibition.title")}</h1>
 
+      {/* Once the tour is under way the name stays in the corner. */}
+      {(piece || walk) && (
+        <div
+          aria-hidden
+          className="absolute left-4 top-4 rounded-full border border-gold/30 bg-ivory/90 px-4 py-1.5 text-navy shadow"
+        >
+          <span className="font-heading text-base font-semibold tracking-wide">{t("exhibition.name")}</span>
+          <span className="font-heading hidden text-sm italic text-gold-ink sm:inline"> · {t("exhibition.tagline")}</span>
+        </div>
+      )}
+
       <div className="pointer-events-auto absolute right-4 top-4 flex items-center gap-2">
         <ModeSwitch walking={walk !== null} canWalk={canWalk} onTour={onExitWalk} onWalk={onEnterWalk} />
         <LanguageToggle />
@@ -216,7 +228,9 @@ export function ExhibitionHud({
       <section
         key={walk ? `walk-${walk.focus}` : stop}
         aria-live="polite"
-        className="pointer-events-auto absolute inset-x-4 bottom-4 rounded-2xl border border-gold/30 bg-ivory/95 p-5 text-navy shadow-lg md:inset-x-auto md:bottom-8 md:left-8 md:max-w-md"
+        className={`pointer-events-auto absolute inset-x-4 bottom-4 rounded-2xl border border-gold/30 bg-ivory/95 p-5 text-navy shadow-lg md:inset-x-auto md:bottom-8 md:left-8 md:max-w-md ${
+          piece || walk ? "" : "px-7 py-6 outline outline-1 -outline-offset-6 outline-gold/40"
+        }`}
       >
         {piece ? (
           <>
@@ -244,8 +258,15 @@ export function ExhibitionHud({
           <p className="text-sm text-navy/80">{t("exhibition.walkHint")}</p>
         ) : (
           <>
-            <p className="text-xs tracking-widest text-gold-ink uppercase">{t("exhibition.entrance")}</p>
-            <p className="font-heading mt-1 text-2xl font-semibold">{t("exhibition.subtitle")}</p>
+            <p className="text-xs tracking-widest text-gold-ink uppercase">
+              {t("exhibition.entrance")} · {t("exhibition.subtitle")}
+            </p>
+            <Flourish className="mt-3 h-5 w-56 text-gold" />
+            <p className="font-heading mt-2 text-4xl font-semibold leading-none tracking-wide">
+              {t("exhibition.name")}
+            </p>
+            <p className="font-heading mt-1 text-xl italic text-gold-ink">{t("exhibition.tagline")}</p>
+            <Flourish className="mt-3 h-5 w-56 rotate-180 text-gold" />
             <p className="mt-3 text-sm text-navy/80">{t("exhibition.intro")}</p>
             <button
               type="button"

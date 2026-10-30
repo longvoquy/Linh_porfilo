@@ -21,7 +21,13 @@ import {
   poseForStop,
   type Pose,
 } from "./cameraRail";
-import { HALL_COLORS, createFloorTexture, createGlowTexture, createPlaqueTexture } from "./hallTextures";
+import {
+  HALL_COLORS,
+  createBannerTexture,
+  createFloorTexture,
+  createGlowTexture,
+  createPlaqueTexture,
+} from "./hallTextures";
 import { aspectOf, pickEndWallPieces, textureUrl, type ExhibitPiece } from "./pieces";
 import { WalkRig } from "./walk/WalkRig";
 import {
@@ -38,6 +44,8 @@ export type SceneProps = {
   pieces: ExhibitPiece[];
   /** Label text for each painting, in piece order (already localized: context does not cross the canvas). */
   plates: { title: string; date?: string }[];
+  /** The exhibition's name and tagline for the banners on the end walls (localized, for the same reason). */
+  banner: { name: string; tagline: string };
   /** 0 is the entrance; 1..pieces.length are the paintings. */
   stop: number;
   closeUp: boolean;
@@ -359,6 +367,21 @@ const END_WALL_CENTER_Y = 2.3;
 
 type EndWall = { piece: ExhibitPiece; plate: Plate };
 
+/** The name banner, centred between the end-wall painting and the crown moulding. */
+const BANNER = { width: 5.4, height: 0.44, y: 3.95 };
+
+function NameBanner({ name, tagline, wallZ, dir }: { name: string; tagline: string; wallZ: number; dir: 1 | -1 }) {
+  const texture = useMemo(() => createBannerTexture(name, tagline), [name, tagline]);
+  useEffect(() => () => texture.dispose(), [texture]);
+
+  return (
+    <mesh position={[0, BANNER.y, wallZ + dir * 0.03]} rotation={[0, dir === 1 ? 0 : Math.PI, 0]}>
+      <planeGeometry args={[BANNER.width, BANNER.height]} />
+      <meshBasicMaterial map={texture} toneMapped={false} />
+    </mesh>
+  );
+}
+
 /**
  * A painting hung on an end wall, framed and labelled like the others but not a
  * stop of the tour. `dir` is 1 on the entrance wall (z = 0, facing +z) and -1 on
@@ -416,10 +439,12 @@ function Hall({
   length,
   endWall,
   glow,
+  banner,
 }: {
   length: number;
   endWall: { entrance: EndWall; far: EndWall } | null;
   glow: Texture;
+  banner: { name: string; tagline: string };
 }) {
   const floor = useMemo(() => {
     const texture = createFloorTexture();
@@ -494,6 +519,10 @@ function Hall({
         );
       })}
 
+      {/* The exhibition's name, above the painting on each end wall. */}
+      <NameBanner {...banner} wallZ={0} dir={1} />
+      <NameBanner {...banner} wallZ={length} dir={-1} />
+
       {/* One of the collection on each end wall: you face the far one from the entrance. */}
       {endWall && (
         <>
@@ -526,6 +555,7 @@ function Hall({
 export default function ExhibitionScene({
   pieces,
   plates,
+  banner,
   stop,
   closeUp,
   reducedMotion,
@@ -576,7 +606,7 @@ export default function ExhibitionScene({
           resume={resume}
         />
       )}
-      <Hall length={length} endWall={endWall} glow={glow} />
+      <Hall length={length} endWall={endWall} glow={glow} banner={banner} />
       {pieces.map((piece, i) => (
         <Painting
           key={piece.slug}

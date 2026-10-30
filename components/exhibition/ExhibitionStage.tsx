@@ -114,6 +114,7 @@ export function ExhibitionStage({
         <ExhibitionScene
           pieces={pieces}
           plates={plates}
+          banner={{ name: t("exhibition.name"), tagline: t("exhibition.tagline") }}
           stop={stop}
           closeUp={closeUp}
           reducedMotion={reducedMotion}
