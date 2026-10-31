@@ -28,7 +28,7 @@ export function PageLoader({ visible }: { visible: boolean }) {
 
       <BrandMark className="relative h-20 w-22 text-gold-ink animate-loader-float" />
 
-      <p className="relative mt-5 font-heading text-3xl font-semibold text-navy">Vũ Khánh Linh</p>
+      <p className="relative mt-5 font-heading text-3xl font-semibold text-navy">Vu Khanh Linh</p>
       <p className="relative mt-1 text-[11px] uppercase tracking-[0.32em] text-navy/60">Portfolio</p>
 
       {/* A thread with a bead of gold running along it. */}
