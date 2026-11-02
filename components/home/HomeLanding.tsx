@@ -242,6 +242,19 @@ export function HomeLanding() {
           <path d="M2 2l6 6 6-6" />
         </svg>
       </div>
+
+      {/* The introduction from the content doc, under the fold. */}
+      <section
+        aria-labelledby="home-intro-title"
+        className={`relative mx-auto max-w-3xl px-6 pb-24 pt-10 text-center sm:pb-32 ${fade}`}
+      >
+        <p className="text-[11px] uppercase tracking-[0.28em] text-gold-ink">{t("home.introTitle")}</p>
+        <h2 id="home-intro-title" className="sr-only">
+          {t("home.introTitle")}
+        </h2>
+        <span aria-hidden className="mx-auto mt-4 block h-px w-16 bg-gold/50" />
+        <p className="mt-6 text-base leading-relaxed text-navy/80 sm:text-lg">{t("about.intro")}</p>
+      </section>
     </main>
   );
 }
