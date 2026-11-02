@@ -96,7 +96,10 @@ export function HomeLanding() {
   }, [markHatReady]);
 
   return (
-    <main className="relative min-h-svh overflow-hidden bg-cream text-navy">
+    <main className="relative overflow-hidden bg-cream text-navy">
+      {/* The first screen is its own positioning box: the corner etchings anchor to its
+          bottom, not to the page bottom (the introduction below makes the page taller). */}
+      <div className="relative min-h-svh">
       {/* Arriving through the transition, its cover is the loader. */}
       <PageLoader visible={!hatReady && !arriving} />
       <div
@@ -241,6 +244,7 @@ export function HomeLanding() {
         >
           <path d="M2 2l6 6 6-6" />
         </svg>
+      </div>
       </div>
 
       {/* The introduction from the content doc, under the fold. */}
